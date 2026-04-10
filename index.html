@@ -231,7 +231,7 @@
 <a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="#control">Control</a>
 </nav>
 <button class="bg-primary-container text-on-primary-container px-6 py-2 font-bold uppercase tracking-widest text-xs hover:bg-primary-fixed-dim transition-all active:scale-95 duration-150">
-            Get Started
+            Run a Pilot
         </button>
 </header>
 <main class="relative pt-20">
@@ -262,148 +262,149 @@
                             Development Force Multiplier
                         </p>
 <p class="text-on-surface-variant font-body text-lg md:text-xl tracking-wide max-w-2xl mx-auto drop-shadow-md">
-                            Clear backlog, refactors, migrations, and compliance work without expanding headcount. GitHub-native, traceable, and approval-driven.
+                            Turn GitHub issues into tested, merge-ready PRs, inside your repo. Runs locally, follows your rules, escalates when stuck.
                         </p>
 <div class="pt-10 flex flex-wrap justify-center gap-6">
 <button class="px-10 py-4 bg-primary-container text-on-primary-container font-bold uppercase tracking-[0.2em] text-sm group relative overflow-hidden shadow-[0_0_20px_rgba(0,218,243,0.3)]">
-<span class="relative z-10">Get Started</span>
+<span class="relative z-10">Run a Pilot</span>
 <div class="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500"></div>
 </button>
 <button class="px-10 py-4 border-l-2 border-primary text-primary font-bold uppercase tracking-[0.2em] text-sm hover:bg-primary/5 transition-colors backdrop-blur-md">
                                 Managed Service
                             </button>
 </div>
+<!-- Trust strip -->
+<div class="pt-12 flex flex-wrap justify-center gap-x-8 gap-y-3">
+<span class="flex items-center gap-2 text-on-surface-variant/60 text-xs uppercase tracking-widest font-headline"><span class="material-symbols-outlined text-primary-fixed-dim text-sm">home</span> Runs locally</span>
+<span class="flex items-center gap-2 text-on-surface-variant/60 text-xs uppercase tracking-widest font-headline"><span class="material-symbols-outlined text-primary-fixed-dim text-sm">hub</span> GitHub-native</span>
+<span class="flex items-center gap-2 text-on-surface-variant/60 text-xs uppercase tracking-widest font-headline"><span class="material-symbols-outlined text-primary-fixed-dim text-sm">verified_user</span> Approval gates</span>
+<span class="flex items-center gap-2 text-on-surface-variant/60 text-xs uppercase tracking-widest font-headline"><span class="material-symbols-outlined text-primary-fixed-dim text-sm">front_hand</span> Smart escalation</span>
+<span class="flex items-center gap-2 text-on-surface-variant/60 text-xs uppercase tracking-widest font-headline"><span class="material-symbols-outlined text-primary-fixed-dim text-sm">history</span> Full audit trail</span>
+</div>
 </div>
 </div>
 </div>
 <div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background to-transparent z-10"></div>
 </section>
-<!-- Metrics/Status Section -->
-<section class="py-24 px-8 grid grid-cols-1 md:grid-cols-12 gap-8 max-w-[1400px] mx-auto">
-<div class="md:col-span-8 p-12 bg-surface-container-low border-t border-l border-primary/10 relative overflow-hidden group">
-<div class="absolute top-0 right-0 p-4 opacity-20">
-<span class="material-symbols-outlined text-6xl text-primary" data-icon="hub">hub</span>
+<!-- ══════ SECTION 2: Two Ways To Ship ══════ -->
+<section class="py-28 px-8 bg-surface-container-lowest border-y border-primary/10 relative">
+<div class="max-w-[1400px] mx-auto">
+<div class="flex items-center gap-4 mb-6">
+    <span class="text-primary font-bold tracking-[0.5em] uppercase text-xs">Service_Models</span>
+    <div class="h-px flex-grow bg-primary/10"></div>
 </div>
-<h2 class="font-headline text-3xl font-bold tracking-[0.2em] text-primary uppercase mb-6">Autonomous Delivery Pipeline</h2>
-<p class="text-on-surface-variant text-lg mb-8 max-w-xl">
-                    Faktorial runs as a local process alongside your repo. It polls your GitHub issues, assigns them to parallel agent workers, and drives each one through a five-stage pipeline &mdash; from investigation to merged PR.
-                </p>
-<div class="flex gap-12">
-<div>
-<div class="text-3xl font-black text-tertiary-fixed-dim font-headline tracking-tighter">5</div>
-<div class="text-[10px] uppercase tracking-[0.3em] text-outline">Pipeline Stages</div>
+<h2 class="font-headline text-3xl md:text-5xl font-black tracking-[0.1em] uppercase mb-6">
+    Two Ways To Ship.<br/><span class="text-primary-fixed-dim">One Standard Of Proof.</span>
+</h2>
+<p class="text-on-surface-variant text-lg max-w-2xl mb-16">
+    Run Faktorial alongside your team, or let Asynkron's engineers handle delivery end-to-end. Same pipeline, same quality gates, same traceability.
+</p>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+    <!-- Self-service -->
+    <div class="border border-primary/20 p-10 relative group hover:border-primary/40 transition-all">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+        <div class="flex items-center gap-3 mb-6">
+            <span class="material-symbols-outlined text-primary text-2xl" data-icon="handshake">handshake</span>
+            <h3 class="font-headline font-black uppercase tracking-[0.15em] text-lg text-primary">Your Team + Faktorial</h3>
+        </div>
+        <p class="text-on-surface-variant text-sm leading-relaxed mb-8">
+            Your developers keep doing what they do best: product, architecture, business logic. Faktorial clears the backlog: bugs, refactors, migrations, test coverage, and the tickets nobody wants to pick up.
+        </p>
+        <div class="space-y-4">
+            <div class="flex items-start gap-3"><span class="text-primary text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">Your devs focus on product</span></div>
+            <div class="flex items-start gap-3"><span class="text-primary text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">Faktorial clears the backlog</span></div>
+            <div class="flex items-start gap-3"><span class="text-primary text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">You review and merge</span></div>
+            <div class="flex items-start gap-3"><span class="text-primary text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">Nothing changes for your team</span></div>
+        </div>
+        <div class="mt-8">
+            <button class="px-8 py-3 bg-primary-container text-on-primary-container font-bold uppercase tracking-[0.15em] text-sm hover:shadow-[0_0_20px_rgba(0,218,243,0.3)] transition-all active:scale-[0.98]">Start with 10 issues</button>
+        </div>
+    </div>
+    <!-- Managed -->
+    <div class="border border-tertiary-fixed-dim/20 p-10 relative group hover:border-tertiary-fixed-dim/40 transition-all">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-tertiary-fixed-dim/5 blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+        <div class="flex items-center gap-3 mb-6">
+            <span class="material-symbols-outlined text-tertiary-fixed-dim text-2xl" data-icon="engineering">engineering</span>
+            <h3 class="font-headline font-black uppercase tracking-[0.15em] text-lg text-tertiary-fixed-dim">Faktorial Managed</h3>
+        </div>
+        <p class="text-on-surface-variant text-sm leading-relaxed mb-8">
+            Don't have the team? Don't want to manage the pipeline? Asynkron's senior engineers operate Faktorial on your behalf. You file issues, we ship production-ready code. Full service.
+        </p>
+        <div class="space-y-4">
+            <div class="flex items-start gap-3"><span class="text-tertiary-fixed-dim text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">Our engineers run the pipeline</span></div>
+            <div class="flex items-start gap-3"><span class="text-tertiary-fixed-dim text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">We deliver end-to-end</span></div>
+            <div class="flex items-start gap-3"><span class="text-tertiary-fixed-dim text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">We review, you approve</span></div>
+            <div class="flex items-start gap-3"><span class="text-tertiary-fixed-dim text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">Scale up or down on demand</span></div>
+        </div>
+        <div class="mt-8">
+            <button class="px-8 py-3 border border-tertiary-fixed-dim/30 text-tertiary-fixed-dim font-bold uppercase tracking-[0.15em] text-sm hover:bg-tertiary-fixed-dim/5 transition-all active:scale-[0.98]">Contact Us</button>
+        </div>
+    </div>
 </div>
-<div>
-<div class="text-3xl font-black text-primary font-headline tracking-tighter">N</div>
-<div class="text-[10px] uppercase tracking-[0.3em] text-outline">Parallel Workers</div>
-</div>
-</div>
-</div>
-<!-- Mini dashboard mockup -->
-<div class="md:col-span-4 bg-[#0a0a0b] border border-primary/10 overflow-hidden flex flex-col">
-<!-- Dashboard header -->
-<div class="flex items-center justify-between px-4 py-2.5 border-b border-primary/10 bg-surface-container-lowest">
-    <span class="text-[10px] text-outline tracking-widest uppercase font-mono">Dashboard</span>
-    <span class="flex items-center gap-1.5 text-[9px] text-[#4ade80] tracking-widest uppercase font-mono"><span class="w-1.5 h-1.5 rounded-full bg-[#4ade80] inline-block"></span> Live</span>
-</div>
-<!-- Mini metrics row -->
-<div class="grid grid-cols-4 border-b border-primary/5">
-    <div class="px-3 py-2.5 border-r border-primary/5">
-        <div class="text-[9px] uppercase tracking-widest text-outline mb-0.5">Queue</div>
-        <div class="text-sm font-black font-headline text-on-surface">10</div>
-    </div>
-    <div class="px-3 py-2.5 border-r border-primary/5">
-        <div class="text-[9px] uppercase tracking-widest text-outline mb-0.5">Active</div>
-        <div class="text-sm font-black font-headline text-[#4ade80]">5</div>
-    </div>
-    <div class="px-3 py-2.5 border-r border-primary/5">
-        <div class="text-[9px] uppercase tracking-widest text-outline mb-0.5">Agents</div>
-        <div class="text-sm font-black font-headline text-on-surface">6</div>
-    </div>
-    <div class="px-3 py-2.5">
-        <div class="text-[9px] uppercase tracking-widest text-outline mb-0.5">Tests</div>
-        <div class="text-sm font-black font-headline text-primary-fixed-dim">2069</div>
-    </div>
-</div>
-<!-- Worker rows -->
-<div class="flex-1 font-mono text-[10px]">
-    <div class="flex items-center gap-2 px-3 py-2 border-b border-primary/5">
-        <span class="w-1.5 h-1.5 rounded-full bg-[#4ade80]"></span>
-        <span class="text-on-surface font-bold w-6">w1</span>
-        <span class="px-1.5 py-0.5 bg-[#4ade80]/15 text-[#4ade80] text-[8px] uppercase tracking-wider">active</span>
-        <span class="text-primary ml-1">#760</span>
-        <span class="text-outline ml-auto px-1.5 py-0.5 bg-surface-container text-[8px] uppercase">build</span>
-    </div>
-    <div class="flex items-center gap-2 px-3 py-2 border-b border-primary/5">
-        <span class="w-1.5 h-1.5 rounded-full bg-[#4ade80]"></span>
-        <span class="text-on-surface font-bold w-6">w2</span>
-        <span class="px-1.5 py-0.5 bg-[#4ade80]/15 text-[#4ade80] text-[8px] uppercase tracking-wider">active</span>
-        <span class="text-primary ml-1">#762</span>
-        <span class="text-outline ml-auto px-1.5 py-0.5 bg-surface-container text-[8px] uppercase">investigate</span>
-    </div>
-    <div class="flex items-center gap-2 px-3 py-2 border-b border-primary/5">
-        <span class="w-1.5 h-1.5 rounded-full bg-[#4ade80]"></span>
-        <span class="text-on-surface font-bold w-6">w3</span>
-        <span class="px-1.5 py-0.5 bg-[#4ade80]/15 text-[#4ade80] text-[8px] uppercase tracking-wider">active</span>
-        <span class="text-primary ml-1">#759</span>
-        <span class="text-outline ml-auto px-1.5 py-0.5 bg-surface-container text-[8px] uppercase">build</span>
-    </div>
-    <div class="flex items-center gap-2 px-3 py-2 border-b border-primary/5">
-        <span class="w-1.5 h-1.5 rounded-full bg-outline/40"></span>
-        <span class="text-on-surface font-bold w-6">res</span>
-        <span class="px-1.5 py-0.5 bg-outline/10 text-outline text-[8px] uppercase tracking-wider">idle</span>
-        <span class="text-outline ml-1">&mdash;</span>
-        <span class="text-outline/40 ml-auto text-[8px]">resolver</span>
-    </div>
-    <div class="flex items-center gap-2 px-3 py-2 border-b border-primary/5">
-        <span class="w-1.5 h-1.5 rounded-full bg-[#4ade80]"></span>
-        <span class="text-on-surface font-bold w-6">sen</span>
-        <span class="px-1.5 py-0.5 bg-[#4ade80]/15 text-[#4ade80] text-[8px] uppercase tracking-wider">active</span>
-        <span class="text-outline ml-1">&mdash;</span>
-        <span class="text-outline/40 ml-auto text-[8px]">sentinel</span>
-    </div>
-    <div class="flex items-center gap-2 px-3 py-2">
-        <span class="w-1.5 h-1.5 rounded-full bg-[#4ade80]"></span>
-        <span class="text-on-surface font-bold w-6">tri</span>
-        <span class="px-1.5 py-0.5 bg-[#4ade80]/15 text-[#4ade80] text-[8px] uppercase tracking-wider">active</span>
-        <span class="text-outline ml-1">&mdash;</span>
-        <span class="text-outline/40 ml-auto text-[8px]">triage</span>
+
+<!-- Shared foundation -->
+<div class="border-t border-primary/10 pt-12">
+    <h4 class="font-headline font-bold uppercase tracking-[0.15em] text-sm text-center mb-10 text-on-surface-variant">Both models share the same foundation</h4>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="flex gap-5">
+            <div class="w-10 h-10 flex-shrink-0 border border-primary/20 flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary text-lg">history_edu</span>
+            </div>
+            <div>
+                <h5 class="font-headline font-bold uppercase tracking-widest text-sm mb-2">Retroactive Compliance</h5>
+                <p class="text-on-surface-variant text-sm leading-relaxed">When new compliance requirements emerge (DORA, NIS2, AI Act), Faktorial evaluates your entire system against them, identifies gaps, and files issues to close them.</p>
+            </div>
+        </div>
+        <div class="flex gap-5">
+            <div class="w-10 h-10 flex-shrink-0 border border-primary/20 flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary text-lg">link</span>
+            </div>
+            <div>
+                <h5 class="font-headline font-bold uppercase tracking-widest text-sm mb-2">Every Decision Has A Paper Trail</h5>
+                <p class="text-on-surface-variant text-sm leading-relaxed">Every change traces back: requirement &rarr; investigation &rarr; acceptance criteria &rarr; tests &rarr; PR &rarr; merge. ADRs capture why. The full evidence chain lives in your repo.</p>
+            </div>
+        </div>
     </div>
 </div>
 </div>
 </section>
-<!-- Service Bento Grid -->
-<section id="features" class="py-24 px-8 bg-surface-container-lowest border-y border-[#00daf3]/10">
+
+<!-- ══════ SECTION 3: Best For ══════ -->
+<section class="py-20 px-8">
 <div class="max-w-[1400px] mx-auto">
-<div class="flex items-center gap-4 mb-16">
-<span class="text-primary font-bold tracking-[0.5em] uppercase text-xs">Core_Capabilities</span>
-<div class="h-px flex-grow bg-primary/10"></div>
+<div class="flex items-center gap-4 mb-6">
+    <span class="text-primary font-bold tracking-[0.5em] uppercase text-xs">Best_For</span>
+    <div class="h-px flex-grow bg-primary/10"></div>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-<!-- Feature Card 1 -->
-<div class="p-8 bg-surface border-l-4 border-primary hover:bg-surface-container-low transition-colors group">
-<span class="material-symbols-outlined text-primary mb-6 block" data-icon="bolt">bolt</span>
-<h4 class="font-headline font-bold text-xl uppercase tracking-widest mb-4">Intelligent Triage</h4>
-<p class="text-on-surface-variant text-sm leading-relaxed">
-                            New issues are auto-classified by priority and effort size. Duplicates detected. Vague requirements restructured into testable acceptance criteria before agents start building.
-                        </p>
-</div>
-<!-- Feature Card 2 -->
-<div class="p-8 bg-surface border-l-4 border-tertiary-fixed-dim hover:bg-surface-container-low transition-colors group">
-<span class="material-symbols-outlined text-tertiary-fixed-dim mb-6 block" data-icon="terminal">terminal</span>
-<h4 class="font-headline font-bold text-xl uppercase tracking-widest mb-4">TDD-First Builds</h4>
-<p class="text-on-surface-variant text-sm leading-relaxed">
-                            Agents write failing tests from acceptance criteria, then implement code to make them pass. Every AC maps to at least one test. Verify blocks if coverage gaps exist.
-                        </p>
-</div>
-<!-- Feature Card 3 -->
-<div class="p-8 bg-surface border-l-4 border-primary hover:bg-surface-container-low transition-colors group">
-<span class="material-symbols-outlined text-primary mb-6 block" data-icon="security">security</span>
-<h4 class="font-headline font-bold text-xl uppercase tracking-widest mb-4">Quality Gates</h4>
-<p class="text-on-surface-variant text-sm leading-relaxed">
-                            Lint, type-check, security scan, and full test suite run at every stage. If any gate fails, the agent fixes it before proceeding. Configurable per project.
-                        </p>
-</div>
+<h2 class="font-headline text-2xl md:text-3xl font-black tracking-[0.1em] uppercase mb-10">
+    Best for <span class="text-primary-fixed-dim">high-volume engineering work.</span>
+</h2>
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+    <div class="p-5 bg-surface-container-low border-t-2 border-primary/20 text-center">
+        <span class="material-symbols-outlined text-primary text-2xl mb-3 block">bug_report</span>
+        <div class="text-xs uppercase tracking-widest text-on-surface-variant font-headline">Backlog &amp; bugs</div>
+    </div>
+    <div class="p-5 bg-surface-container-low border-t-2 border-primary/20 text-center">
+        <span class="material-symbols-outlined text-primary text-2xl mb-3 block">autorenew</span>
+        <div class="text-xs uppercase tracking-widest text-on-surface-variant font-headline">Refactors</div>
+    </div>
+    <div class="p-5 bg-surface-container-low border-t-2 border-primary/20 text-center">
+        <span class="material-symbols-outlined text-primary text-2xl mb-3 block">swap_horiz</span>
+        <div class="text-xs uppercase tracking-widest text-on-surface-variant font-headline">Migrations</div>
+    </div>
+    <div class="p-5 bg-surface-container-low border-t-2 border-primary/20 text-center">
+        <span class="material-symbols-outlined text-primary text-2xl mb-3 block">science</span>
+        <div class="text-xs uppercase tracking-widest text-on-surface-variant font-headline">Test coverage</div>
+    </div>
+    <div class="p-5 bg-surface-container-low border-t-2 border-tertiary-fixed-dim/20 text-center">
+        <span class="material-symbols-outlined text-tertiary-fixed-dim text-2xl mb-3 block">gavel</span>
+        <div class="text-xs uppercase tracking-widest text-on-surface-variant font-headline">Compliance</div>
+    </div>
+    <div class="p-5 bg-surface-container-low border-t-2 border-tertiary-fixed-dim/20 text-center">
+        <span class="material-symbols-outlined text-tertiary-fixed-dim text-2xl mb-3 block">update</span>
+        <div class="text-xs uppercase tracking-widest text-on-surface-variant font-headline">Legacy modernization</div>
+    </div>
 </div>
 </div>
 </section>
@@ -419,7 +420,7 @@
 Your Issues. <span class="text-primary-fixed-dim">Our Agents.</span><br/>Merged to Main.
 </h2>
 <p class="text-on-surface-variant text-lg max-w-2xl mb-20">
-Every issue flows through five stages. Each stage is handled by an autonomous agent with its own git worktree, its own tools, and a clear mandate. No human required between stages &mdash; unless the agent asks for help.
+Every issue flows through five stages. Each stage has quality gates, scope enforcement, and escalation rules. You stay in control. Agents ask for help when they need it.
 </p>
 
 <!-- Pipeline Stages -->
@@ -460,7 +461,7 @@ Every issue flows through five stages. Each stage is handled by an autonomous ag
 <span class="material-symbols-outlined text-primary text-3xl" data-icon="rocket_launch">rocket_launch</span>
 </div>
 <h4 class="font-headline font-bold uppercase tracking-[0.2em] text-sm text-primary mb-2">Deploy</h4>
-<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Validates merge readiness &mdash; CI green, approvals obtained, no conflicts. Merges to main and triggers your CI/CD</p>
+<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Validates merge readiness: CI green, approvals obtained, no conflicts. Merges to main and triggers your CI/CD</p>
 </div>
 
 <!-- Stage 5: Learn -->
@@ -491,10 +492,10 @@ Every issue flows through five stages. Each stage is handled by an autonomous ag
 <div class="h-px flex-grow bg-primary/10"></div>
 </div>
 <h2 class="font-headline text-3xl md:text-5xl font-black tracking-[0.1em] uppercase mb-8">
-Not Copilot.<br/><span class="text-primary-fixed-dim">Not Autocomplete.</span><br/>A Dev Team.
+Controlled Autonomy.<br/><span class="text-primary-fixed-dim">Real Oversight.</span>
 </h2>
 <p class="text-on-surface-variant text-lg mb-10 leading-relaxed">
-Each agent picks up a GitHub issue, checks out its own git worktree, writes tests first, implements the code, and opens a PR. Multiple agents work in parallel on different issues. They don't wait for you to tab-complete.
+Each agent picks up a GitHub issue, checks out its own git worktree, writes tests, implements the code, and opens a PR. Multiple agents work in parallel. When an agent is stuck or uncertain, it escalates and waits for your decision.
 </p>
 
 <div class="space-y-6">
@@ -565,7 +566,7 @@ Live Agent Output
 </section>
 
 <!-- Control Plane -->
-<section class="py-32 px-8 relative">
+<section id="control" class="py-32 px-8 relative">
 <div class="max-w-[1400px] mx-auto">
 <div class="flex items-center gap-4 mb-6">
 <span class="text-primary font-bold tracking-[0.5em] uppercase text-xs">Control_&amp;_Observability</span>
@@ -575,7 +576,7 @@ Live Agent Output
 Command Center.<br/><span class="text-tertiary-fixed-dim">Total Visibility.</span>
 </h2>
 <p class="text-on-surface-variant text-lg max-w-2xl mb-16">
-A local status dashboard shows the issue queue, agent states, and recent events in real time. Zero external API calls &mdash; reads from local state. Plus an MCP server so your coding agent can query pipeline status directly.
+A local status dashboard shows the issue queue, agent states, and recent events in real time. Zero external API calls, reads from local state. Plus an MCP server so your coding agent can query pipeline status directly.
 </p>
 
 <!-- Queue kanban mockup -->
@@ -691,100 +692,6 @@ A local status dashboard shows the issue queue, agent states, and recent events 
 </div>
 </div>
 
-<!-- Inline Metrics Strip -->
-<div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6">
-<div class="p-6 bg-surface-container border-t-2 border-primary/20">
-<div class="text-3xl font-black text-primary font-headline tracking-tighter mb-1">5</div>
-<div class="text-[10px] uppercase tracking-[0.3em] text-outline">Pipeline Stages</div>
-</div>
-<div class="p-6 bg-surface-container border-t-2 border-tertiary-fixed-dim/20">
-<div class="text-3xl font-black text-tertiary-fixed-dim font-headline tracking-tighter mb-1">3</div>
-<div class="text-[10px] uppercase tracking-[0.3em] text-outline">Autonomy Levels</div>
-</div>
-<div class="p-6 bg-surface-container border-t-2 border-primary/20">
-<div class="text-3xl font-black text-primary font-headline tracking-tighter mb-1">12</div>
-<div class="text-[10px] uppercase tracking-[0.3em] text-outline">Specialist Domains</div>
-</div>
-<div class="p-6 bg-surface-container border-t-2 border-tertiary-fixed-dim/20">
-<div class="text-3xl font-black text-tertiary-fixed-dim font-headline tracking-tighter mb-1">3</div>
-<div class="text-[10px] uppercase tracking-[0.3em] text-outline">Engine Options</div>
-</div>
-</div>
-</div>
-</section>
-
-<!-- What You Keep -->
-<section id="control" class="py-32 px-8 bg-surface-container-lowest border-y border-primary/10">
-<div class="max-w-[1400px] mx-auto">
-<div class="flex items-center gap-4 mb-6">
-<span class="text-primary font-bold tracking-[0.5em] uppercase text-xs">Your_Guardrails</span>
-<div class="h-px flex-grow bg-primary/10"></div>
-</div>
-<h2 class="font-headline text-3xl md:text-5xl font-black tracking-[0.1em] uppercase mb-16">
-You Stay In Control.<br/><span class="text-primary-fixed-dim">Always.</span>
-</h2>
-
-<div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-<div class="space-y-8">
-<div class="flex gap-5">
-<div class="w-10 h-10 flex-shrink-0 border border-primary/30 flex items-center justify-center">
-<span class="text-primary text-lg font-black font-headline">1</span>
-</div>
-<div>
-<h5 class="font-headline font-bold uppercase tracking-widest text-sm mb-2">Your Repo, Your Rules</h5>
-<p class="text-on-surface-variant text-sm leading-relaxed">Agents read your CLAUDE.md, your linting config, your test requirements, your architecture conventions. They adapt to your codebase &mdash; not the other way around.</p>
-</div>
-</div>
-<div class="flex gap-5">
-<div class="w-10 h-10 flex-shrink-0 border border-primary/30 flex items-center justify-center">
-<span class="text-primary text-lg font-black font-headline">2</span>
-</div>
-<div>
-<h5 class="font-headline font-bold uppercase tracking-widest text-sm mb-2">GitHub-Native Workflow</h5>
-<p class="text-on-surface-variant text-sm leading-relaxed">Everything happens through standard GitHub issues and PRs. No proprietary IDE. No vendor lock-in. Review and merge like any other contributor.</p>
-</div>
-</div>
-<div class="flex gap-5">
-<div class="w-10 h-10 flex-shrink-0 border border-primary/30 flex items-center justify-center">
-<span class="text-primary text-lg font-black font-headline">3</span>
-</div>
-<div>
-<h5 class="font-headline font-bold uppercase tracking-widest text-sm mb-2">Smart Retry &amp; Escalation</h5>
-<p class="text-on-surface-variant text-sm leading-relaxed">Failures are classified as transient (retry with backoff) or structural (escalate immediately). When an agent is stuck, it stops and flags the issue. You decide.</p>
-</div>
-</div>
-</div>
-
-<div class="space-y-8">
-<div class="flex gap-5">
-<div class="w-10 h-10 flex-shrink-0 border border-tertiary-fixed-dim/30 flex items-center justify-center">
-<span class="text-tertiary-fixed-dim text-lg font-black font-headline">4</span>
-</div>
-<div>
-<h5 class="font-headline font-bold uppercase tracking-widest text-sm mb-2">Quality Gates at Every Stage</h5>
-<p class="text-on-surface-variant text-sm leading-relaxed">Lint, type-check, test, security scan — all automated. If any gate fails, the agent fixes it before proceeding. Not after.</p>
-</div>
-</div>
-<div class="flex gap-5">
-<div class="w-10 h-10 flex-shrink-0 border border-tertiary-fixed-dim/30 flex items-center justify-center">
-<span class="text-tertiary-fixed-dim text-lg font-black font-headline">5</span>
-</div>
-<div>
-<h5 class="font-headline font-bold uppercase tracking-widest text-sm mb-2">Full Audit Trail</h5>
-<p class="text-on-surface-variant text-sm leading-relaxed">Per-issue JSONL journals record every event: stage transitions, commands, errors, token usage. Compliance-ready traceability from requirement to deployment.</p>
-</div>
-</div>
-<div class="flex gap-5">
-<div class="w-10 h-10 flex-shrink-0 border border-tertiary-fixed-dim/30 flex items-center justify-center">
-<span class="text-tertiary-fixed-dim text-lg font-black font-headline">6</span>
-</div>
-<div>
-<h5 class="font-headline font-bold uppercase tracking-widest text-sm mb-2">Flaky Test Detection</h5>
-<p class="text-on-surface-variant text-sm leading-relaxed">Built-in flaky test registry tracks fail rates per test. Agents know which failures are real and which are noise.</p>
-</div>
-</div>
-</div>
-</div>
 </div>
 </section>
 
@@ -799,7 +706,7 @@ You Stay In Control.<br/><span class="text-primary-fixed-dim">Always.</span>
     Every delivery makes <br/>the next one <span class="text-tertiary-fixed-dim">better.</span>
 </h2>
 <p class="text-on-surface-variant text-lg max-w-2xl mb-16">
-    The learn stage runs after every merge. It captures what happened, why it mattered, and what to do differently next time &mdash; as code-committed ADRs and preventive rules that future agents automatically follow.
+    The learn stage runs after every merge. It captures what happened, why it mattered, and what to do differently next time, as code-committed ADRs and preventive rules that future agents automatically follow.
 </p>
 
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -808,7 +715,7 @@ You Stay In Control.<br/><span class="text-primary-fixed-dim">Always.</span>
 <div>
     <h4 class="font-headline font-bold uppercase tracking-widest text-sm mb-6 text-primary">Spec-Test Sync Check</h4>
     <p class="text-on-surface-variant text-sm leading-relaxed mb-6">
-        The sentinel continuously audits closed issues. If an issue has acceptance criteria but no matching test evidence (PR, merge commit, or child issues delivering the ACs), it raises a follow-up alert &mdash; catching gaps that slipped through.
+        The sentinel continuously audits closed issues. If an issue has acceptance criteria but no matching test evidence (PR, merge commit, or child issues delivering the ACs), it raises a follow-up alert, catching gaps that slipped through.
     </p>
 
     <!-- Spec-test-sync mockup -->
@@ -875,119 +782,6 @@ You Stay In Control.<br/><span class="text-primary-fixed-dim">Always.</span>
 </div>
 </section>
 
-<!-- Two Ways To Ship -->
-<section class="py-32 px-8 bg-surface-container-lowest border-y border-primary/10 relative">
-<div class="max-w-[1400px] mx-auto">
-<div class="flex items-center gap-4 mb-6">
-    <span class="text-primary font-bold tracking-[0.5em] uppercase text-xs">Service_Models</span>
-    <div class="h-px flex-grow bg-primary/10"></div>
-</div>
-<h2 class="font-headline text-3xl md:text-5xl font-black tracking-[0.1em] uppercase mb-6">
-    Two Ways To Ship.<br/><span class="text-primary-fixed-dim">One Standard Of Proof.</span>
-</h2>
-<p class="text-on-surface-variant text-lg max-w-2xl mb-16">
-    Run Faktorial alongside your team, or let Asynkron's engineers handle delivery end-to-end. Same pipeline, same quality gates, same traceability.
-</p>
-
-<!-- Two columns: self-service vs managed -->
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-
-    <!-- Self-service -->
-    <div class="border border-primary/20 p-10 relative group hover:border-primary/40 transition-all">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-        <div class="flex items-center gap-3 mb-6">
-            <span class="material-symbols-outlined text-primary text-2xl" data-icon="handshake">handshake</span>
-            <h3 class="font-headline font-black uppercase tracking-[0.15em] text-lg text-primary">Your Team + Faktorial</h3>
-        </div>
-        <p class="text-on-surface-variant text-sm leading-relaxed mb-8">
-            Your developers keep doing what they do best &mdash; product, architecture, business logic. Faktorial clears the backlog: bugs, refactors, migrations, test coverage, and the tickets nobody wants to pick up.
-        </p>
-        <div class="space-y-4">
-            <div class="flex items-start gap-3">
-                <span class="text-primary text-sm mt-0.5">&#10003;</span>
-                <span class="text-on-surface-variant text-sm">Your devs focus on product</span>
-            </div>
-            <div class="flex items-start gap-3">
-                <span class="text-primary text-sm mt-0.5">&#10003;</span>
-                <span class="text-on-surface-variant text-sm">Faktorial clears the backlog</span>
-            </div>
-            <div class="flex items-start gap-3">
-                <span class="text-primary text-sm mt-0.5">&#10003;</span>
-                <span class="text-on-surface-variant text-sm">You review and merge</span>
-            </div>
-            <div class="flex items-start gap-3">
-                <span class="text-primary text-sm mt-0.5">&#10003;</span>
-                <span class="text-on-surface-variant text-sm">Nothing changes for your team</span>
-            </div>
-        </div>
-        <div class="mt-8">
-            <button class="px-8 py-3 bg-primary-container text-on-primary-container font-bold uppercase tracking-[0.15em] text-sm hover:shadow-[0_0_20px_rgba(0,218,243,0.3)] transition-all active:scale-[0.98]">Get Started</button>
-        </div>
-    </div>
-
-    <!-- Managed -->
-    <div class="border border-tertiary-fixed-dim/20 p-10 relative group hover:border-tertiary-fixed-dim/40 transition-all">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-tertiary-fixed-dim/5 blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-        <div class="flex items-center gap-3 mb-6">
-            <span class="material-symbols-outlined text-tertiary-fixed-dim text-2xl" data-icon="engineering">engineering</span>
-            <h3 class="font-headline font-black uppercase tracking-[0.15em] text-lg text-tertiary-fixed-dim">Faktorial Managed</h3>
-        </div>
-        <p class="text-on-surface-variant text-sm leading-relaxed mb-8">
-            Don't have the team? Don't want to manage the pipeline? Asynkron's senior engineers operate Faktorial on your behalf. You file issues, we ship production-ready code. Full service.
-        </p>
-        <div class="space-y-4">
-            <div class="flex items-start gap-3">
-                <span class="text-tertiary-fixed-dim text-sm mt-0.5">&#10003;</span>
-                <span class="text-on-surface-variant text-sm">Our engineers run the pipeline</span>
-            </div>
-            <div class="flex items-start gap-3">
-                <span class="text-tertiary-fixed-dim text-sm mt-0.5">&#10003;</span>
-                <span class="text-on-surface-variant text-sm">We deliver end-to-end</span>
-            </div>
-            <div class="flex items-start gap-3">
-                <span class="text-tertiary-fixed-dim text-sm mt-0.5">&#10003;</span>
-                <span class="text-on-surface-variant text-sm">We review, you approve</span>
-            </div>
-            <div class="flex items-start gap-3">
-                <span class="text-tertiary-fixed-dim text-sm mt-0.5">&#10003;</span>
-                <span class="text-on-surface-variant text-sm">Scale up or down on demand</span>
-            </div>
-        </div>
-        <div class="mt-8">
-            <button class="px-8 py-3 border border-tertiary-fixed-dim/30 text-tertiary-fixed-dim font-bold uppercase tracking-[0.15em] text-sm hover:bg-tertiary-fixed-dim/5 transition-all active:scale-[0.98]">Contact Us</button>
-        </div>
-    </div>
-
-</div>
-
-<!-- Shared foundation: compliance + evidence -->
-<div class="border-t border-primary/10 pt-12">
-    <h4 class="font-headline font-bold uppercase tracking-[0.15em] text-sm text-center mb-10 text-on-surface-variant">Both models share the same foundation</h4>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="flex gap-5">
-            <div class="w-10 h-10 flex-shrink-0 border border-primary/20 flex items-center justify-center">
-                <span class="material-symbols-outlined text-primary text-lg">history_edu</span>
-            </div>
-            <div>
-                <h5 class="font-headline font-bold uppercase tracking-widest text-sm mb-2">Retroactive Compliance</h5>
-                <p class="text-on-surface-variant text-sm leading-relaxed">When new compliance requirements emerge &mdash; DORA, NIS2, AI Act &mdash; Faktorial evaluates your entire system against them, identifies gaps, and files issues to close them. Systematic, not scrambled.</p>
-            </div>
-        </div>
-        <div class="flex gap-5">
-            <div class="w-10 h-10 flex-shrink-0 border border-primary/20 flex items-center justify-center">
-                <span class="material-symbols-outlined text-primary text-lg">link</span>
-            </div>
-            <div>
-                <h5 class="font-headline font-bold uppercase tracking-widest text-sm mb-2">Every Decision Has A Paper Trail</h5>
-                <p class="text-on-surface-variant text-sm leading-relaxed">No black-box AI. Every change traces back: requirement &rarr; investigation &rarr; acceptance criteria &rarr; tests &rarr; PR &rarr; merge. ADRs capture why. The full evidence chain lives in your repo.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-</div>
-</section>
-
 <!-- CTA -->
 <section class="py-32 px-8 text-center relative overflow-hidden">
 <div class="absolute inset-0 opacity-[0.06] pointer-events-none">
@@ -995,10 +789,10 @@ You Stay In Control.<br/><span class="text-primary-fixed-dim">Always.</span>
 </div>
 <div class="relative z-10 max-w-3xl mx-auto">
 <h2 class="display-medium font-headline font-black text-4xl md:text-6xl uppercase tracking-[0.15em] mb-6">
-    You Decide What To Build.<br/><span class="text-primary-fixed-dim">Faktorial Builds It.</span>
+    You Direct.<br/><span class="text-primary-fixed-dim">Faktorial Delivers.</span>
 </h2>
 <p class="text-on-surface-variant text-lg mb-12 max-w-xl mx-auto">
-    Whether your team runs the pipeline or ours does &mdash; every issue ships with tests, traceability, and a full audit trail.
+    Whether your team runs the pipeline or ours does, every issue ships with tests, traceability, and a full audit trail.
 </p>
 <div class="inline-flex flex-col sm:flex-row gap-4 items-center">
 <button class="px-14 py-5 bg-primary-container text-on-primary-container font-black uppercase tracking-[0.2em] text-sm hover:shadow-[0_0_30px_rgba(0,218,243,0.3)] transition-all active:scale-[0.98]">

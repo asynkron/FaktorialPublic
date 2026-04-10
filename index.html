@@ -3,7 +3,7 @@
 <html class="dark" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>FAKTORIAL.AI // KINETIC LATTICE PROTOCOL</title>
+<title>Faktorial — Autonomous Dev Agents That Ship to Main</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -137,6 +137,79 @@
         .text-glow {
             text-shadow: 0 0 20px rgba(0, 218, 243, 0.8), 0 0 40px rgba(0, 218, 243, 0.4);
         }
+
+        /* Globe sunrise behind hero */
+        .globe-wrap {
+            position: absolute;
+            left: 50%;
+            bottom: -4800px;
+            transform: translateX(-50%);
+            width: 5400px;
+            height: 5400px;
+            pointer-events: none;
+            z-index: 1;
+        }
+        /* The dark globe itself */
+        .globe {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: radial-gradient(
+                circle at 50% 10%,
+                #15151a 0%,
+                #111116 30%,
+                #0c0c10 60%,
+                #08080c 100%
+            );
+        }
+        /* Atmosphere rim — bright thin edge at the top */
+        .globe::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 50%;
+            background: transparent;
+            box-shadow:
+                inset 0 1px 0 rgba(180, 220, 255, 0.8),
+                inset 0 2px 2px rgba(120, 180, 255, 0.5),
+                inset 0 4px 8px rgba(60, 140, 255, 0.2),
+                inset 0 8px 20px rgba(30, 100, 220, 0.1);
+        }
+        /* Bright sunrise glow — positioned right on the globe horizon */
+        /* Globe top = section_bottom - (5400 - 4800) = bottom: 600px */
+        .globe-glow {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 560px;
+            height: 500px;
+            background: radial-gradient(
+                ellipse 35% 80% at 50% 100%,
+                rgba(200, 235, 255, 0.8) 0%,
+                rgba(140, 200, 255, 0.35) 25%,
+                rgba(80, 150, 255, 0.12) 50%,
+                rgba(40, 100, 220, 0.04) 75%,
+                transparent 100%
+            );
+            pointer-events: none;
+            z-index: 0;
+        }
+        /* Wider diffuse atmospheric wash above the horizon */
+        .globe-wash {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 500px;
+            height: 600px;
+            background: radial-gradient(
+                ellipse 55% 70% at 50% 100%,
+                rgba(80, 140, 230, 0.10) 0%,
+                rgba(50, 100, 200, 0.04) 50%,
+                transparent 100%
+            );
+            pointer-events: none;
+            z-index: 0;
+        }
     </style>
 </head>
 <body class="selection:bg-primary-container selection:text-on-primary-container">
@@ -144,13 +217,13 @@
 <header class="fixed top-0 w-full z-50 flex justify-between items-center px-8 h-20 bg-[#131314]/40 backdrop-blur-xl border-b border-[#00daf3]/10">
 <div class="text-2xl font-black tracking-[0.25em] text-[#c3f5ff] uppercase">FAKTORIAL.AI</div>
 <nav class="hidden md:flex gap-10 items-center">
-<a class="text-[#c3f5ff] font-bold border-b-2 border-[#c3f5ff] pb-1 text-sm uppercase tracking-[0.2em] font-headline" href="#">Network</a>
-<a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="#">Protocols</a>
-<a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="#">Terminal</a>
-<a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="#">Vault</a>
+<a class="text-[#c3f5ff] font-bold border-b-2 border-[#c3f5ff] pb-1 text-sm uppercase tracking-[0.2em] font-headline" href="#">Pipeline</a>
+<a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="#">Agents</a>
+<a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="#">Features</a>
+<a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="#">Control</a>
 </nav>
 <button class="bg-primary-container text-on-primary-container px-6 py-2 font-bold uppercase tracking-widest text-xs hover:bg-primary-fixed-dim transition-all active:scale-95 duration-150">
-            Initialize
+            Get Started
         </button>
 </header>
 <main class="relative pt-20">
@@ -165,28 +238,31 @@
 <div class="tunnel-wall wall-right"></div>
 </div>
 </div>
+<!-- Globe sunrise -->
+<div class="globe-wash"></div>
+<div class="globe-glow"></div>
+<div class="globe-wrap"><div class="globe"></div></div>
 <!-- Legibility Overlay -->
-<div class="absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background z-0"></div>
-<div class="absolute inset-0 radial-glow opacity-30 pointer-events-none z-0"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background z-[2]"></div>
 <div class="relative z-10 text-center px-4">
-<div class="backdrop-blur-[2px] py-8 rounded-3xl">
-<h1 class="display-large text-[12vw] md:text-[8vw] font-black tracking-[0.25em] text-primary-fixed-dim uppercase leading-none mb-8 filter text-glow">
+<div class="py-8 rounded-3xl">
+<h1 class="display-large text-[12vw] md:text-[8vw] font-black tracking-[0.25em] text-primary-fixed-dim uppercase leading-none mb-8 filter text-glow relative z-10">
                         FAKTORIAL.AI
                     </h1>
 <div class="max-w-3xl mx-auto space-y-6">
 <p class="font-headline text-2xl md:text-4xl font-bold tracking-[0.2em] text-primary uppercase drop-shadow-lg">
-                            Developer Force Multiplied
+                            File an Issue. Get a PR.
                         </p>
 <p class="text-on-surface-variant font-body text-lg md:text-xl tracking-wide max-w-2xl mx-auto drop-shadow-md">
-                            Faktorial is a virtual dev team under your own command. Each developer becomes exponentially more productive through our kinetic lattice protocol.
+                            Faktorial is a team of AI agents that turns GitHub issues into merged pull requests. They investigate your codebase, write tests first, implement the code, pass CI, and deploy &mdash; without you writing a single line.
                         </p>
 <div class="pt-10 flex flex-wrap justify-center gap-6">
 <button class="px-10 py-4 bg-primary-container text-on-primary-container font-bold uppercase tracking-[0.2em] text-sm group relative overflow-hidden shadow-[0_0_20px_rgba(0,218,243,0.3)]">
-<span class="relative z-10">Access Terminal</span>
+<span class="relative z-10">Get Started</span>
 <div class="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500"></div>
 </button>
 <button class="px-10 py-4 border-l-2 border-primary text-primary font-bold uppercase tracking-[0.2em] text-sm hover:bg-primary/5 transition-colors backdrop-blur-md">
-                                View Protocols
+                                Managed Service
                             </button>
 </div>
 </div>
@@ -200,29 +276,29 @@
 <div class="absolute top-0 right-0 p-4 opacity-20">
 <span class="material-symbols-outlined text-6xl text-primary" data-icon="hub">hub</span>
 </div>
-<h2 class="font-headline text-3xl font-bold tracking-[0.2em] text-primary uppercase mb-6">Neural Network Integration</h2>
+<h2 class="font-headline text-3xl font-bold tracking-[0.2em] text-primary uppercase mb-6">Autonomous Delivery Pipeline</h2>
 <p class="text-on-surface-variant text-lg mb-8 max-w-xl">
-                    Deploying Faktorial agents into your existing CI/CD pipeline triggers an immediate optimization wave. Our agents don't just write code; they architect systems that evolve.
+                    Faktorial runs as a local process alongside your repo. It polls your GitHub issues, assigns them to parallel agent workers, and drives each one through a five-stage pipeline &mdash; from investigation to merged PR.
                 </p>
 <div class="flex gap-12">
 <div>
-<div class="text-3xl font-black text-tertiary-fixed-dim font-headline tracking-tighter">400%</div>
-<div class="text-[10px] uppercase tracking-[0.3em] text-outline">Velocity Gain</div>
+<div class="text-3xl font-black text-tertiary-fixed-dim font-headline tracking-tighter">5</div>
+<div class="text-[10px] uppercase tracking-[0.3em] text-outline">Pipeline Stages</div>
 </div>
 <div>
-<div class="text-3xl font-black text-primary font-headline tracking-tighter">0.03ms</div>
-<div class="text-[10px] uppercase tracking-[0.3em] text-outline">Sync Latency</div>
+<div class="text-3xl font-black text-primary font-headline tracking-tighter">N</div>
+<div class="text-[10px] uppercase tracking-[0.3em] text-outline">Parallel Workers</div>
 </div>
 </div>
 </div>
 <div class="md:col-span-4 p-8 bg-surface-container-highest border border-primary/5 flex flex-col justify-between">
 <div class="space-y-4">
 <div class="w-12 h-1 bg-tertiary-fixed-dim"></div>
-<h3 class="font-headline font-bold uppercase tracking-[0.15em] text-sm">System Health</h3>
+<h3 class="font-headline font-bold uppercase tracking-[0.15em] text-sm">Engine Support</h3>
 <div class="space-y-2">
 <div class="flex justify-between text-[10px] uppercase tracking-widest text-on-surface-variant">
-<span>Lattice Load</span>
-<span class="text-primary-fixed-dim">Optimal</span>
+<span>Claude &middot; Codex &middot; Copilot</span>
+<span class="text-primary-fixed-dim">Active</span>
 </div>
 <div class="w-full h-1 bg-surface-container">
 <div class="w-3/4 h-full bg-primary-fixed-dim"></div>
@@ -236,32 +312,32 @@
 <section class="py-24 px-8 bg-surface-container-lowest border-y border-[#00daf3]/10">
 <div class="max-w-[1400px] mx-auto">
 <div class="flex items-center gap-4 mb-16">
-<span class="text-primary font-bold tracking-[0.5em] uppercase text-xs">Services_Catalogue</span>
+<span class="text-primary font-bold tracking-[0.5em] uppercase text-xs">Core_Capabilities</span>
 <div class="h-px flex-grow bg-primary/10"></div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 <!-- Feature Card 1 -->
 <div class="p-8 bg-surface border-l-4 border-primary hover:bg-surface-container-low transition-colors group">
 <span class="material-symbols-outlined text-primary mb-6 block" data-icon="bolt">bolt</span>
-<h4 class="font-headline font-bold text-xl uppercase tracking-widest mb-4">Instant Onboarding</h4>
+<h4 class="font-headline font-bold text-xl uppercase tracking-widest mb-4">Intelligent Triage</h4>
 <p class="text-on-surface-variant text-sm leading-relaxed">
-                            Upload your documentation. Faktorial agents ingest 100k+ lines of code in seconds, mirroring your architecture patterns perfectly.
+                            New issues are auto-classified by priority and effort size. Duplicates detected. Vague requirements restructured into testable acceptance criteria before agents start building.
                         </p>
 </div>
 <!-- Feature Card 2 -->
 <div class="p-8 bg-surface border-l-4 border-tertiary-fixed-dim hover:bg-surface-container-low transition-colors group">
 <span class="material-symbols-outlined text-tertiary-fixed-dim mb-6 block" data-icon="terminal">terminal</span>
-<h4 class="font-headline font-bold text-xl uppercase tracking-widest mb-4">CLI Autonomy</h4>
+<h4 class="font-headline font-bold text-xl uppercase tracking-widest mb-4">TDD-First Builds</h4>
 <p class="text-on-surface-variant text-sm leading-relaxed">
-                            Command your virtual team directly from the terminal. Issue high-level architectural requirements; receive production-ready pull requests.
+                            Agents write failing tests from acceptance criteria, then implement code to make them pass. Every AC maps to at least one test. Verify blocks if coverage gaps exist.
                         </p>
 </div>
 <!-- Feature Card 3 -->
 <div class="p-8 bg-surface border-l-4 border-primary hover:bg-surface-container-low transition-colors group">
 <span class="material-symbols-outlined text-primary mb-6 block" data-icon="security">security</span>
-<h4 class="font-headline font-bold text-xl uppercase tracking-widest mb-4">Audit-First Logic</h4>
+<h4 class="font-headline font-bold text-xl uppercase tracking-widest mb-4">Quality Gates</h4>
 <p class="text-on-surface-variant text-sm leading-relaxed">
-                            Every line of code is pre-scanned against 40+ security protocols before it ever hits your staging environment.
+                            Lint, type-check, security scan, and full test suite run at every stage. If any gate fails, the agent fixes it before proceeding. Configurable per project.
                         </p>
 </div>
 </div>
@@ -279,7 +355,7 @@
 Your Issues. <span class="text-primary-fixed-dim">Our Agents.</span><br/>Merged to Main.
 </h2>
 <p class="text-on-surface-variant text-lg max-w-2xl mb-20">
-File a GitHub issue. Faktorial agents pick it up, investigate the codebase, write the code, run the tests, open a PR, and deploy — all without you lifting a finger.
+Every issue flows through five stages. Each stage is handled by an autonomous agent with its own git worktree, its own tools, and a clear mandate. No human required between stages &mdash; unless the agent asks for help.
 </p>
 
 <!-- Pipeline Stages -->
@@ -293,7 +369,7 @@ File a GitHub issue. Faktorial agents pick it up, investigate the codebase, writ
 <span class="material-symbols-outlined text-primary text-3xl" data-icon="search_insights">search_insights</span>
 </div>
 <h4 class="font-headline font-bold uppercase tracking-[0.2em] text-sm text-primary mb-2">Investigate</h4>
-<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Agent reads the issue, maps the codebase, identifies affected files and dependencies</p>
+<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Reads the issue, maps affected files, traces dependencies, declares blast radius, and writes an investigation plan with acceptance criteria</p>
 </div>
 
 <!-- Stage 2: Build -->
@@ -302,7 +378,7 @@ File a GitHub issue. Faktorial agents pick it up, investigate the codebase, writ
 <span class="material-symbols-outlined text-primary text-3xl" data-icon="code">code</span>
 </div>
 <h4 class="font-headline font-bold uppercase tracking-[0.2em] text-sm text-primary mb-2">Build</h4>
-<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Writes production code, follows your patterns, respects your architecture and conventions</p>
+<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Writes failing tests from the acceptance criteria (TDD), implements code to make them pass, runs full suite, opens a PR</p>
 </div>
 
 <!-- Stage 3: Verify -->
@@ -311,7 +387,7 @@ File a GitHub issue. Faktorial agents pick it up, investigate the codebase, writ
 <span class="material-symbols-outlined text-primary text-3xl" data-icon="verified">verified</span>
 </div>
 <h4 class="font-headline font-bold uppercase tracking-[0.2em] text-sm text-primary mb-2">Verify</h4>
-<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Runs tests, checks quality gates, validates the PR against acceptance criteria</p>
+<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Quality gate: checks CI status, AC-to-test traceability, blast radius compliance, test quality level, and security scan results</p>
 </div>
 
 <!-- Stage 4: Deploy -->
@@ -320,7 +396,7 @@ File a GitHub issue. Faktorial agents pick it up, investigate the codebase, writ
 <span class="material-symbols-outlined text-primary text-3xl" data-icon="rocket_launch">rocket_launch</span>
 </div>
 <h4 class="font-headline font-bold uppercase tracking-[0.2em] text-sm text-primary mb-2">Deploy</h4>
-<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Merges to main, triggers your CI/CD pipeline, ships to production</p>
+<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Validates merge readiness &mdash; CI green, approvals obtained, no conflicts. Merges to main and triggers your CI/CD</p>
 </div>
 
 <!-- Stage 5: Learn -->
@@ -329,7 +405,7 @@ File a GitHub issue. Faktorial agents pick it up, investigate the codebase, writ
 <span class="material-symbols-outlined text-tertiary-fixed-dim text-3xl" data-icon="psychology">psychology</span>
 </div>
 <h4 class="font-headline font-bold uppercase tracking-[0.2em] text-sm text-tertiary-fixed-dim mb-2">Learn</h4>
-<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Records patterns, updates rules, gets smarter with every issue it completes</p>
+<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Writes Architecture Decision Records, creates preventive rules from failures, feeds lessons into future agent runs</p>
 </div>
 </div>
 </div>
@@ -354,22 +430,22 @@ File a GitHub issue. Faktorial agents pick it up, investigate the codebase, writ
 Not Copilot.<br/><span class="text-primary-fixed-dim">Not Autocomplete.</span><br/>A Dev Team.
 </h2>
 <p class="text-on-surface-variant text-lg mb-10 leading-relaxed">
-Faktorial agents are autonomous workers — each one picks up a GitHub issue, checks out a branch, writes code, runs tests, and opens a PR. They work in parallel. They don't wait for you to tab-complete.
+Each agent picks up a GitHub issue, checks out its own git worktree, writes tests first, implements the code, and opens a PR. Multiple agents work in parallel on different issues. They don't wait for you to tab-complete.
 </p>
 
 <div class="space-y-6">
 <div class="flex gap-4 items-start p-5 bg-surface-container border-l-2 border-primary/40 hover:border-primary transition-colors">
 <span class="material-symbols-outlined text-primary text-xl mt-0.5" data-icon="commit">commit</span>
 <div>
-<h5 class="font-headline font-bold text-sm uppercase tracking-widest mb-1">Full Git Workflow</h5>
-<p class="text-on-surface-variant text-sm">Each agent operates on its own branch. Real commits, real PRs, real code review. Your git history stays clean.</p>
+<h5 class="font-headline font-bold text-sm uppercase tracking-widest mb-1">Git Worktree Isolation</h5>
+<p class="text-on-surface-variant text-sm">Each agent gets its own worktree. Parallel work, no file conflicts, no coordination overhead. Real commits, real PRs, clean git history.</p>
 </div>
 </div>
 <div class="flex gap-4 items-start p-5 bg-surface-container border-l-2 border-primary/40 hover:border-primary transition-colors">
 <span class="material-symbols-outlined text-primary text-xl mt-0.5" data-icon="lock">lock</span>
 <div>
 <h5 class="font-headline font-bold text-sm uppercase tracking-widest mb-1">Blast Radius Protection</h5>
-<p class="text-on-surface-variant text-sm">File-level locking prevents agents from stepping on each other. No merge conflicts. No coordination overhead.</p>
+<p class="text-on-surface-variant text-sm">The investigate stage declares which files will be touched. Verify blocks the PR if the diff exceeds that scope. No surprise side-effects.</p>
 </div>
 </div>
 <div class="flex gap-4 items-start p-5 bg-surface-container border-l-2 border-tertiary-fixed-dim/40 hover:border-tertiary-fixed-dim transition-colors">
@@ -390,25 +466,26 @@ Faktorial agents are autonomous workers — each one picks up a GitHub issue, ch
 <div class="w-2.5 h-2.5 rounded-full bg-error/60"></div>
 <div class="w-2.5 h-2.5 rounded-full bg-tertiary-fixed-dim/60"></div>
 <div class="w-2.5 h-2.5 rounded-full bg-primary-fixed-dim/60"></div>
-<span class="ml-3 text-[10px] text-outline tracking-widest uppercase font-mono">agent-w3 // issue #259</span>
+<span class="ml-3 text-[10px] text-outline tracking-widest uppercase font-mono">worker-3 // issue #259</span>
 </div>
 <!-- Terminal body -->
 <div class="p-6 font-mono text-xs leading-relaxed space-y-1.5 text-on-surface-variant/70">
-<div><span class="text-primary-fixed-dim">14:31:02</span> <span class="text-outline">│</span> Picked up issue <span class="text-primary">#259</span> — spec/test sync follow-up</div>
-<div><span class="text-primary-fixed-dim">14:31:04</span> <span class="text-outline">│</span> Investigating codebase... mapping 14 files</div>
-<div><span class="text-primary-fixed-dim">14:31:08</span> <span class="text-outline">│</span> Acquired lock on <span class="text-tertiary-fixed-dim">tests/test_status.py</span></div>
-<div><span class="text-primary-fixed-dim">14:31:09</span> <span class="text-outline">│</span> Acquired lock on <span class="text-tertiary-fixed-dim">src/status_service.py</span></div>
-<div><span class="text-primary-fixed-dim">14:31:15</span> <span class="text-outline">│</span> Stage → <span class="text-[#4ade80]">build</span></div>
+<div><span class="text-primary-fixed-dim">14:31:02</span> <span class="text-outline">│</span> Picked up issue <span class="text-primary">#259</span> — add retry logic to webhook handler</div>
+<div><span class="text-primary-fixed-dim">14:31:04</span> <span class="text-outline">│</span> <span class="text-[#facc15]">investigate</span> → mapping blast radius... 6 files</div>
+<div><span class="text-primary-fixed-dim">14:31:12</span> <span class="text-outline">│</span> Posted investigation comment with 4 ACs</div>
+<div><span class="text-primary-fixed-dim">14:31:15</span> <span class="text-outline">│</span> <span class="text-[#4ade80]">build</span> → writing tests for AC-1..AC-4</div>
 <div><span class="text-primary-fixed-dim">14:32:41</span> <span class="text-outline">│</span> Wrote 3 files, +87 -12 lines</div>
-<div><span class="text-primary-fixed-dim">14:32:44</span> <span class="text-outline">│</span> Running pytest... <span class="text-[#4ade80]">18 passed</span></div>
-<div><span class="text-primary-fixed-dim">14:32:48</span> <span class="text-outline">│</span> Running ruff... <span class="text-[#4ade80]">clean</span></div>
-<div><span class="text-primary-fixed-dim">14:32:50</span> <span class="text-outline">│</span> Running mypy... <span class="text-[#4ade80]">0 errors</span></div>
-<div><span class="text-primary-fixed-dim">14:32:52</span> <span class="text-outline">│</span> Stage → <span class="text-[#facc15]">verify</span></div>
+<div><span class="text-primary-fixed-dim">14:32:44</span> <span class="text-outline">│</span> pytest... <span class="text-[#4ade80]">18 passed</span></div>
+<div><span class="text-primary-fixed-dim">14:32:48</span> <span class="text-outline">│</span> ruff... <span class="text-[#4ade80]">clean</span> · mypy... <span class="text-[#4ade80]">0 errors</span></div>
+<div><span class="text-primary-fixed-dim">14:32:52</span> <span class="text-outline">│</span> <span class="text-[#facc15]">verify</span> → checking quality gates</div>
 <div><span class="text-primary-fixed-dim">14:33:01</span> <span class="text-outline">│</span> Opened PR <span class="text-primary">#287</span> — CI running</div>
 <div><span class="text-primary-fixed-dim">14:34:18</span> <span class="text-outline">│</span> CI <span class="text-[#4ade80]">passed</span> — all checks green</div>
-<div><span class="text-primary-fixed-dim">14:34:22</span> <span class="text-outline">│</span> Stage → <span class="text-primary-fixed-dim">deploy</span></div>
-<div><span class="text-primary-fixed-dim">14:34:25</span> <span class="text-outline">│</span> Merged to <span class="text-primary">main</span> ✓</div>
-<div class="pt-2"><span class="text-primary-fixed-dim">14:34:26</span> <span class="text-outline">│</span> Released locks. Cycle time: <span class="text-primary font-bold">3m 24s</span></div>
+<div><span class="text-primary-fixed-dim">14:34:20</span> <span class="text-outline">│</span> AC traceability: <span class="text-[#4ade80]">4/4 mapped</span></div>
+<div><span class="text-primary-fixed-dim">14:34:21</span> <span class="text-outline">│</span> Blast radius: <span class="text-[#4ade80]">3/3 files in scope</span></div>
+<div><span class="text-primary-fixed-dim">14:34:22</span> <span class="text-outline">│</span> <span class="text-primary-fixed-dim">deploy</span> → merging to main</div>
+<div><span class="text-primary-fixed-dim">14:34:25</span> <span class="text-outline">│</span> Merged to <span class="text-primary">main</span></div>
+<div><span class="text-primary-fixed-dim">14:34:26</span> <span class="text-outline">│</span> <span class="text-tertiary-fixed-dim">learn</span> → writing ADR, no rule needed</div>
+<div class="pt-2"><span class="text-primary-fixed-dim">14:34:30</span> <span class="text-outline">│</span> Issue <span class="text-primary">#259</span> closed. Cycle: <span class="text-primary font-bold">3m 28s</span></div>
 <div><span class="text-primary-fixed-dim animate-pulse">▊</span></div>
 </div>
 </div>
@@ -427,14 +504,14 @@ Live Agent Output
 <section class="py-32 px-8 relative">
 <div class="max-w-[1400px] mx-auto">
 <div class="flex items-center gap-4 mb-6">
-<span class="text-primary font-bold tracking-[0.5em] uppercase text-xs">Control_Plane</span>
+<span class="text-primary font-bold tracking-[0.5em] uppercase text-xs">Control_&amp;_Observability</span>
 <div class="h-px flex-grow bg-primary/10"></div>
 </div>
 <h2 class="font-headline text-3xl md:text-5xl font-black tracking-[0.1em] uppercase mb-6">
 Command Center.<br/><span class="text-tertiary-fixed-dim">Total Visibility.</span>
 </h2>
 <p class="text-on-surface-variant text-lg max-w-2xl mb-16">
-A real-time dashboard shows every agent, every issue, every stage. See who's working on what, how fast they're shipping, and where attention is needed.
+A local status dashboard shows the issue queue, agent states, and recent events in real time. Zero external API calls &mdash; reads from local state. Plus an MCP server so your coding agent can query pipeline status directly.
 </p>
 
 <!-- Dashboard Feature Grid -->
@@ -446,10 +523,10 @@ A real-time dashboard shows every agent, every issue, every stage. See who's wor
 <span class="material-symbols-outlined text-primary" data-icon="grid_view">grid_view</span>
 <h4 class="font-headline font-bold uppercase tracking-[0.15em] text-sm">Pipeline Queue</h4>
 </div>
-<p class="text-on-surface-variant text-sm leading-relaxed mb-6">Kanban view of all issues flowing through investigate, build, verify, deploy, and learn stages.</p>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-6">Issues grouped by pipeline stage. See what's in investigate, build, verify, deploy, and learn at a glance.</p>
 <div class="flex gap-3 flex-wrap">
 <span class="px-2 py-1 text-[9px] uppercase tracking-widest bg-surface-container text-primary-fixed-dim border border-primary/10">Real-time</span>
-<span class="px-2 py-1 text-[9px] uppercase tracking-widest bg-surface-container text-tertiary-fixed-dim border border-tertiary-fixed-dim/10">Swimlanes</span>
+<span class="px-2 py-1 text-[9px] uppercase tracking-widest bg-surface-container text-tertiary-fixed-dim border border-tertiary-fixed-dim/10">Local</span>
 </div>
 </div>
 
@@ -460,9 +537,9 @@ A real-time dashboard shows every agent, every issue, every stage. See who's wor
 <span class="material-symbols-outlined text-tertiary-fixed-dim" data-icon="monitoring">monitoring</span>
 <h4 class="font-headline font-bold uppercase tracking-[0.15em] text-sm">Cycle Metrics</h4>
 </div>
-<p class="text-on-surface-variant text-sm leading-relaxed mb-6">Rolling averages, per-stage durations, idle vs active ratios. Know exactly where time is spent.</p>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-6">Per-stage durations, retry rates, friction hotspots, and success rates by issue size. Know exactly where time is spent.</p>
 <div class="flex gap-3 flex-wrap">
-<span class="px-2 py-1 text-[9px] uppercase tracking-widest bg-surface-container text-primary-fixed-dim border border-primary/10">7d / 30d</span>
+<span class="px-2 py-1 text-[9px] uppercase tracking-widest bg-surface-container text-primary-fixed-dim border border-primary/10">30d lookback</span>
 <span class="px-2 py-1 text-[9px] uppercase tracking-widest bg-surface-container text-tertiary-fixed-dim border border-tertiary-fixed-dim/10">Per-stage</span>
 </div>
 </div>
@@ -474,10 +551,10 @@ A real-time dashboard shows every agent, every issue, every stage. See who's wor
 <span class="material-symbols-outlined text-primary" data-icon="deployed_code">deployed_code</span>
 <h4 class="font-headline font-bold uppercase tracking-[0.15em] text-sm">Agent Workers</h4>
 </div>
-<p class="text-on-surface-variant text-sm leading-relaxed mb-6">See each agent's status, current issue, heartbeat, and health. Scale up or down as your backlog demands.</p>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-6">Each worker's current issue, stage, and state (active, idle, blocked). Configure worker count in config.yaml.</p>
 <div class="flex gap-3 flex-wrap">
-<span class="px-2 py-1 text-[9px] uppercase tracking-widest bg-surface-container text-primary-fixed-dim border border-primary/10">Heartbeat</span>
-<span class="px-2 py-1 text-[9px] uppercase tracking-widest bg-surface-container text-tertiary-fixed-dim border border-tertiary-fixed-dim/10">Auto-scale</span>
+<span class="px-2 py-1 text-[9px] uppercase tracking-widest bg-surface-container text-primary-fixed-dim border border-primary/10">Configurable</span>
+<span class="px-2 py-1 text-[9px] uppercase tracking-widest bg-surface-container text-tertiary-fixed-dim border border-tertiary-fixed-dim/10">Parallel</span>
 </div>
 </div>
 </div>
@@ -485,20 +562,20 @@ A real-time dashboard shows every agent, every issue, every stage. See who's wor
 <!-- Inline Metrics Strip -->
 <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6">
 <div class="p-6 bg-surface-container border-t-2 border-primary/20">
-<div class="text-3xl font-black text-primary font-headline tracking-tighter mb-1">1.4h</div>
-<div class="text-[10px] uppercase tracking-[0.3em] text-outline">Avg Cycle Time</div>
+<div class="text-3xl font-black text-primary font-headline tracking-tighter mb-1">5</div>
+<div class="text-[10px] uppercase tracking-[0.3em] text-outline">Pipeline Stages</div>
 </div>
 <div class="p-6 bg-surface-container border-t-2 border-tertiary-fixed-dim/20">
-<div class="text-3xl font-black text-tertiary-fixed-dim font-headline tracking-tighter mb-1">9</div>
-<div class="text-[10px] uppercase tracking-[0.3em] text-outline">Active Agents</div>
+<div class="text-3xl font-black text-tertiary-fixed-dim font-headline tracking-tighter mb-1">3</div>
+<div class="text-[10px] uppercase tracking-[0.3em] text-outline">Autonomy Levels</div>
 </div>
 <div class="p-6 bg-surface-container border-t-2 border-primary/20">
-<div class="text-3xl font-black text-primary font-headline tracking-tighter mb-1">58</div>
-<div class="text-[10px] uppercase tracking-[0.3em] text-outline">Issues Shipped</div>
+<div class="text-3xl font-black text-primary font-headline tracking-tighter mb-1">12</div>
+<div class="text-[10px] uppercase tracking-[0.3em] text-outline">Specialist Domains</div>
 </div>
 <div class="p-6 bg-surface-container border-t-2 border-tertiary-fixed-dim/20">
-<div class="text-3xl font-black text-tertiary-fixed-dim font-headline tracking-tighter mb-1">39%</div>
-<div class="text-[10px] uppercase tracking-[0.3em] text-outline">Active Uptime</div>
+<div class="text-3xl font-black text-tertiary-fixed-dim font-headline tracking-tighter mb-1">3</div>
+<div class="text-[10px] uppercase tracking-[0.3em] text-outline">Engine Options</div>
 </div>
 </div>
 </div>
@@ -523,7 +600,7 @@ You Stay In Control.<br/><span class="text-primary-fixed-dim">Always.</span>
 </div>
 <div>
 <h5 class="font-headline font-bold uppercase tracking-widest text-sm mb-2">Your Repo, Your Rules</h5>
-<p class="text-on-surface-variant text-sm leading-relaxed">Agents follow your CLAUDE.md instructions, your linting config, your test requirements. They adapt to you — not the other way around.</p>
+<p class="text-on-surface-variant text-sm leading-relaxed">Agents read your CLAUDE.md, your linting config, your test requirements, your architecture conventions. They adapt to your codebase &mdash; not the other way around.</p>
 </div>
 </div>
 <div class="flex gap-5">
@@ -540,8 +617,8 @@ You Stay In Control.<br/><span class="text-primary-fixed-dim">Always.</span>
 <span class="text-primary text-lg font-black font-headline">3</span>
 </div>
 <div>
-<h5 class="font-headline font-bold uppercase tracking-widest text-sm mb-2">Escalation & Attention</h5>
-<p class="text-on-surface-variant text-sm leading-relaxed">When an agent is stuck or uncertain, it flags the issue for human review. You decide. The agent waits.</p>
+<h5 class="font-headline font-bold uppercase tracking-widest text-sm mb-2">Smart Retry &amp; Escalation</h5>
+<p class="text-on-surface-variant text-sm leading-relaxed">Failures are classified as transient (retry with backoff) or structural (escalate immediately). When an agent is stuck, it stops and flags the issue. You decide.</p>
 </div>
 </div>
 </div>
@@ -562,7 +639,7 @@ You Stay In Control.<br/><span class="text-primary-fixed-dim">Always.</span>
 </div>
 <div>
 <h5 class="font-headline font-bold uppercase tracking-widest text-sm mb-2">Full Audit Trail</h5>
-<p class="text-on-surface-variant text-sm leading-relaxed">Every decision, every file change, every test run is logged. Activity feed, agent logs, and metrics — all accessible from the dashboard.</p>
+<p class="text-on-surface-variant text-sm leading-relaxed">Per-issue JSONL journals record every event: stage transitions, commands, errors, token usage. Compliance-ready traceability from requirement to deployment.</p>
 </div>
 </div>
 <div class="flex gap-5">
@@ -586,15 +663,13 @@ You Stay In Control.<br/><span class="text-primary-fixed-dim">Always.</span>
 </div>
 <div class="relative z-10 max-w-4xl mx-auto">
 <h2 class="display-medium font-headline font-black text-5xl md:text-7xl uppercase tracking-[0.2em] mb-12">
-                    RECODE YOUR <span class="text-tertiary-fixed-dim">VELOCITY</span>
+                    STOP WRITING <span class="text-tertiary-fixed-dim">BOILERPLATE</span>
 </h2>
+<p class="text-on-surface-variant text-lg mb-10 max-w-xl mx-auto">Run it yourself, or let our team handle your development. Either way &mdash; issues in, code shipped.</p>
 <div class="inline-flex flex-col md:flex-row gap-4 items-center">
 <button class="px-16 py-6 bg-primary-container text-on-primary-container font-black uppercase tracking-[0.3em] text-lg hover:shadow-[0_0_30px_rgba(0,218,243,0.4)] transition-shadow">
-                        Join the Lattice
+                        Get Started
                     </button>
-<div class="px-8 py-2 border border-primary/20 bg-surface-container-high text-[10px] uppercase tracking-widest text-primary-fixed-dim">
-                        Invite-only Beta: 014 Slots Available
-                    </div>
 </div>
 </div>
 </section>
@@ -603,13 +678,12 @@ You Stay In Control.<br/><span class="text-primary-fixed-dim">Always.</span>
 <footer class="w-full py-12 px-8 flex flex-col md:flex-row justify-between items-center gap-6 bg-[#0e0e0f] border-t border-[#00daf3]/10">
 <div class="flex flex-col items-center md:items-start gap-2">
 <div class="text-lg font-bold text-[#c3f5ff] tracking-widest uppercase">FAKTORIAL.AI</div>
-<div class="text-[#bac9cc]/60 font-mono text-[10px] tracking-widest uppercase">© 2024 FAKTORIAL.AI // KINETIC LATTICE PROTOCOL</div>
+<div class="text-[#bac9cc]/60 font-mono text-[10px] tracking-widest uppercase">&copy; Asynkron AB</div>
 </div>
 <div class="flex gap-8">
-<a class="text-[#bac9cc]/60 hover:text-[#00daf3] transition-opacity text-xs uppercase font-headline tracking-widest" href="#">Source</a>
-<a class="text-[#bac9cc]/60 hover:text-[#00daf3] transition-opacity text-xs uppercase font-headline tracking-widest" href="#">Audit</a>
-<a class="text-[#bac9cc]/60 hover:text-[#00daf3] transition-opacity text-xs uppercase font-headline tracking-widest" href="#">Security</a>
-<a class="text-[#bac9cc]/60 hover:text-[#00daf3] transition-opacity text-xs uppercase font-headline tracking-widest" href="#">Changelog</a>
+<a class="text-[#bac9cc]/60 hover:text-[#00daf3] transition-opacity text-xs uppercase font-headline tracking-widest" href="#">Platform</a>
+<a class="text-[#bac9cc]/60 hover:text-[#00daf3] transition-opacity text-xs uppercase font-headline tracking-widest" href="#">Managed Service</a>
+<a class="text-[#bac9cc]/60 hover:text-[#00daf3] transition-opacity text-xs uppercase font-headline tracking-widest" href="#">Contact</a>
 </div>
 <div class="flex gap-4">
 <span class="material-symbols-outlined text-[#bac9cc]/40 text-xl" data-icon="language">language</span>

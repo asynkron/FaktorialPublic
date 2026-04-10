@@ -154,13 +154,21 @@
             position: absolute;
             inset: 0;
             border-radius: 50%;
-            background: radial-gradient(
-                circle at 50% 10%,
-                #15151a 0%,
-                #111116 30%,
-                #0c0c10 60%,
-                #08080c 100%
-            );
+            background:
+                radial-gradient(
+                    ellipse 120% 25% at 50% 0%,
+                    rgba(0, 180, 210, 0.12) 0%,
+                    rgba(0, 140, 170, 0.06) 30%,
+                    rgba(0, 80, 100, 0.02) 60%,
+                    transparent 100%
+                ),
+                radial-gradient(
+                    circle at 50% 10%,
+                    #15151a 0%,
+                    #111116 30%,
+                    #0c0c10 60%,
+                    #08080c 100%
+                );
         }
         /* Atmosphere rim — bright thin edge at the top */
         .globe::after {
@@ -184,11 +192,11 @@
             bottom: 560px;
             height: 500px;
             background: radial-gradient(
-                ellipse 35% 80% at 50% 100%,
-                rgba(200, 235, 255, 0.8) 0%,
-                rgba(140, 200, 255, 0.35) 25%,
-                rgba(80, 150, 255, 0.12) 50%,
-                rgba(40, 100, 220, 0.04) 75%,
+                ellipse 55% 80% at 50% 100%,
+                rgba(0, 229, 255, 0.7) 0%,
+                rgba(0, 218, 243, 0.3) 25%,
+                rgba(0, 160, 200, 0.10) 50%,
+                rgba(0, 100, 140, 0.03) 75%,
                 transparent 100%
             );
             pointer-events: none;
@@ -202,9 +210,9 @@
             bottom: 500px;
             height: 600px;
             background: radial-gradient(
-                ellipse 55% 70% at 50% 100%,
-                rgba(80, 140, 230, 0.10) 0%,
-                rgba(50, 100, 200, 0.04) 50%,
+                ellipse 80% 70% at 50% 100%,
+                rgba(0, 218, 243, 0.08) 0%,
+                rgba(0, 160, 200, 0.03) 50%,
                 transparent 100%
             );
             pointer-events: none;
@@ -217,10 +225,10 @@
 <header class="fixed top-0 w-full z-50 flex justify-between items-center px-8 h-20 bg-[#131314]/40 backdrop-blur-xl border-b border-[#00daf3]/10">
 <div class="text-2xl font-black tracking-[0.25em] text-[#c3f5ff] uppercase">FAKTORIAL.AI</div>
 <nav class="hidden md:flex gap-10 items-center">
-<a class="text-[#c3f5ff] font-bold border-b-2 border-[#c3f5ff] pb-1 text-sm uppercase tracking-[0.2em] font-headline" href="#">Pipeline</a>
-<a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="#">Agents</a>
-<a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="#">Features</a>
-<a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="#">Control</a>
+<a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="#pipeline">Pipeline</a>
+<a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="#agents">Agents</a>
+<a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="#features">Features</a>
+<a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="#control">Control</a>
 </nav>
 <button class="bg-primary-container text-on-primary-container px-6 py-2 font-bold uppercase tracking-widest text-xs hover:bg-primary-fixed-dim transition-all active:scale-95 duration-150">
             Get Started
@@ -291,25 +299,81 @@
 </div>
 </div>
 </div>
-<div class="md:col-span-4 p-8 bg-surface-container-highest border border-primary/5 flex flex-col justify-between">
-<div class="space-y-4">
-<div class="w-12 h-1 bg-tertiary-fixed-dim"></div>
-<h3 class="font-headline font-bold uppercase tracking-[0.15em] text-sm">Engine Support</h3>
-<div class="space-y-2">
-<div class="flex justify-between text-[10px] uppercase tracking-widest text-on-surface-variant">
-<span>Claude &middot; Codex &middot; Copilot</span>
-<span class="text-primary-fixed-dim">Active</span>
+<!-- Mini dashboard mockup -->
+<div class="md:col-span-4 bg-[#0a0a0b] border border-primary/10 overflow-hidden flex flex-col">
+<!-- Dashboard header -->
+<div class="flex items-center justify-between px-4 py-2.5 border-b border-primary/10 bg-surface-container-lowest">
+    <span class="text-[10px] text-outline tracking-widest uppercase font-mono">Dashboard</span>
+    <span class="flex items-center gap-1.5 text-[9px] text-[#4ade80] tracking-widest uppercase font-mono"><span class="w-1.5 h-1.5 rounded-full bg-[#4ade80] inline-block"></span> Live</span>
 </div>
-<div class="w-full h-1 bg-surface-container">
-<div class="w-3/4 h-full bg-primary-fixed-dim"></div>
+<!-- Mini metrics row -->
+<div class="grid grid-cols-4 border-b border-primary/5">
+    <div class="px-3 py-2.5 border-r border-primary/5">
+        <div class="text-[9px] uppercase tracking-widest text-outline mb-0.5">Queue</div>
+        <div class="text-sm font-black font-headline text-on-surface">10</div>
+    </div>
+    <div class="px-3 py-2.5 border-r border-primary/5">
+        <div class="text-[9px] uppercase tracking-widest text-outline mb-0.5">Active</div>
+        <div class="text-sm font-black font-headline text-[#4ade80]">5</div>
+    </div>
+    <div class="px-3 py-2.5 border-r border-primary/5">
+        <div class="text-[9px] uppercase tracking-widest text-outline mb-0.5">Agents</div>
+        <div class="text-sm font-black font-headline text-on-surface">6</div>
+    </div>
+    <div class="px-3 py-2.5">
+        <div class="text-[9px] uppercase tracking-widest text-outline mb-0.5">Tests</div>
+        <div class="text-sm font-black font-headline text-primary-fixed-dim">2069</div>
+    </div>
 </div>
+<!-- Worker rows -->
+<div class="flex-1 font-mono text-[10px]">
+    <div class="flex items-center gap-2 px-3 py-2 border-b border-primary/5">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#4ade80]"></span>
+        <span class="text-on-surface font-bold w-6">w1</span>
+        <span class="px-1.5 py-0.5 bg-[#4ade80]/15 text-[#4ade80] text-[8px] uppercase tracking-wider">active</span>
+        <span class="text-primary ml-1">#760</span>
+        <span class="text-outline ml-auto px-1.5 py-0.5 bg-surface-container text-[8px] uppercase">build</span>
+    </div>
+    <div class="flex items-center gap-2 px-3 py-2 border-b border-primary/5">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#4ade80]"></span>
+        <span class="text-on-surface font-bold w-6">w2</span>
+        <span class="px-1.5 py-0.5 bg-[#4ade80]/15 text-[#4ade80] text-[8px] uppercase tracking-wider">active</span>
+        <span class="text-primary ml-1">#762</span>
+        <span class="text-outline ml-auto px-1.5 py-0.5 bg-surface-container text-[8px] uppercase">investigate</span>
+    </div>
+    <div class="flex items-center gap-2 px-3 py-2 border-b border-primary/5">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#4ade80]"></span>
+        <span class="text-on-surface font-bold w-6">w3</span>
+        <span class="px-1.5 py-0.5 bg-[#4ade80]/15 text-[#4ade80] text-[8px] uppercase tracking-wider">active</span>
+        <span class="text-primary ml-1">#759</span>
+        <span class="text-outline ml-auto px-1.5 py-0.5 bg-surface-container text-[8px] uppercase">build</span>
+    </div>
+    <div class="flex items-center gap-2 px-3 py-2 border-b border-primary/5">
+        <span class="w-1.5 h-1.5 rounded-full bg-outline/40"></span>
+        <span class="text-on-surface font-bold w-6">res</span>
+        <span class="px-1.5 py-0.5 bg-outline/10 text-outline text-[8px] uppercase tracking-wider">idle</span>
+        <span class="text-outline ml-1">&mdash;</span>
+        <span class="text-outline/40 ml-auto text-[8px]">resolver</span>
+    </div>
+    <div class="flex items-center gap-2 px-3 py-2 border-b border-primary/5">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#4ade80]"></span>
+        <span class="text-on-surface font-bold w-6">sen</span>
+        <span class="px-1.5 py-0.5 bg-[#4ade80]/15 text-[#4ade80] text-[8px] uppercase tracking-wider">active</span>
+        <span class="text-outline ml-1">&mdash;</span>
+        <span class="text-outline/40 ml-auto text-[8px]">sentinel</span>
+    </div>
+    <div class="flex items-center gap-2 px-3 py-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#4ade80]"></span>
+        <span class="text-on-surface font-bold w-6">tri</span>
+        <span class="px-1.5 py-0.5 bg-[#4ade80]/15 text-[#4ade80] text-[8px] uppercase tracking-wider">active</span>
+        <span class="text-outline ml-1">&mdash;</span>
+        <span class="text-outline/40 ml-auto text-[8px]">triage</span>
+    </div>
 </div>
-</div>
-<img class="w-full h-48 object-cover mt-8 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-700" data-alt="abstract digital visualization of a neural network with glowing cyan lines and data points on a dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBoKZhi08ILF_mu5kTBuynNbo9lmiWd5aGqm-iKenBrlPTkS86ltbG655wjk53Akyf8ewC3TmNvjkE02513yXjH7hKouJ7OplHYBD7M0YHVG3oIFN0nZh3AIWgwzrGzLT8VljcTzppS4-MOseXVRJygXNaQiIwki9G3IKT2Sh-nvyBzIBgTOXOYrtT2gccEQdvL0-vuQgf9lchmJsE-iBbXEjaKEQrHC6TDuOrBkIFYWt2t41pzym626eJnGhGF_RqscL9yy7SgmDM"/>
 </div>
 </section>
 <!-- Service Bento Grid -->
-<section class="py-24 px-8 bg-surface-container-lowest border-y border-[#00daf3]/10">
+<section id="features" class="py-24 px-8 bg-surface-container-lowest border-y border-[#00daf3]/10">
 <div class="max-w-[1400px] mx-auto">
 <div class="flex items-center gap-4 mb-16">
 <span class="text-primary font-bold tracking-[0.5em] uppercase text-xs">Core_Capabilities</span>
@@ -344,7 +408,7 @@
 </div>
 </section>
 <!-- How It Works — Pipeline -->
-<section class="py-32 px-8 relative overflow-hidden">
+<section id="pipeline" class="py-32 px-8 relative overflow-hidden">
 <div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(180deg, #0e0e0f 0%, #131314 30%, #131314 70%, #0e0e0f 100%);"></div>
 <div class="relative z-10 max-w-[1400px] mx-auto">
 <div class="flex items-center gap-4 mb-6">
@@ -412,7 +476,7 @@ Every issue flows through five stages. Each stage is handled by an autonomous ag
 </section>
 
 <!-- Autonomous Agents Deep Dive -->
-<section class="py-32 px-8 bg-surface-container-lowest border-y border-primary/10 relative">
+<section id="agents" class="py-32 px-8 bg-surface-container-lowest border-y border-primary/10 relative">
 <div class="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
 <div class="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full blur-[160px] opacity-5 bg-primary"></div>
 <div class="absolute -bottom-40 -left-40 w-[400px] h-[400px] rounded-full blur-[120px] opacity-5 bg-tertiary-fixed-dim"></div>
@@ -514,48 +578,77 @@ Command Center.<br/><span class="text-tertiary-fixed-dim">Total Visibility.</spa
 A local status dashboard shows the issue queue, agent states, and recent events in real time. Zero external API calls &mdash; reads from local state. Plus an MCP server so your coding agent can query pipeline status directly.
 </p>
 
-<!-- Dashboard Feature Grid -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-<!-- Dashboard card 1 -->
-<div class="bg-surface-container-lowest border border-primary/5 p-8 relative group hover:border-primary/20 transition-all">
-<div class="absolute top-0 right-0 w-24 h-24 bg-primary/5 blur-[40px] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-<div class="flex items-center gap-3 mb-6">
-<span class="material-symbols-outlined text-primary" data-icon="grid_view">grid_view</span>
-<h4 class="font-headline font-bold uppercase tracking-[0.15em] text-sm">Pipeline Queue</h4>
+<!-- Queue kanban mockup -->
+<div class="bg-[#0a0a0b] border border-primary/10 overflow-hidden">
+<div class="flex items-center justify-between px-5 py-3 border-b border-primary/10 bg-surface-container-lowest">
+    <div class="flex items-center gap-6 text-[10px] uppercase tracking-widest font-mono">
+        <span class="text-on-surface-variant border-b border-on-surface-variant pb-1">Queue</span>
+        <span class="text-outline">Workers</span>
+        <span class="text-outline">Logs</span>
+        <span class="text-outline">Metrics</span>
+    </div>
+    <span class="flex items-center gap-1.5 text-[9px] text-[#4ade80] tracking-widest uppercase font-mono"><span class="w-1.5 h-1.5 rounded-full bg-[#4ade80] inline-block"></span> Live</span>
 </div>
-<p class="text-on-surface-variant text-sm leading-relaxed mb-6">Issues grouped by pipeline stage. See what's in investigate, build, verify, deploy, and learn at a glance.</p>
-<div class="flex gap-3 flex-wrap">
-<span class="px-2 py-1 text-[9px] uppercase tracking-widest bg-surface-container text-primary-fixed-dim border border-primary/10">Real-time</span>
-<span class="px-2 py-1 text-[9px] uppercase tracking-widest bg-surface-container text-tertiary-fixed-dim border border-tertiary-fixed-dim/10">Local</span>
-</div>
-</div>
-
-<!-- Dashboard card 2 -->
-<div class="bg-surface-container-lowest border border-primary/5 p-8 relative group hover:border-primary/20 transition-all">
-<div class="absolute top-0 right-0 w-24 h-24 bg-tertiary-fixed-dim/5 blur-[40px] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-<div class="flex items-center gap-3 mb-6">
-<span class="material-symbols-outlined text-tertiary-fixed-dim" data-icon="monitoring">monitoring</span>
-<h4 class="font-headline font-bold uppercase tracking-[0.15em] text-sm">Cycle Metrics</h4>
-</div>
-<p class="text-on-surface-variant text-sm leading-relaxed mb-6">Per-stage durations, retry rates, friction hotspots, and success rates by issue size. Know exactly where time is spent.</p>
-<div class="flex gap-3 flex-wrap">
-<span class="px-2 py-1 text-[9px] uppercase tracking-widest bg-surface-container text-primary-fixed-dim border border-primary/10">30d lookback</span>
-<span class="px-2 py-1 text-[9px] uppercase tracking-widest bg-surface-container text-tertiary-fixed-dim border border-tertiary-fixed-dim/10">Per-stage</span>
-</div>
-</div>
-
-<!-- Dashboard card 3 -->
-<div class="bg-surface-container-lowest border border-primary/5 p-8 relative group hover:border-primary/20 transition-all">
-<div class="absolute top-0 right-0 w-24 h-24 bg-primary/5 blur-[40px] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-<div class="flex items-center gap-3 mb-6">
-<span class="material-symbols-outlined text-primary" data-icon="deployed_code">deployed_code</span>
-<h4 class="font-headline font-bold uppercase tracking-[0.15em] text-sm">Agent Workers</h4>
-</div>
-<p class="text-on-surface-variant text-sm leading-relaxed mb-6">Each worker's current issue, stage, and state (active, idle, blocked). Configure worker count in config.yaml.</p>
-<div class="flex gap-3 flex-wrap">
-<span class="px-2 py-1 text-[9px] uppercase tracking-widest bg-surface-container text-primary-fixed-dim border border-primary/10">Configurable</span>
-<span class="px-2 py-1 text-[9px] uppercase tracking-widest bg-surface-container text-tertiary-fixed-dim border border-tertiary-fixed-dim/10">Parallel</span>
-</div>
+<!-- Kanban columns -->
+<div class="grid grid-cols-5 divide-x divide-primary/5 min-h-[260px]">
+    <!-- Investigate -->
+    <div class="p-3">
+        <div class="flex items-center justify-between mb-3">
+            <span class="text-[9px] uppercase tracking-widest text-[#facc15] font-mono flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-[#facc15]"></span> Investigate</span>
+            <span class="text-[9px] text-outline font-mono">3</span>
+        </div>
+        <div class="space-y-2">
+            <div class="bg-surface-container-low border border-primary/5 p-2.5">
+                <div class="flex items-center gap-1.5 mb-1"><span class="text-primary text-[10px] font-mono font-bold">#762</span><span class="px-1 py-0.5 bg-[#4ade80]/15 text-[#4ade80] text-[7px] uppercase">w2</span></div>
+                <div class="text-[9px] text-on-surface-variant leading-snug">Reduce issue comment context in prompts</div>
+            </div>
+            <div class="bg-surface-container-low border border-primary/5 p-2.5">
+                <div class="flex items-center gap-1.5 mb-1"><span class="text-primary text-[10px] font-mono font-bold">#758</span><span class="px-1 py-0.5 bg-outline/10 text-outline text-[7px] uppercase">queued</span></div>
+                <div class="text-[9px] text-on-surface-variant leading-snug">Add prompt caching warmup</div>
+            </div>
+        </div>
+    </div>
+    <!-- Build -->
+    <div class="p-3">
+        <div class="flex items-center justify-between mb-3">
+            <span class="text-[9px] uppercase tracking-widest text-[#4ade80] font-mono flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-[#4ade80]"></span> Build</span>
+            <span class="text-[9px] text-outline font-mono">2</span>
+        </div>
+        <div class="space-y-2">
+            <div class="bg-surface-container-low border border-primary/5 p-2.5">
+                <div class="flex items-center gap-1.5 mb-1"><span class="text-primary text-[10px] font-mono font-bold">#760</span><span class="px-1 py-0.5 bg-[#4ade80]/15 text-[#4ade80] text-[7px] uppercase">w1</span></div>
+                <div class="text-[9px] text-on-surface-variant leading-snug">Compact CLAUDE.md rules</div>
+            </div>
+            <div class="bg-surface-container-low border border-primary/5 p-2.5">
+                <div class="flex items-center gap-1.5 mb-1"><span class="text-primary text-[10px] font-mono font-bold">#759</span><span class="px-1 py-0.5 bg-[#4ade80]/15 text-[#4ade80] text-[7px] uppercase">w3</span></div>
+                <div class="text-[9px] text-on-surface-variant leading-snug">Enforce max_turns limits per stage</div>
+            </div>
+        </div>
+    </div>
+    <!-- Verify -->
+    <div class="p-3">
+        <div class="flex items-center justify-between mb-3">
+            <span class="text-[9px] uppercase tracking-widest text-primary-fixed-dim font-mono flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary-fixed-dim"></span> Verify</span>
+            <span class="text-[9px] text-outline font-mono">0</span>
+        </div>
+        <div class="text-[9px] text-outline/40 text-center mt-8">No issues</div>
+    </div>
+    <!-- Deploy -->
+    <div class="p-3">
+        <div class="flex items-center justify-between mb-3">
+            <span class="text-[9px] uppercase tracking-widest text-primary-fixed-dim font-mono flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary-fixed-dim"></span> Deploy</span>
+            <span class="text-[9px] text-outline font-mono">0</span>
+        </div>
+        <div class="text-[9px] text-outline/40 text-center mt-8">No issues</div>
+    </div>
+    <!-- Learn -->
+    <div class="p-3">
+        <div class="flex items-center justify-between mb-3">
+            <span class="text-[9px] uppercase tracking-widest text-tertiary-fixed-dim font-mono flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed-dim"></span> Learn</span>
+            <span class="text-[9px] text-outline font-mono">0</span>
+        </div>
+        <div class="text-[9px] text-outline/40 text-center mt-8">No issues</div>
+    </div>
 </div>
 </div>
 
@@ -582,7 +675,7 @@ A local status dashboard shows the issue queue, agent states, and recent events 
 </section>
 
 <!-- What You Keep -->
-<section class="py-32 px-8 bg-surface-container-lowest border-y border-primary/10">
+<section id="control" class="py-32 px-8 bg-surface-container-lowest border-y border-primary/10">
 <div class="max-w-[1400px] mx-auto">
 <div class="flex items-center gap-4 mb-6">
 <span class="text-primary font-bold tracking-[0.5em] uppercase text-xs">Your_Guardrails</span>
@@ -656,6 +749,93 @@ You Stay In Control.<br/><span class="text-primary-fixed-dim">Always.</span>
 </div>
 </section>
 
+<!-- Self-Learning: ADRs, Rules, Spec-Test Sync -->
+<section class="py-32 px-8 relative">
+<div class="max-w-[1400px] mx-auto">
+<div class="flex items-center gap-4 mb-6">
+    <span class="text-tertiary-fixed-dim font-bold tracking-[0.5em] uppercase text-xs">Self_Learning</span>
+    <div class="h-px flex-grow bg-tertiary-fixed-dim/10"></div>
+</div>
+<h2 class="font-headline text-3xl md:text-5xl font-black tracking-[0.1em] uppercase mb-6">
+    Every delivery makes <br/>the next one <span class="text-tertiary-fixed-dim">better.</span>
+</h2>
+<p class="text-on-surface-variant text-lg max-w-2xl mb-16">
+    The learn stage runs after every merge. It captures what happened, why it mattered, and what to do differently next time &mdash; as code-committed ADRs and preventive rules that future agents automatically follow.
+</p>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+<!-- Left: How spec-test-sync works -->
+<div>
+    <h4 class="font-headline font-bold uppercase tracking-widest text-sm mb-6 text-primary">Spec-Test Sync Check</h4>
+    <p class="text-on-surface-variant text-sm leading-relaxed mb-6">
+        The sentinel continuously audits closed issues. If an issue has acceptance criteria but no matching test evidence (PR, merge commit, or child issues delivering the ACs), it raises a follow-up alert &mdash; catching gaps that slipped through.
+    </p>
+
+    <!-- Spec-test-sync mockup -->
+    <div class="bg-[#0a0a0b] border border-primary/10 overflow-hidden">
+        <div class="flex items-center gap-2 px-4 py-2.5 border-b border-primary/10 bg-surface-container-lowest">
+            <span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim"></span>
+            <span class="text-[10px] text-outline tracking-widest uppercase font-mono">sentinel // spec-test-sync</span>
+        </div>
+        <div class="p-5 font-mono text-[10px] leading-[2] text-on-surface-variant/70">
+            <div><span class="text-outline">│</span> Scanning closed issues with ACs...</div>
+            <div><span class="text-outline">│</span> Issue <span class="text-primary">#693</span> — 6 ACs, no direct PR evidence</div>
+            <div><span class="text-outline">│</span> Checking child issues...</div>
+            <div><span class="text-outline">│</span>&ensp; <span class="text-primary">#723</span> AC-1 (worker.py) → <span class="text-[#4ade80]">merged</span></div>
+            <div><span class="text-outline">│</span>&ensp; <span class="text-primary">#724</span> AC-2 (github.py) → <span class="text-[#4ade80]">merged</span></div>
+            <div><span class="text-outline">│</span>&ensp; <span class="text-primary">#725</span> AC-3 (server.py) → <span class="text-[#4ade80]">merged</span></div>
+            <div><span class="text-outline">│</span> AC-4..AC-6 → <span class="text-[#4ade80]">enforced per-issue in child builds</span></div>
+            <div><span class="text-outline">│</span> Evidence chain: <span class="text-[#4ade80]">6/6 ACs satisfied</span></div>
+            <div><span class="text-outline">│</span> Result: <span class="text-[#4ade80]">no alert needed</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- Right: ADR + Rule mockups -->
+<div>
+    <h4 class="font-headline font-bold uppercase tracking-widest text-sm mb-6 text-tertiary-fixed-dim">ADRs &amp; Preventive Rules</h4>
+    <p class="text-on-surface-variant text-sm leading-relaxed mb-6">
+        When the learn stage detects retries, friction, or non-trivial decisions, it writes an Architecture Decision Record and a preventive rule. Both are committed to the repo and applied to all future agent runs.
+    </p>
+
+    <!-- ADR mockup -->
+    <div class="bg-[#0a0a0b] border border-tertiary-fixed-dim/10 overflow-hidden mb-4">
+        <div class="flex items-center gap-2 px-4 py-2.5 border-b border-tertiary-fixed-dim/10 bg-surface-container-lowest">
+            <span class="text-[10px] text-outline tracking-widest uppercase font-mono">docs/adrs/0096-scope-coverage-per-module.md</span>
+        </div>
+        <div class="p-4 font-mono text-[10px] leading-[1.9] text-on-surface-variant/70">
+            <div><span class="text-tertiary-fixed-dim"># ADR-0096:</span> Scope coverage issues per module</div>
+            <div><span class="text-outline">Status:</span> accepted</div>
+            <div><span class="text-outline">Issue:</span> <span class="text-primary">#693</span></div>
+            <div class="mt-2"><span class="text-outline">## Context</span></div>
+            <div>Bundling 3 large modules into one coverage issue</div>
+            <div>exceeded the 50-turn limit twice before succeeding.</div>
+            <div class="mt-2"><span class="text-outline">## Decision</span></div>
+            <div>Scope each coverage issue to a single module.</div>
+        </div>
+    </div>
+
+    <!-- Rule mockup -->
+    <div class="bg-[#0a0a0b] border border-tertiary-fixed-dim/10 overflow-hidden">
+        <div class="flex items-center gap-2 px-4 py-2.5 border-b border-tertiary-fixed-dim/10 bg-surface-container-lowest">
+            <span class="text-[10px] text-outline tracking-widest uppercase font-mono">.claude/rules/025-scope-coverage-per-module.md</span>
+        </div>
+        <div class="p-4 font-mono text-[10px] leading-[1.9] text-on-surface-variant/70">
+            <div>When creating coverage improvement issues,</div>
+            <div>scope each issue to a <span class="text-tertiary-fixed-dim">single module</span>.</div>
+            <div class="mt-1.5">For modules with &gt;1000 statements, expect</div>
+            <div>2-3x the turns of a typical feature issue.</div>
+            <div class="mt-1.5"><span class="text-outline">Reason:</span> Issue <span class="text-primary">#693</span> bundled 3 modules,</div>
+            <div>was killed and split. See ADR-0096.</div>
+        </div>
+    </div>
+</div>
+
+</div>
+</div>
+</section>
+
 <!-- CTA / Final Impact -->
 <section class="py-32 px-8 text-center relative overflow-hidden">
 <div class="absolute inset-0 opacity-10 pointer-events-none">
@@ -690,4 +870,26 @@ You Stay In Control.<br/><span class="text-primary-fixed-dim">Always.</span>
 <span class="material-symbols-outlined text-[#bac9cc]/40 text-xl" data-icon="terminal">terminal</span>
 </div>
 </footer>
+<script>
+    // Parallax: globe + glow scroll slower than content
+    (function() {
+        const els = document.querySelectorAll('.globe-wrap, .globe-glow, .globe-wash');
+        let ticking = false;
+        window.addEventListener('scroll', function() {
+            if (!ticking) {
+                requestAnimationFrame(function() {
+                    const s = window.scrollY;
+                    const offset = s * 0.4; // moves at 60% of scroll speed (1 - 0.4)
+                    for (let i = 0; i < els.length; i++) {
+                        els[i].style.transform = (els[i].classList.contains('globe-wrap')
+                            ? 'translateX(-50%) translateY(-' + offset + 'px)'
+                            : 'translateY(-' + offset + 'px)');
+                    }
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+    })();
+</script>
 </body></html>

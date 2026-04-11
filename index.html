@@ -68,9 +68,9 @@
                         "full": "9999px"
                     },
                     "fontFamily": {
-                        "headline": ["Space Grotesk"],
-                        "body": ["Inter"],
-                        "label": ["Space Grotesk"]
+                        "headline": ["Space Grotesk", "system-ui", "sans-serif"],
+                        "body": ["Inter", "system-ui", "sans-serif"],
+                        "label": ["Space Grotesk", "system-ui", "sans-serif"]
                     }
                 },
             },
@@ -275,10 +275,10 @@
 </div>
 <!-- Trust strip -->
 <div class="pt-12 flex flex-wrap justify-center gap-x-8 gap-y-3">
-<span class="flex items-center gap-2 text-on-surface-variant/60 text-xs uppercase tracking-widest font-headline"><span class="material-symbols-outlined text-primary-fixed-dim text-sm">home</span> Runs locally</span>
-<span class="flex items-center gap-2 text-on-surface-variant/60 text-xs uppercase tracking-widest font-headline"><span class="material-symbols-outlined text-primary-fixed-dim text-sm">hub</span> GitHub-native</span>
+<span class="flex items-center gap-2 text-on-surface-variant/60 text-xs uppercase tracking-widest font-headline"><span class="material-symbols-outlined text-primary-fixed-dim text-sm">computer</span> Runs locally</span>
+<span class="flex items-center gap-2 text-on-surface-variant/60 text-xs uppercase tracking-widest font-headline"><svg class="w-3.5 h-3.5 text-primary-fixed-dim" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg> GitHub-native</span>
 <span class="flex items-center gap-2 text-on-surface-variant/60 text-xs uppercase tracking-widest font-headline"><span class="material-symbols-outlined text-primary-fixed-dim text-sm">verified_user</span> Approval gates</span>
-<span class="flex items-center gap-2 text-on-surface-variant/60 text-xs uppercase tracking-widest font-headline"><span class="material-symbols-outlined text-primary-fixed-dim text-sm">front_hand</span> Smart escalation</span>
+<span class="flex items-center gap-2 text-on-surface-variant/60 text-xs uppercase tracking-widest font-headline"><span class="material-symbols-outlined text-primary-fixed-dim text-sm">psychology</span> Smart escalation</span>
 <span class="flex items-center gap-2 text-on-surface-variant/60 text-xs uppercase tracking-widest font-headline"><span class="material-symbols-outlined text-primary-fixed-dim text-sm">history</span> Full audit trail</span>
 </div>
 </div>
@@ -507,7 +507,7 @@ Each agent picks up a GitHub issue, checks out its own git worktree, writes test
 </div>
 </div>
 <div class="flex gap-4 items-start p-5 bg-surface-container border-l-2 border-primary/40 hover:border-primary transition-colors">
-<span class="material-symbols-outlined text-primary text-xl mt-0.5" data-icon="lock">lock</span>
+<span class="material-symbols-outlined text-primary text-xl mt-0.5" data-icon="target">target</span>
 <div>
 <h5 class="font-headline font-bold text-sm uppercase tracking-widest mb-1">Blast Radius Protection</h5>
 <p class="text-on-surface-variant text-sm">The investigate stage declares which files will be touched. Verify blocks the PR if the diff exceeds that scope. No surprise side-effects.</p>
@@ -815,10 +815,6 @@ A local status dashboard shows the issue queue, agent states, and recent events 
 <a class="text-[#bac9cc]/60 hover:text-[#00daf3] transition-opacity text-xs uppercase font-headline tracking-widest" href="mailto:info@asynkron.se?subject=Faktorial%20Pilot%20Inquiry&body=Hi%2C%0A%0AWe%27re%20interested%20in%20running%20a%20Faktorial%20pilot.%0A%0ACompany%3A%20%0ARepo%20size%20(approx)%3A%20%0ABacklog%20size%3A%20%0A%0AThanks">Run a Pilot</a>
 <a class="text-[#bac9cc]/60 hover:text-[#00daf3] transition-opacity text-xs uppercase font-headline tracking-widest" href="mailto:info@asynkron.se?subject=Faktorial%20Managed%20Service&body=Hi%2C%0A%0AWe%27re%20interested%20in%20Faktorial%20Managed%20by%20Asynkron.%0A%0ACompany%3A%20%0AWhat%20we%20need%20help%20with%3A%20%0A%0AThanks">Managed Service</a>
 <a class="text-[#bac9cc]/60 hover:text-[#00daf3] transition-opacity text-xs uppercase font-headline tracking-widest" href="mailto:info@asynkron.se?subject=Faktorial%20Inquiry">Contact</a>
-</div>
-<div class="flex gap-4">
-<span class="material-symbols-outlined text-[#bac9cc]/40 text-xl" data-icon="language">language</span>
-<span class="material-symbols-outlined text-[#bac9cc]/40 text-xl" data-icon="terminal">terminal</span>
 </div>
 </footer>
 <script>

@@ -3,7 +3,7 @@
 <html class="dark" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Faktorial — Autonomous Dev Agents That Ship to Main</title>
+<title>Faktorial - Autonomous Engineering Delivery</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -223,11 +223,17 @@
 <body class="selection:bg-primary-container selection:text-on-primary-container">
 <!-- TopAppBar -->
 <header class="fixed top-0 w-full z-50 flex justify-between items-center px-8 h-20 bg-[#131314]/40 backdrop-blur-xl border-b border-[#00daf3]/10">
+<div class="flex items-center gap-4">
 <div class="text-2xl font-black tracking-[0.25em] text-[#c3f5ff] uppercase">FAKTORIAL.AI</div>
+<div class="hidden lg:flex items-center gap-2 border-l border-primary/20 pl-4">
+<span class="text-[#bac9cc]/50 text-[9px] uppercase tracking-[0.25em] font-headline">by</span>
+<img src="https://asynkron.se/img/asynkron.png" alt="Asynkron" class="h-5 w-auto opacity-80"/>
+</div>
+</div>
 <nav class="hidden md:flex gap-10 items-center">
+<a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="#models">Models</a>
+<a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="#fit">Fit</a>
 <a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="#pipeline">Pipeline</a>
-<a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="#agents">Agents</a>
-<a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="#features">Features</a>
 <a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="#control">Control</a>
 </nav>
 <a href="mailto:info@asynkron.se?subject=Faktorial%20Pilot%20Inquiry&body=Hi%2C%0A%0AWe%27re%20interested%20in%20running%20a%20Faktorial%20pilot.%0A%0ACompany%3A%20%0ARepo%20size%20(approx)%3A%20%0ABacklog%20size%3A%20%0A%0AThanks" class="bg-primary-container text-on-primary-container px-6 py-2 font-bold uppercase tracking-widest text-xs hover:bg-primary-fixed-dim transition-all active:scale-95 duration-150 inline-block">
@@ -259,10 +265,10 @@
                     </h1>
 <div class="max-w-3xl mx-auto space-y-6">
 <p class="font-headline text-2xl md:text-4xl font-bold tracking-[0.2em] text-primary uppercase drop-shadow-lg">
-                            Development Force Multiplier
+                            Autonomous Engineering Delivery
                         </p>
 <p class="text-on-surface-variant font-body text-lg md:text-xl tracking-wide max-w-2xl mx-auto drop-shadow-md">
-                            Turn GitHub issues into tested, merge-ready PRs, inside your repo. Runs locally, follows your rules, escalates when stuck.
+                            Faktorial operates the delivery loop inside your repo: investigate the work, build the change, prove it with tests and CI, prepare the PR, and capture what it learned. Run it with your team, or have Asynkron operate it for you.
                         </p>
 <div class="pt-10 flex flex-wrap justify-center gap-6">
 <a href="mailto:info@asynkron.se?subject=Faktorial%20Pilot%20Inquiry&body=Hi%2C%0A%0AWe%27re%20interested%20in%20running%20a%20Faktorial%20pilot.%0A%0ACompany%3A%20%0ARepo%20size%20(approx)%3A%20%0ABacklog%20size%3A%20%0A%0AThanks" class="px-10 py-4 bg-primary-container text-on-primary-container font-bold uppercase tracking-[0.2em] text-sm group relative overflow-hidden shadow-[0_0_20px_rgba(0,218,243,0.3)] inline-block">
@@ -278,7 +284,7 @@
 <span class="flex items-center gap-2 text-on-surface-variant/60 text-xs uppercase tracking-widest font-headline"><span class="material-symbols-outlined text-primary-fixed-dim text-sm">computer</span> Runs locally</span>
 <span class="flex items-center gap-2 text-on-surface-variant/60 text-xs uppercase tracking-widest font-headline"><svg class="w-3.5 h-3.5 text-primary-fixed-dim" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg> GitHub-native</span>
 <span class="flex items-center gap-2 text-on-surface-variant/60 text-xs uppercase tracking-widest font-headline"><span class="material-symbols-outlined text-primary-fixed-dim text-sm">verified_user</span> Approval gates</span>
-<span class="flex items-center gap-2 text-on-surface-variant/60 text-xs uppercase tracking-widest font-headline"><span class="material-symbols-outlined text-primary-fixed-dim text-sm">psychology</span> Smart escalation</span>
+<span class="flex items-center gap-2 text-on-surface-variant/60 text-xs uppercase tracking-widest font-headline"><span class="material-symbols-outlined text-primary-fixed-dim text-sm">psychology</span> Escalates when uncertain</span>
 <span class="flex items-center gap-2 text-on-surface-variant/60 text-xs uppercase tracking-widest font-headline"><span class="material-symbols-outlined text-primary-fixed-dim text-sm">history</span> Full audit trail</span>
 </div>
 </div>
@@ -286,8 +292,60 @@
 </div>
 <div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background to-transparent z-10"></div>
 </section>
+<!-- Category Contrast -->
+<section class="py-16 px-8 bg-background border-y border-primary/10">
+<div class="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="border-l-2 border-primary/30 pl-6">
+        <h2 class="font-headline font-bold uppercase tracking-[0.15em] text-sm text-primary mb-3">Not A Copilot</h2>
+        <p class="text-on-surface-variant text-sm leading-relaxed">Autocomplete helps a developer type. Faktorial takes a GitHub issue through investigation, tests, implementation, CI, and PR review.</p>
+    </div>
+    <div class="border-l-2 border-primary/30 pl-6">
+        <h2 class="font-headline font-bold uppercase tracking-[0.15em] text-sm text-primary mb-3">Not Black-Box SaaS</h2>
+        <p class="text-on-surface-variant text-sm leading-relaxed">Runs locally, follows your repo rules, and leaves the evidence chain where your team already works.</p>
+    </div>
+    <div class="border-l-2 border-tertiary-fixed-dim/30 pl-6">
+        <h2 class="font-headline font-bold uppercase tracking-[0.15em] text-sm text-tertiary-fixed-dim mb-3">Not Traditional Outsourcing</h2>
+        <p class="text-on-surface-variant text-sm leading-relaxed">Whether your team runs it or Asynkron does, the operating model stays issue-driven, test-backed, and reviewable in GitHub.</p>
+    </div>
+</div>
+</section>
+<!-- Asynkron Credibility -->
+<section id="asynkron" class="py-24 px-8 bg-surface-container-lowest border-y border-primary/10">
+<div class="max-w-[1400px] mx-auto">
+<div class="flex items-center gap-4 mb-6">
+<span class="text-primary font-bold tracking-[0.5em] uppercase text-xs">Asynkron_Origin</span>
+<div class="h-px flex-grow bg-primary/10"></div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-12 items-center">
+    <div>
+        <img src="https://asynkron.se/img/asynkron.png" alt="Asynkron" class="h-12 w-auto max-w-[320px] object-contain mb-10"/>
+        <h2 class="font-headline text-3xl md:text-5xl font-black tracking-[0.1em] uppercase mb-6">
+            Created By The Team Behind <span class="text-primary-fixed-dim">Proto.Actor.</span>
+        </h2>
+        <p class="text-on-surface-variant text-lg leading-relaxed max-w-3xl">
+            Asynkron brings distributed-systems experience from high-scale, mission-critical platforms across finance, industrial automation, and real-time communications into Faktorial's delivery model.
+        </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="border-l-2 border-primary/30 bg-surface-container-low p-8">
+            <img src="https://asynkron.se/img/protoactor.png" alt="Proto.Actor" class="h-14 w-auto max-w-full object-contain object-left mb-8"/>
+            <h3 class="font-headline font-bold uppercase tracking-[0.15em] text-sm text-primary mb-4">Flagship Framework</h3>
+            <p class="text-on-surface-variant text-sm leading-relaxed">
+                Proto.Actor is Asynkron's actor framework for .NET and Go, built for resilient distributed systems with message-driven actors, virtual actors, and clustering.
+            </p>
+        </div>
+        <div class="border-l-2 border-tertiary-fixed-dim/30 bg-surface-container-low p-8">
+            <h3 class="font-headline font-bold uppercase tracking-[0.15em] text-sm text-tertiary-fixed-dim mb-4">Why It Matters</h3>
+            <p class="text-on-surface-variant text-sm leading-relaxed">
+                Faktorial comes from a team used to production runtimes, long-running workflows, observability, and controlled automation rather than one-off code generation demos.
+            </p>
+        </div>
+    </div>
+</div>
+</div>
+</section>
 <!-- ══════ SECTION 2: Two Ways To Ship ══════ -->
-<section class="py-28 px-8 bg-surface-container-lowest border-y border-primary/10 relative">
+<section id="models" class="py-28 px-8 bg-surface-container-lowest border-y border-primary/10 relative">
 <div class="max-w-[1400px] mx-auto">
 <div class="flex items-center gap-4 mb-6">
     <span class="text-primary font-bold tracking-[0.5em] uppercase text-xs">Service_Models</span>
@@ -297,47 +355,47 @@
     Two Ways To Ship.<br/><span class="text-primary-fixed-dim">One Standard Of Proof.</span>
 </h2>
 <p class="text-on-surface-variant text-lg max-w-2xl mb-16">
-    Run Faktorial alongside your team, or let Asynkron's engineers handle delivery end-to-end. Same pipeline, same quality gates, same traceability.
+    Use Faktorial inside your existing GitHub workflow with your engineers reviewing PRs, or use Faktorial Managed when you want Asynkron to run the delivery loop. Same pipeline, same quality gates, same traceability.
 </p>
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
     <!-- Self-service -->
-    <div class="border border-primary/20 p-10 relative group hover:border-primary/40 transition-all">
+    <div class="border border-primary/20 p-10 relative group hover:border-primary/40 transition-all flex flex-col">
         <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
         <div class="flex items-center gap-3 mb-6">
             <span class="material-symbols-outlined text-primary text-2xl" data-icon="handshake">handshake</span>
             <h3 class="font-headline font-black uppercase tracking-[0.15em] text-lg text-primary">Your Team + Faktorial</h3>
         </div>
         <p class="text-on-surface-variant text-sm leading-relaxed mb-8">
-            Your developers keep doing what they do best: product, architecture, business logic. Faktorial clears the backlog: bugs, refactors, migrations, test coverage, and the tickets nobody wants to pick up.
+            Best when you already have a development team and want more delivery capacity inside the workflow you use today. Your team owns priorities, architecture, reviews, and merge decisions. Faktorial handles scoped implementation work.
         </p>
-        <div class="space-y-4">
-            <div class="flex items-start gap-3"><span class="text-primary text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">Your devs focus on product</span></div>
-            <div class="flex items-start gap-3"><span class="text-primary text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">Faktorial clears the backlog</span></div>
-            <div class="flex items-start gap-3"><span class="text-primary text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">You review and merge</span></div>
-            <div class="flex items-start gap-3"><span class="text-primary text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">Nothing changes for your team</span></div>
+        <div class="space-y-4 mb-8">
+            <div class="flex items-start gap-3"><span class="text-primary text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">Your team owns priorities and merge decisions</span></div>
+            <div class="flex items-start gap-3"><span class="text-primary text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">Faktorial handles scoped implementation issues</span></div>
+            <div class="flex items-start gap-3"><span class="text-primary text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">PRs arrive with tests and evidence</span></div>
+            <div class="flex items-start gap-3"><span class="text-primary text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">Works inside your existing repo workflow</span></div>
         </div>
-        <div class="mt-8">
+        <div class="mt-auto">
             <a href="mailto:info@asynkron.se?subject=Faktorial%20Pilot%20Inquiry&body=Hi%2C%0A%0AWe%27re%20interested%20in%20running%20a%20Faktorial%20pilot.%0A%0ACompany%3A%20%0ARepo%20size%20(approx)%3A%20%0ABacklog%20size%3A%20%0A%0AThanks" class="px-8 py-3 bg-primary-container text-on-primary-container font-bold uppercase tracking-[0.15em] text-sm hover:shadow-[0_0_20px_rgba(0,218,243,0.3)] transition-all active:scale-[0.98] inline-block">Start with 10 issues</a>
         </div>
     </div>
     <!-- Managed -->
-    <div class="border border-tertiary-fixed-dim/20 p-10 relative group hover:border-tertiary-fixed-dim/40 transition-all">
+    <div class="border border-tertiary-fixed-dim/20 p-10 relative group hover:border-tertiary-fixed-dim/40 transition-all flex flex-col">
         <div class="absolute top-0 right-0 w-32 h-32 bg-tertiary-fixed-dim/5 blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
         <div class="flex items-center gap-3 mb-6">
             <span class="material-symbols-outlined text-tertiary-fixed-dim text-2xl" data-icon="engineering">engineering</span>
             <h3 class="font-headline font-black uppercase tracking-[0.15em] text-lg text-tertiary-fixed-dim">Faktorial Managed</h3>
         </div>
         <p class="text-on-surface-variant text-sm leading-relaxed mb-8">
-            Don't have the team? Don't want to manage the pipeline? Asynkron's senior engineers operate Faktorial on your behalf. You file issues, we ship production-ready code. Full service.
+            Best when you want Asynkron to run the operating loop. You file or approve issues; senior engineers supervise Faktorial, handle escalations, and deliver review-ready code.
         </p>
-        <div class="space-y-4">
-            <div class="flex items-start gap-3"><span class="text-tertiary-fixed-dim text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">Our engineers run the pipeline</span></div>
-            <div class="flex items-start gap-3"><span class="text-tertiary-fixed-dim text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">We deliver end-to-end</span></div>
-            <div class="flex items-start gap-3"><span class="text-tertiary-fixed-dim text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">We review, you approve</span></div>
-            <div class="flex items-start gap-3"><span class="text-tertiary-fixed-dim text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">Scale up or down on demand</span></div>
+        <div class="space-y-4 mb-8">
+            <div class="flex items-start gap-3"><span class="text-tertiary-fixed-dim text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">Asynkron runs the pipeline</span></div>
+            <div class="flex items-start gap-3"><span class="text-tertiary-fixed-dim text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">We supervise agents and handle escalations</span></div>
+            <div class="flex items-start gap-3"><span class="text-tertiary-fixed-dim text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">You approve scope and merge decisions</span></div>
+            <div class="flex items-start gap-3"><span class="text-tertiary-fixed-dim text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">Capacity scales by backlog, not headcount</span></div>
         </div>
-        <div class="mt-8">
+        <div class="mt-auto">
             <a href="mailto:info@asynkron.se?subject=Faktorial%20Managed%20Service&body=Hi%2C%0A%0AWe%27re%20interested%20in%20Faktorial%20Managed%20by%20Asynkron.%0A%0ACompany%3A%20%0AWhat%20we%20need%20help%20with%3A%20%0A%0AThanks" class="px-8 py-3 border border-tertiary-fixed-dim/30 text-tertiary-fixed-dim font-bold uppercase tracking-[0.15em] text-sm hover:bg-tertiary-fixed-dim/5 transition-all active:scale-[0.98] inline-block">Contact Us</a>
         </div>
     </div>
@@ -345,15 +403,15 @@
 
 <!-- Shared foundation -->
 <div class="border-t border-primary/10 pt-12">
-    <h4 class="font-headline font-bold uppercase tracking-[0.15em] text-sm text-center mb-10 text-on-surface-variant">Both models share the same foundation</h4>
+    <h4 class="font-headline font-bold uppercase tracking-[0.15em] text-sm text-center mb-10 text-on-surface-variant">Both models keep control in your repo</h4>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div class="flex gap-5">
             <div class="w-10 h-10 flex-shrink-0 border border-primary/20 flex items-center justify-center">
                 <span class="material-symbols-outlined text-primary text-lg">history_edu</span>
             </div>
             <div>
-                <h5 class="font-headline font-bold uppercase tracking-widest text-sm mb-2">Retroactive Compliance</h5>
-                <p class="text-on-surface-variant text-sm leading-relaxed">When new compliance requirements emerge (DORA, NIS2, AI Act), Faktorial evaluates your entire system against them, identifies gaps, and files issues to close them.</p>
+                <h5 class="font-headline font-bold uppercase tracking-widest text-sm mb-2">Compliance Backlog</h5>
+                <p class="text-on-surface-variant text-sm leading-relaxed">When new requirements emerge, Faktorial can evaluate the repo, identify gaps, and turn the remediation work into issues your team can review and track.</p>
             </div>
         </div>
         <div class="flex gap-5">
@@ -370,16 +428,45 @@
 </div>
 </section>
 
-<!-- ══════ SECTION 3: Best For ══════ -->
-<section class="py-20 px-8">
+<!-- ══════ SECTION 3: Fit Guide ══════ -->
+<section id="fit" class="py-24 px-8">
 <div class="max-w-[1400px] mx-auto">
 <div class="flex items-center gap-4 mb-6">
-    <span class="text-primary font-bold tracking-[0.5em] uppercase text-xs">Best_For</span>
+    <span class="text-primary font-bold tracking-[0.5em] uppercase text-xs">Fit_Guide</span>
     <div class="h-px flex-grow bg-primary/10"></div>
 </div>
-<h2 class="font-headline text-2xl md:text-3xl font-black tracking-[0.1em] uppercase mb-10">
+<div class="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-12 items-start mb-14">
+    <div>
+        <h2 class="font-headline text-3xl md:text-5xl font-black tracking-[0.1em] uppercase mb-6">
+            Built For Backlog-Heavy Teams.<br/><span class="text-primary-fixed-dim">With Clear Review Paths.</span>
+        </h2>
+        <p class="text-on-surface-variant text-lg leading-relaxed">
+            Faktorial works best when your team already has a GitHub workflow, a queue of engineering work, and enough context in issues or code for implementation to be reviewed against clear expectations.
+        </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="border-t-2 border-primary/30 bg-surface-container-low p-8">
+            <h3 class="font-headline font-bold uppercase tracking-[0.15em] text-sm text-primary mb-6">Good Fit</h3>
+            <div class="space-y-4">
+                <div class="flex gap-3"><span class="text-primary">&#10003;</span><span class="text-on-surface-variant text-sm">Structured GitHub issues with acceptance criteria</span></div>
+                <div class="flex gap-3"><span class="text-primary">&#10003;</span><span class="text-on-surface-variant text-sm">Teams that need more throughput without adding headcount</span></div>
+                <div class="flex gap-3"><span class="text-primary">&#10003;</span><span class="text-on-surface-variant text-sm">Regulated or audit-heavy repositories</span></div>
+                <div class="flex gap-3"><span class="text-primary">&#10003;</span><span class="text-on-surface-variant text-sm">Recurring bugs, refactors, migrations, and test work</span></div>
+            </div>
+        </div>
+        <div class="border-t-2 border-tertiary-fixed-dim/30 bg-surface-container-low p-8">
+            <h3 class="font-headline font-bold uppercase tracking-[0.15em] text-sm text-tertiary-fixed-dim mb-6">Keep Human First</h3>
+            <div class="space-y-4">
+                <div class="flex gap-3"><span class="text-tertiary-fixed-dim">&times;</span><span class="text-on-surface-variant text-sm">Ambiguous product discovery with no clear outcome yet</span></div>
+                <div class="flex gap-3"><span class="text-tertiary-fixed-dim">&times;</span><span class="text-on-surface-variant text-sm">Architecture calls without an accountable owner</span></div>
+                <div class="flex gap-3"><span class="text-tertiary-fixed-dim">&times;</span><span class="text-on-surface-variant text-sm">High-risk production changes without a review path</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+<h3 class="font-headline text-xl md:text-2xl font-black tracking-[0.1em] uppercase mb-8">
     Best for <span class="text-primary-fixed-dim">high-volume engineering work.</span>
-</h2>
+</h3>
 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
     <div class="p-5 bg-surface-container-low border-t-2 border-primary/20 text-center">
         <span class="material-symbols-outlined text-primary text-2xl mb-3 block">bug_report</span>
@@ -399,11 +486,44 @@
     </div>
     <div class="p-5 bg-surface-container-low border-t-2 border-tertiary-fixed-dim/20 text-center">
         <span class="material-symbols-outlined text-tertiary-fixed-dim text-2xl mb-3 block">gavel</span>
-        <div class="text-xs uppercase tracking-widest text-on-surface-variant font-headline">Compliance</div>
+        <div class="text-xs uppercase tracking-widest text-on-surface-variant font-headline">Compliance gaps</div>
     </div>
     <div class="p-5 bg-surface-container-low border-t-2 border-tertiary-fixed-dim/20 text-center">
         <span class="material-symbols-outlined text-tertiary-fixed-dim text-2xl mb-3 block">update</span>
         <div class="text-xs uppercase tracking-widest text-on-surface-variant font-headline">Legacy modernization</div>
+    </div>
+</div>
+</div>
+</section>
+<!-- Pilot Proof -->
+<section id="proof" class="py-24 px-8 bg-surface-container-lowest border-y border-primary/10 relative">
+<div class="max-w-[1400px] mx-auto">
+<div class="flex items-center gap-4 mb-6">
+<span class="text-tertiary-fixed-dim font-bold tracking-[0.5em] uppercase text-xs">Pilot_Proof</span>
+<div class="h-px flex-grow bg-tertiary-fixed-dim/20"></div>
+</div>
+<h2 class="font-headline text-3xl md:text-5xl font-black tracking-[0.1em] uppercase mb-6">
+    Start With 10 Real Issues.<br/><span class="text-tertiary-fixed-dim">Measure What Ships.</span>
+</h2>
+<p class="text-on-surface-variant text-lg max-w-3xl mb-14 leading-relaxed">
+    The first proof should come from your repo, not a staged demo. A pilot uses a bounded set of issues and reports the evidence engineering leaders actually care about: accepted PRs, CI results, review rework, cycle time, and escalation quality.
+</p>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="border border-tertiary-fixed-dim/20 p-6 bg-surface-container-low">
+        <h3 class="font-headline font-bold uppercase tracking-widest text-sm text-tertiary-fixed-dim mb-3">Acceptance</h3>
+        <p class="text-on-surface-variant text-sm leading-relaxed">How many PRs were accepted, merged, or returned for rework.</p>
+    </div>
+    <div class="border border-tertiary-fixed-dim/20 p-6 bg-surface-container-low">
+        <h3 class="font-headline font-bold uppercase tracking-widest text-sm text-tertiary-fixed-dim mb-3">Cycle Time</h3>
+        <p class="text-on-surface-variant text-sm leading-relaxed">How long issues took from pickup to review-ready pull request.</p>
+    </div>
+    <div class="border border-primary/20 p-6 bg-surface-container-low">
+        <h3 class="font-headline font-bold uppercase tracking-widest text-sm text-primary mb-3">Evidence</h3>
+        <p class="text-on-surface-variant text-sm leading-relaxed">Which tests, CI checks, and trace links backed each delivery.</p>
+    </div>
+    <div class="border border-primary/20 p-6 bg-surface-container-low">
+        <h3 class="font-headline font-bold uppercase tracking-widest text-sm text-primary mb-3">Escalations</h3>
+        <p class="text-on-surface-variant text-sm leading-relaxed">Where the system paused for human judgment instead of guessing.</p>
     </div>
 </div>
 </div>
@@ -417,10 +537,10 @@
 <div class="h-px flex-grow bg-tertiary-fixed-dim/20"></div>
 </div>
 <h2 class="font-headline text-3xl md:text-5xl font-black tracking-[0.1em] uppercase mb-6">
-Your Issues. <span class="text-primary-fixed-dim">Our Agents.</span><br/>Merged to Main.
+From Backlog To Verified Delivery.<br/><span class="text-primary-fixed-dim">Then To Main.</span>
 </h2>
 <p class="text-on-surface-variant text-lg max-w-2xl mb-20">
-Every issue flows through five stages. Each stage has quality gates, scope enforcement, and escalation rules. You stay in control. Agents ask for help when they need it.
+Each delivery run moves through five stages. Scope, tests, review, CI, and learning stay visible at each step. When judgment is needed, the work pauses and asks for a decision.
 </p>
 
 <!-- Pipeline Stages -->
@@ -434,7 +554,7 @@ Every issue flows through five stages. Each stage has quality gates, scope enfor
 <span class="material-symbols-outlined text-primary text-3xl" data-icon="search_insights">search_insights</span>
 </div>
 <h4 class="font-headline font-bold uppercase tracking-[0.2em] text-sm text-primary mb-2">Investigate</h4>
-<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Reads the issue, maps affected files, traces dependencies, declares blast radius, and writes an investigation plan with acceptance criteria</p>
+<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Reads the issue, maps affected files and dependencies, defines the intended scope, and writes acceptance criteria</p>
 </div>
 
 <!-- Stage 2: Build -->
@@ -443,7 +563,7 @@ Every issue flows through five stages. Each stage has quality gates, scope enfor
 <span class="material-symbols-outlined text-primary text-3xl" data-icon="code">code</span>
 </div>
 <h4 class="font-headline font-bold uppercase tracking-[0.2em] text-sm text-primary mb-2">Build</h4>
-<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Writes failing tests from the acceptance criteria (TDD), implements code to make them pass, runs full suite, opens a PR</p>
+<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Writes failing tests from acceptance criteria, implements code, runs the suite, and opens a pull request</p>
 </div>
 
 <!-- Stage 3: Verify -->
@@ -452,7 +572,7 @@ Every issue flows through five stages. Each stage has quality gates, scope enfor
 <span class="material-symbols-outlined text-primary text-3xl" data-icon="verified">verified</span>
 </div>
 <h4 class="font-headline font-bold uppercase tracking-[0.2em] text-sm text-primary mb-2">Verify</h4>
-<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Quality gate: checks CI status, AC-to-test traceability, blast radius compliance, test quality level, and security scan results</p>
+<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Checks CI status, acceptance-criteria coverage, approved scope, test quality, and security scan results</p>
 </div>
 
 <!-- Stage 4: Deploy -->
@@ -461,7 +581,7 @@ Every issue flows through five stages. Each stage has quality gates, scope enfor
 <span class="material-symbols-outlined text-primary text-3xl" data-icon="rocket_launch">rocket_launch</span>
 </div>
 <h4 class="font-headline font-bold uppercase tracking-[0.2em] text-sm text-primary mb-2">Deploy</h4>
-<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Validates merge readiness: CI green, approvals obtained, no conflicts. Merges to main and triggers your CI/CD</p>
+<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Confirms CI is green, approvals are in, and no conflicts remain. Then merges according to your repo rules</p>
 </div>
 
 <!-- Stage 5: Learn -->
@@ -470,7 +590,7 @@ Every issue flows through five stages. Each stage has quality gates, scope enfor
 <span class="material-symbols-outlined text-tertiary-fixed-dim text-3xl" data-icon="psychology">psychology</span>
 </div>
 <h4 class="font-headline font-bold uppercase tracking-[0.2em] text-sm text-tertiary-fixed-dim mb-2">Learn</h4>
-<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Writes Architecture Decision Records, creates preventive rules from failures, feeds lessons into future agent runs</p>
+<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Commits decision notes and preventive rules from the run so future issues follow what was learned</p>
 </div>
 </div>
 </div>
@@ -488,36 +608,36 @@ Every issue flows through five stages. Each stage has quality gates, scope enfor
 <!-- Left: Content -->
 <div>
 <div class="flex items-center gap-4 mb-6">
-<span class="text-primary font-bold tracking-[0.5em] uppercase text-xs">Agent_Architecture</span>
+<span class="text-primary font-bold tracking-[0.5em] uppercase text-xs">Delivery_Engine</span>
 <div class="h-px flex-grow bg-primary/10"></div>
 </div>
 <h2 class="font-headline text-3xl md:text-5xl font-black tracking-[0.1em] uppercase mb-8">
-Controlled Autonomy.<br/><span class="text-primary-fixed-dim">Real Oversight.</span>
+Controlled Execution.<br/><span class="text-primary-fixed-dim">Human Approval.</span>
 </h2>
 <p class="text-on-surface-variant text-lg mb-10 leading-relaxed">
-Each agent picks up a GitHub issue, checks out its own git worktree, writes tests, implements the code, and opens a PR. Multiple agents work in parallel. When an agent is stuck or uncertain, it escalates and waits for your decision.
+Each issue runs in an isolated workspace, writes tests, implements code, and opens a PR. Multiple issues can move in parallel. When the system is stuck or uncertain, it escalates and waits for your decision.
 </p>
 
 <div class="space-y-6">
 <div class="flex gap-4 items-start p-5 bg-surface-container border-l-2 border-primary/40 hover:border-primary transition-colors">
 <span class="material-symbols-outlined text-primary text-xl mt-0.5" data-icon="commit">commit</span>
 <div>
-<h5 class="font-headline font-bold text-sm uppercase tracking-widest mb-1">Git Worktree Isolation</h5>
-<p class="text-on-surface-variant text-sm">Each agent gets its own worktree. Parallel work, no file conflicts, no coordination overhead. Real commits, real PRs, clean git history.</p>
+<h5 class="font-headline font-bold text-sm uppercase tracking-widest mb-1">Issue Isolation</h5>
+<p class="text-on-surface-variant text-sm">Each issue gets its own git worktree. Parallel work, no file conflicts, no coordination overhead. Real commits, real PRs, clean git history.</p>
 </div>
 </div>
 <div class="flex gap-4 items-start p-5 bg-surface-container border-l-2 border-primary/40 hover:border-primary transition-colors">
 <span class="material-symbols-outlined text-primary text-xl mt-0.5" data-icon="target">target</span>
 <div>
-<h5 class="font-headline font-bold text-sm uppercase tracking-widest mb-1">Blast Radius Protection</h5>
-<p class="text-on-surface-variant text-sm">The investigate stage declares which files will be touched. Verify blocks the PR if the diff exceeds that scope. No surprise side-effects.</p>
+<h5 class="font-headline font-bold text-sm uppercase tracking-widest mb-1">Scoped Change Protection</h5>
+<p class="text-on-surface-variant text-sm">The investigate stage declares which files should change. Verify blocks the PR if the diff exceeds that scope. No surprise side effects.</p>
 </div>
 </div>
 <div class="flex gap-4 items-start p-5 bg-surface-container border-l-2 border-tertiary-fixed-dim/40 hover:border-tertiary-fixed-dim transition-colors">
 <span class="material-symbols-outlined text-tertiary-fixed-dim text-xl mt-0.5" data-icon="auto_fix_high">auto_fix_high</span>
 <div>
-<h5 class="font-headline font-bold text-sm uppercase tracking-widest mb-1">Self-Correcting</h5>
-<p class="text-on-surface-variant text-sm">When tests fail, agents diagnose the error and fix it. Runtime failures feed back into the agent loop — not into your inbox.</p>
+<h5 class="font-headline font-bold text-sm uppercase tracking-widest mb-1">Self-Correcting Runs</h5>
+<p class="text-on-surface-variant text-sm">When tests fail, the system diagnoses the error and fixes it. Runtime failures feed back into the delivery loop instead of becoming noise in your inbox.</p>
 </div>
 </div>
 </div>
@@ -536,7 +656,7 @@ Each agent picks up a GitHub issue, checks out its own git worktree, writes test
 <!-- Terminal body -->
 <div class="p-6 font-mono text-xs leading-relaxed space-y-1.5 text-on-surface-variant/70">
 <div><span class="text-primary-fixed-dim">14:31:02</span> <span class="text-outline">│</span> Picked up issue <span class="text-primary">#259</span> — add retry logic to webhook handler</div>
-<div><span class="text-primary-fixed-dim">14:31:04</span> <span class="text-outline">│</span> <span class="text-[#facc15]">investigate</span> → mapping blast radius... 6 files</div>
+<div><span class="text-primary-fixed-dim">14:31:04</span> <span class="text-outline">│</span> <span class="text-[#facc15]">investigate</span> → mapping scope... 6 files</div>
 <div><span class="text-primary-fixed-dim">14:31:12</span> <span class="text-outline">│</span> Posted investigation comment with 4 ACs</div>
 <div><span class="text-primary-fixed-dim">14:31:15</span> <span class="text-outline">│</span> <span class="text-[#4ade80]">build</span> → writing tests for AC-1..AC-4</div>
 <div><span class="text-primary-fixed-dim">14:32:41</span> <span class="text-outline">│</span> Wrote 3 files, +87 -12 lines</div>
@@ -546,7 +666,7 @@ Each agent picks up a GitHub issue, checks out its own git worktree, writes test
 <div><span class="text-primary-fixed-dim">14:33:01</span> <span class="text-outline">│</span> Opened PR <span class="text-primary">#287</span> — CI running</div>
 <div><span class="text-primary-fixed-dim">14:34:18</span> <span class="text-outline">│</span> CI <span class="text-[#4ade80]">passed</span> — all checks green</div>
 <div><span class="text-primary-fixed-dim">14:34:20</span> <span class="text-outline">│</span> AC traceability: <span class="text-[#4ade80]">4/4 mapped</span></div>
-<div><span class="text-primary-fixed-dim">14:34:21</span> <span class="text-outline">│</span> Blast radius: <span class="text-[#4ade80]">3/3 files in scope</span></div>
+<div><span class="text-primary-fixed-dim">14:34:21</span> <span class="text-outline">│</span> Scope: <span class="text-[#4ade80]">3/3 files in scope</span></div>
 <div><span class="text-primary-fixed-dim">14:34:22</span> <span class="text-outline">│</span> <span class="text-primary-fixed-dim">deploy</span> → merging to main</div>
 <div><span class="text-primary-fixed-dim">14:34:25</span> <span class="text-outline">│</span> Merged to <span class="text-primary">main</span></div>
 <div><span class="text-primary-fixed-dim">14:34:26</span> <span class="text-outline">│</span> <span class="text-tertiary-fixed-dim">learn</span> → writing ADR, no rule needed</div>
@@ -556,12 +676,11 @@ Each agent picks up a GitHub issue, checks out its own git worktree, writes test
 </div>
 <!-- Decorative label -->
 <div class="absolute -bottom-3 -right-3 px-4 py-1.5 bg-primary-container text-on-primary-container text-[9px] font-bold uppercase tracking-[0.3em]">
-Live Agent Output
+Live Delivery Log
 </div>
 </div>
 </div>
 
-</div>
 </div>
 </section>
 
@@ -573,10 +692,10 @@ Live Agent Output
 <div class="h-px flex-grow bg-primary/10"></div>
 </div>
 <h2 class="font-headline text-3xl md:text-5xl font-black tracking-[0.1em] uppercase mb-6">
-Command Center.<br/><span class="text-tertiary-fixed-dim">Total Visibility.</span>
+Local Command Center.<br/><span class="text-tertiary-fixed-dim">Full Audit Trail.</span>
 </h2>
 <p class="text-on-surface-variant text-lg max-w-2xl mb-16">
-A local status dashboard shows the issue queue, agent states, and recent events in real time. Zero external API calls, reads from local state. Plus an MCP server so your coding agent can query pipeline status directly.
+A local status dashboard shows the issue queue, worker states, and recent events in real time. It reads from local state in your environment, with no external status service required. Reviewers can see what is running, what is blocked, and what evidence backs each PR.
 </p>
 
 <!-- Queue kanban mockup -->
@@ -647,7 +766,7 @@ A local status dashboard shows the issue queue, agent states, and recent events 
             <div class="bg-surface-container-low border border-primary/5 p-2.5">
                 <div class="flex items-center gap-1.5 mb-1"><span class="text-primary text-[10px] font-mono font-bold">#206</span><span class="px-1 py-0.5 bg-primary-fixed-dim/15 text-primary-fixed-dim text-[7px] uppercase">CI</span></div>
                 <div class="text-[9px] text-on-surface-variant leading-snug">Standing order scheduler</div>
-                <div class="text-[8px] text-[#4ade80] mt-1">AC 3/3 &middot; blast radius ok</div>
+                <div class="text-[8px] text-[#4ade80] mt-1">AC 3/3 &middot; scope ok</div>
             </div>
             <div class="bg-surface-container-low border border-primary/5 p-2.5">
                 <div class="flex items-center gap-1.5 mb-1"><span class="text-primary text-[10px] font-mono font-bold">#208</span><span class="px-1 py-0.5 bg-primary-fixed-dim/15 text-primary-fixed-dim text-[7px] uppercase">CI</span></div>
@@ -699,23 +818,23 @@ A local status dashboard shows the issue queue, agent states, and recent events 
 <section class="py-32 px-8 relative">
 <div class="max-w-[1400px] mx-auto">
 <div class="flex items-center gap-4 mb-6">
-    <span class="text-tertiary-fixed-dim font-bold tracking-[0.5em] uppercase text-xs">Self_Learning</span>
+    <span class="text-tertiary-fixed-dim font-bold tracking-[0.5em] uppercase text-xs">Continuous_Learning</span>
     <div class="h-px flex-grow bg-tertiary-fixed-dim/10"></div>
 </div>
 <h2 class="font-headline text-3xl md:text-5xl font-black tracking-[0.1em] uppercase mb-6">
     Every delivery makes <br/>the next one <span class="text-tertiary-fixed-dim">better.</span>
 </h2>
 <p class="text-on-surface-variant text-lg max-w-2xl mb-16">
-    The learn stage runs after every merge. It captures what happened, why it mattered, and what to do differently next time, as code-committed ADRs and preventive rules that future agents automatically follow.
+    The learn stage runs after every merge. It captures what happened, why it mattered, and what to do differently next time as repo-committed decision records and preventive rules.
 </p>
 
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
 <!-- Left: How spec-test-sync works -->
 <div>
-    <h4 class="font-headline font-bold uppercase tracking-widest text-sm mb-6 text-primary">Spec-Test Sync Check</h4>
+    <h4 class="font-headline font-bold uppercase tracking-widest text-sm mb-6 text-primary">Test Evidence Check</h4>
     <p class="text-on-surface-variant text-sm leading-relaxed mb-6">
-        The sentinel continuously audits closed issues. If an issue has acceptance criteria but no matching test evidence (PR, merge commit, or child issues delivering the ACs), it raises a follow-up alert, catching gaps that slipped through.
+        A background check audits closed issues. If an issue has acceptance criteria but no matching test evidence, it raises a follow-up alert so gaps do not quietly disappear.
     </p>
 
     <!-- Spec-test-sync mockup -->
@@ -740,9 +859,9 @@ A local status dashboard shows the issue queue, agent states, and recent events 
 
 <!-- Right: ADR + Rule mockups -->
 <div>
-    <h4 class="font-headline font-bold uppercase tracking-widest text-sm mb-6 text-tertiary-fixed-dim">ADRs &amp; Preventive Rules</h4>
+    <h4 class="font-headline font-bold uppercase tracking-widest text-sm mb-6 text-tertiary-fixed-dim">Decision Records &amp; Preventive Rules</h4>
     <p class="text-on-surface-variant text-sm leading-relaxed mb-6">
-        When the learn stage detects retries, friction, or non-trivial decisions, it writes an Architecture Decision Record and a preventive rule. Both are committed to the repo and applied to all future agent runs.
+        When the learn stage detects retries, friction, or non-trivial decisions, it writes an Architecture Decision Record and a preventive rule. Both are committed to the repo and applied to future runs.
     </p>
 
     <!-- ADR mockup -->
@@ -789,17 +908,17 @@ A local status dashboard shows the issue queue, agent states, and recent events 
 </div>
 <div class="relative z-10 max-w-3xl mx-auto">
 <h2 class="font-headline font-black text-4xl md:text-6xl uppercase tracking-[0.1em] mb-6">
-    You Direct.<br/><span class="text-primary-fixed-dim">Faktorial Delivers.</span>
+    Start With Real Issues.<br/><span class="text-primary-fixed-dim">Measure Real Output.</span>
 </h2>
 <p class="text-on-surface-variant text-lg mb-12 max-w-xl mx-auto">
-    Whether your team runs the pipeline or ours does, every issue ships with tests, traceability, and a full audit trail.
+    Bring a bounded set of backlog items. Whether your team runs the pipeline or ours does, every accepted issue ships with tests, traceability, and a reviewable PR.
 </p>
 <div class="inline-flex flex-col sm:flex-row gap-4 items-center">
 <a href="mailto:info@asynkron.se?subject=Faktorial%20Pilot%20Inquiry&body=Hi%2C%0A%0AWe%27re%20interested%20in%20running%20a%20Faktorial%20pilot.%0A%0ACompany%3A%20%0ARepo%20size%20(approx)%3A%20%0ABacklog%20size%3A%20%0A%0AThanks" class="px-14 py-5 bg-primary-container text-on-primary-container font-black uppercase tracking-[0.2em] text-sm hover:shadow-[0_0_30px_rgba(0,218,243,0.3)] transition-all active:scale-[0.98] inline-block">
     Run a Pilot
 </a>
 <a href="mailto:info@asynkron.se?subject=Faktorial%20Managed%20Service&body=Hi%2C%0A%0AWe%27re%20interested%20in%20Faktorial%20Managed%20by%20Asynkron.%0A%0ACompany%3A%20%0AWhat%20we%20need%20help%20with%3A%20%0A%0AThanks" class="px-14 py-5 border border-tertiary-fixed-dim/20 text-tertiary-fixed-dim font-bold uppercase tracking-[0.2em] text-sm hover:bg-tertiary-fixed-dim/5 transition-colors inline-block">
-    Managed Service
+    Talk Managed Service
 </a>
 </div>
 </div>

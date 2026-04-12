@@ -925,15 +925,59 @@ A local status dashboard shows the issue queue, worker states, and recent events
 </section>
 </main>
 <!-- Footer -->
-<footer class="w-full py-12 px-8 flex flex-col md:flex-row justify-between items-center gap-6 bg-[#0e0e0f] border-t border-[#00daf3]/10">
-<div class="flex flex-col items-center md:items-start gap-2">
-<div class="text-lg font-bold text-[#c3f5ff] tracking-widest uppercase">FAKTORIAL.AI</div>
-<div class="text-[#bac9cc]/60 font-mono text-[10px] tracking-widest uppercase">&copy; Asynkron AB</div>
+<footer class="w-full py-16 px-8 bg-[#0e0e0f] border-t border-[#00daf3]/10">
+<div class="max-w-[1400px] mx-auto">
+<div class="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr_1fr] gap-12">
+<div>
+<div class="flex flex-wrap items-center gap-4 mb-6">
+<div class="text-xl font-black text-[#c3f5ff] tracking-[0.25em] uppercase">FAKTORIAL.AI</div>
+<div class="h-5 w-px bg-primary/20 hidden sm:block"></div>
+<img src="https://asynkron.se/img/asynkron.png" alt="Asynkron" class="h-6 w-auto opacity-80"/>
 </div>
-<div class="flex gap-8">
-<a class="text-[#bac9cc]/60 hover:text-[#00daf3] transition-opacity text-xs uppercase font-headline tracking-widest" href="mailto:info@asynkron.se?subject=Faktorial%20Pilot%20Inquiry&body=Hi%2C%0A%0AWe%27re%20interested%20in%20running%20a%20Faktorial%20pilot.%0A%0ACompany%3A%20%0ARepo%20size%20(approx)%3A%20%0ABacklog%20size%3A%20%0A%0AThanks">Run a Pilot</a>
-<a class="text-[#bac9cc]/60 hover:text-[#00daf3] transition-opacity text-xs uppercase font-headline tracking-widest" href="mailto:info@asynkron.se?subject=Faktorial%20Managed%20Service&body=Hi%2C%0A%0AWe%27re%20interested%20in%20Faktorial%20Managed%20by%20Asynkron.%0A%0ACompany%3A%20%0AWhat%20we%20need%20help%20with%3A%20%0A%0AThanks">Managed Service</a>
-<a class="text-[#bac9cc]/60 hover:text-[#00daf3] transition-opacity text-xs uppercase font-headline tracking-widest" href="mailto:info@asynkron.se?subject=Faktorial%20Inquiry">Contact</a>
+<p class="text-[#bac9cc]/70 text-sm leading-relaxed max-w-xl">
+Autonomous engineering delivery by Asynkron AB, the distributed-systems team behind Proto.Actor.
+</p>
+<div class="mt-8 flex flex-wrap gap-4">
+<a class="px-5 py-3 bg-primary-container text-on-primary-container font-bold uppercase tracking-[0.15em] text-xs hover:bg-primary-fixed-dim transition-colors inline-block" href="mailto:info@asynkron.se?subject=Faktorial%20Pilot%20Inquiry&body=Hi%2C%0A%0AWe%27re%20interested%20in%20running%20a%20Faktorial%20pilot.%0A%0ACompany%3A%20%0ARepo%20size%20(approx)%3A%20%0ABacklog%20size%3A%20%0A%0AThanks">Run a Pilot</a>
+<a class="px-5 py-3 border border-tertiary-fixed-dim/20 text-tertiary-fixed-dim font-bold uppercase tracking-[0.15em] text-xs hover:bg-tertiary-fixed-dim/5 transition-colors inline-block" href="mailto:info@asynkron.se?subject=Faktorial%20Managed%20Service&body=Hi%2C%0A%0AWe%27re%20interested%20in%20Faktorial%20Managed%20by%20Asynkron.%0A%0ACompany%3A%20%0AWhat%20we%20need%20help%20with%3A%20%0A%0AThanks">Managed Service</a>
+</div>
+</div>
+<div>
+<h2 class="font-headline font-bold uppercase tracking-[0.2em] text-sm text-primary mb-6">Company</h2>
+<address class="not-italic text-[#bac9cc]/70 text-sm leading-relaxed space-y-3">
+<div class="grid grid-cols-[1.5rem_1fr] gap-3">
+<span class="font-mono text-primary-fixed-dim/80">a:</span>
+<span>Asynkron AB<br/>Sankt Eriksvägen 9B<br/>141 32 Huddinge</span>
+</div>
+<div class="grid grid-cols-[1.5rem_1fr] gap-3">
+<span class="font-mono text-primary-fixed-dim/80">e:</span>
+<a class="hover:text-primary-fixed-dim transition-colors" href="mailto:info@asynkron.se">info@asynkron.se</a>
+</div>
+<div class="grid grid-cols-[1.5rem_1fr] gap-3">
+<span class="font-mono text-primary-fixed-dim/80">w:</span>
+<a class="hover:text-primary-fixed-dim transition-colors" href="https://asynkron.se">asynkron.se</a>
+</div>
+<div class="grid grid-cols-[1.5rem_1fr] gap-3">
+<span class="font-mono text-primary-fixed-dim/80">m:</span>
+<a class="hover:text-primary-fixed-dim transition-colors" href="tel:+46763150349">+46-763150349</a>
+</div>
+</address>
+</div>
+<div>
+<h2 class="font-headline font-bold uppercase tracking-[0.2em] text-sm text-tertiary-fixed-dim mb-6">Links</h2>
+<nav class="grid grid-cols-1 gap-3">
+<a class="text-[#bac9cc]/70 hover:text-primary-fixed-dim transition-colors text-sm uppercase font-headline tracking-widest" href="https://asynkron.se/docs/intro/">Asynkron Docs</a>
+<a class="text-[#bac9cc]/70 hover:text-primary-fixed-dim transition-colors text-sm uppercase font-headline tracking-widest" href="https://asynkron.se/blog">Blog</a>
+<a class="text-[#bac9cc]/70 hover:text-primary-fixed-dim transition-colors text-sm uppercase font-headline tracking-widest" href="https://github.com/Asynkron">GitHub Organization</a>
+<a class="text-[#bac9cc]/70 hover:text-primary-fixed-dim transition-colors text-sm uppercase font-headline tracking-widest" href="https://proto.actor">Proto.Actor Project</a>
+<a class="text-[#bac9cc]/70 hover:text-tertiary-fixed-dim transition-colors text-sm uppercase font-headline tracking-widest" href="mailto:info@asynkron.se?subject=Faktorial%20Inquiry">Contact</a>
+</nav>
+</div>
+</div>
+<div class="mt-14 pt-6 border-t border-primary/10 flex flex-col md:flex-row justify-between gap-4 text-[#bac9cc]/40 font-mono text-[10px] tracking-widest uppercase">
+<span>&copy; Asynkron AB</span>
+<span>Faktorial.ai</span>
+</div>
 </div>
 </footer>
 <script>

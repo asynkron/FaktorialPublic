@@ -219,6 +219,20 @@
             pointer-events: none;
             z-index: 0;
         }
+
+        .hero-logo {
+            width: 100%;
+            max-width: 780px;
+            height: auto;
+        }
+
+        @media (min-width: 768px) {
+            .hero-logo {
+                max-width: 1220px;
+                transform: translateX(-5%);
+                margin-bottom: -11%;
+            }
+        }
     </style>
 </head>
 <body class="selection:bg-primary-container selection:text-on-primary-container">
@@ -261,9 +275,9 @@
 <div class="absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background z-[2]"></div>
 <div class="relative z-10 text-center px-4">
 <div class="py-8 rounded-3xl">
-<h1 class="display-large text-[12vw] md:text-[8vw] font-black tracking-[0.25em] text-primary-fixed-dim uppercase leading-none mb-8 filter text-glow relative z-10">
-                        FAKTORIAL.AI
-                    </h1>
+<h1 class="mb-8 relative z-10">
+<img src="faktorialai.png" alt="Faktorial.AI" class="hero-logo mx-auto drop-shadow-[0_0_28px_rgba(0,218,243,0.35)]" decoding="async" fetchpriority="high"/>
+</h1>
 <div class="max-w-3xl mx-auto space-y-6">
 <p class="font-headline text-2xl md:text-4xl font-bold tracking-[0.2em] text-primary uppercase drop-shadow-lg">
                             Autonomous Engineering Delivery

@@ -8,6 +8,7 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="header.css" rel="stylesheet"/>
 <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -248,25 +249,55 @@
 </head>
 <body class="selection:bg-primary-container selection:text-on-primary-container">
 <!-- TopAppBar -->
-<header class="fixed top-0 w-full z-50 flex justify-between items-center px-8 h-20 bg-[#131314]/40 backdrop-blur-xl border-b border-[#00daf3]/10">
-<div class="flex items-center gap-4">
-<div class="text-2xl font-black tracking-[0.25em] text-[#c3f5ff] uppercase">FAKTORIAL.AI</div>
-<div class="hidden lg:flex items-center gap-2 border-l border-primary/20 pl-4">
-<span class="text-[#bac9cc]/50 text-[9px] uppercase tracking-[0.25em] font-headline">by</span>
-<img src="https://asynkron.se/img/asynkron.png" alt="Asynkron" class="h-5 w-auto opacity-80"/>
+<header class="site-header">
+<a class="site-header__brand" href="index.html" aria-label="Faktorial home">
+<img class="site-header__brand-mark" src="faktorialai-plain.png" alt="Faktorial.AI"/>
+<span class="site-header__brand-copy">
+<span class="site-header__brand-title">Faktorial.AI</span>
+<span class="site-header__brand-subtitle">Asynkron autonomous engineering</span>
+</span>
+</a>
+<nav class="site-header__primary" aria-label="Primary">
+<a class="site-header__link" href="index.html" aria-current="page">Overview</a>
+<a class="site-header__link" href="pitch.html">Pitch</a>
+<a class="site-header__link" href="bokabra.html">Case</a>
+<div class="site-header__menu" data-nav-menu>
+<button class="site-header__link site-header__menu-trigger" type="button" data-nav-trigger aria-expanded="false" aria-controls="site-sections-index">
+Sections
+<span class="site-header__caret" aria-hidden="true"></span>
+</button>
+<div class="site-header__dropdown" id="site-sections-index" data-nav-panel hidden>
+<a class="site-header__dropdown-link" href="#models">Models</a>
+<a class="site-header__dropdown-link" href="#fit">Fit</a>
+<a class="site-header__dropdown-link" href="#pipeline">Pipeline</a>
+<a class="site-header__dropdown-link" href="#control">Control</a>
 </div>
 </div>
-<nav class="hidden md:flex gap-10 items-center">
-<a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="#models">Models</a>
-<a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="#fit">Fit</a>
-<a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="#pipeline">Pipeline</a>
-<a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="#control">Control</a>
-<a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="pitch.html">Pitch</a>
-<a class="text-[#bac9cc] hover:text-[#c3f5ff] transition-colors text-sm uppercase tracking-[0.2em] font-headline" href="bokabra.html">Case</a>
 </nav>
-<a href="mailto:info@asynkron.se?subject=Faktorial%20Pilot%20Inquiry&body=Hi%2C%0A%0AWe%27re%20interested%20in%20running%20a%20Faktorial%20pilot.%0A%0ACompany%3A%20%0ARepo%20size%20(approx)%3A%20%0ABacklog%20size%3A%20%0A%0AThanks" class="bg-primary-container text-on-primary-container px-6 py-2 font-bold uppercase tracking-widest text-xs hover:bg-primary-fixed-dim transition-all active:scale-95 duration-150 inline-block">
-            Run a Pilot
-        </a>
+<div class="site-header__actions">
+<a class="site-header__cta" href="mailto:info@asynkron.se?subject=Faktorial%20Pilot%20Inquiry&body=Hi%2C%0A%0AWe%27re%20interested%20in%20running%20a%20Faktorial%20pilot.%0A%0ACompany%3A%20%0ARepo%20size%20(approx)%3A%20%0ABacklog%20size%3A%20%0A%0AThanks">Run a Pilot</a>
+<div class="site-header__menu site-header__menu--mobile" data-nav-menu>
+<button class="site-header__icon-button" type="button" data-nav-trigger aria-expanded="false" aria-controls="mobile-nav-index">
+Menu
+<span class="site-header__icon-stack" aria-hidden="true"><span></span><span></span><span></span></span>
+</button>
+<div class="site-header__mobile-panel" id="mobile-nav-index" data-nav-panel hidden>
+<div class="site-header__mobile-group">
+<span class="site-header__mobile-label">Pages</span>
+<a class="site-header__mobile-link" href="index.html" aria-current="page">Overview</a>
+<a class="site-header__mobile-link" href="pitch.html">Pitch</a>
+<a class="site-header__mobile-link" href="bokabra.html">Case</a>
+</div>
+<div class="site-header__mobile-group">
+<span class="site-header__mobile-label">Sections</span>
+<a class="site-header__mobile-link" href="#models">Models</a>
+<a class="site-header__mobile-link" href="#fit">Fit</a>
+<a class="site-header__mobile-link" href="#pipeline">Pipeline</a>
+<a class="site-header__mobile-link" href="#control">Control</a>
+</div>
+</div>
+</div>
+</div>
 </header>
 <main class="relative pt-20">
 <!-- Hero Section with 3D Tron Tunnel -->
@@ -1009,6 +1040,7 @@ Autonomous engineering delivery by Asynkron AB, the distributed-systems team beh
 </div>
 </div>
 </footer>
+<script src="header.js"></script>
 <script>
     // Parallax: globe + glow scroll slower than content
     (function() {

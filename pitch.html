@@ -9,6 +9,7 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+  <link href="header.css" rel="stylesheet" />
   <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -1556,26 +1557,56 @@
 </head>
 <body>
   <div class="shell" id="top">
-    <header class="topbar">
-      <a class="brand" href="#top" aria-label="Faktorial">
-        <img src="faktorialai-plain.png" alt="Faktorial.AI" />
+    <header class="site-header">
+      <a class="site-header__brand" href="index.html" aria-label="Faktorial home">
+        <img class="site-header__brand-mark" src="faktorialai-plain.png" alt="Faktorial.AI" />
+        <span class="site-header__brand-copy">
+          <span class="site-header__brand-title">Faktorial.AI</span>
+          <span class="site-header__brand-subtitle">Asynkron autonomous engineering</span>
+        </span>
       </a>
-      <nav class="nav" aria-label="Pitch sections">
-        <a href="index.html">Main site</a>
-        <a href="bokabra.html">BokaBra case</a>
-        <a href="#what">What it does</a>
-        <a href="#flow">Flow</a>
-        <a href="#control">Scope</a>
-        <a href="#learn">Learning</a>
+      <nav class="site-header__primary" aria-label="Primary">
+        <a class="site-header__link" href="index.html">Overview</a>
+        <a class="site-header__link" href="pitch.html" aria-current="page">Pitch</a>
+        <a class="site-header__link" href="bokabra.html">Case</a>
+        <div class="site-header__menu" data-nav-menu>
+          <button class="site-header__link site-header__menu-trigger" type="button" data-nav-trigger aria-expanded="false" aria-controls="site-sections-pitch">
+            Sections
+            <span class="site-header__caret" aria-hidden="true"></span>
+          </button>
+          <div class="site-header__dropdown" id="site-sections-pitch" data-nav-panel hidden>
+            <a class="site-header__dropdown-link" href="#what">What it does</a>
+            <a class="site-header__dropdown-link" href="#flow">Flow</a>
+            <a class="site-header__dropdown-link" href="#control">Scope</a>
+            <a class="site-header__dropdown-link" href="#learn">Learning</a>
+            <a class="site-header__dropdown-link" href="#proof">Proof</a>
+          </div>
+        </div>
       </nav>
-      <div class="top-actions">
-        <a class="btn ghost" href="#proof">Proof</a>
-        <a class="btn primary" href="mailto:info@asynkron.se?subject=Faktorial%20Pilot%20Inquiry&body=Hi%2C%0A%0AWe%27re%20interested%20in%20running%20a%20Faktorial%20pilot.%0A%0ACompany%3A%20%0ARepo%20size%20(approx)%3A%20%0ABacklog%20size%3A%20%0A%0AThanks">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-          Run pilot
-        </a>
+      <div class="site-header__actions">
+        <a class="site-header__cta" href="mailto:info@asynkron.se?subject=Faktorial%20Pilot%20Inquiry&body=Hi%2C%0A%0AWe%27re%20interested%20in%20running%20a%20Faktorial%20pilot.%0A%0ACompany%3A%20%0ARepo%20size%20(approx)%3A%20%0ABacklog%20size%3A%20%0A%0AThanks">Run a Pilot</a>
+        <div class="site-header__menu site-header__menu--mobile" data-nav-menu>
+          <button class="site-header__icon-button" type="button" data-nav-trigger aria-expanded="false" aria-controls="mobile-nav-pitch">
+            Menu
+            <span class="site-header__icon-stack" aria-hidden="true"><span></span><span></span><span></span></span>
+          </button>
+          <div class="site-header__mobile-panel" id="mobile-nav-pitch" data-nav-panel hidden>
+            <div class="site-header__mobile-group">
+              <span class="site-header__mobile-label">Pages</span>
+              <a class="site-header__mobile-link" href="index.html">Overview</a>
+              <a class="site-header__mobile-link" href="pitch.html" aria-current="page">Pitch</a>
+              <a class="site-header__mobile-link" href="bokabra.html">Case</a>
+            </div>
+            <div class="site-header__mobile-group">
+              <span class="site-header__mobile-label">Sections</span>
+              <a class="site-header__mobile-link" href="#what">What it does</a>
+              <a class="site-header__mobile-link" href="#flow">Flow</a>
+              <a class="site-header__mobile-link" href="#control">Scope</a>
+              <a class="site-header__mobile-link" href="#learn">Learning</a>
+              <a class="site-header__mobile-link" href="#proof">Proof</a>
+            </div>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -2145,5 +2176,6 @@ Autonomous engineering delivery by Asynkron AB, the distributed-systems team beh
 </div>
 </footer>
   </div>
+  <script src="header.js"></script>
 </body>
 </html>

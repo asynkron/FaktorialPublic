@@ -664,7 +664,7 @@
     }
 
     .architecture-section .flow-layout {
-      grid-template-columns: minmax(300px, .68fr) minmax(0, 1.32fr);
+      align-items: stretch;
     }
 
     .flow-copy h2 {
@@ -719,6 +719,7 @@
 
     .architecture-diagram {
       position: relative;
+      min-height: 100%;
       border: 1px solid var(--line);
       border-radius: var(--radius);
       background: #0a0a0b;
@@ -744,7 +745,7 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      z-index: 1;
+      z-index: 3;
       pointer-events: none;
     }
 
@@ -757,16 +758,21 @@
       position: relative;
       z-index: 2;
       display: grid;
-      grid-template-columns: minmax(145px, .72fr) minmax(260px, 1.18fr) minmax(145px, .72fr);
-      gap: 18px;
-      min-height: 560px;
+      gap: 22px;
+      min-height: 100%;
       padding: 24px;
       align-items: center;
     }
 
-    .diagram-column {
+    .diagram-layer {
       display: grid;
-      gap: 16px;
+      gap: 10px;
+    }
+
+    .diagram-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
     }
 
     .diagram-label {
@@ -779,8 +785,8 @@
     }
 
     .diagram-node {
-      min-height: 86px;
-      padding: 15px;
+      min-height: 92px;
+      padding: 14px;
       border: 1px solid var(--line-soft);
       border-radius: var(--radius);
       background: rgba(19, 19, 20, .88);
@@ -803,7 +809,7 @@
       display: block;
       color: var(--ink);
       font-family: var(--font-display);
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 900;
       line-height: 1.05;
       text-transform: uppercase;
@@ -820,9 +826,11 @@
     .faktorial-core {
       position: relative;
       display: grid;
-      gap: 18px;
-      min-height: 430px;
-      padding: 28px;
+      gap: 16px;
+      width: min(760px, 100%);
+      min-height: 242px;
+      justify-self: center;
+      padding: 22px;
       border: 1px solid rgba(0, 218, 243, .42);
       border-radius: var(--radius);
       background:
@@ -852,7 +860,7 @@
       margin-top: 8px;
       color: var(--ink);
       font-family: var(--font-display);
-      font-size: clamp(28px, 2.3vw, 38px);
+      font-size: clamp(27px, 2.1vw, 36px);
       font-weight: 900;
       letter-spacing: .06em;
       line-height: .92;
@@ -862,13 +870,13 @@
 
     .core-chips {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 10px;
     }
 
     .core-chip {
-      min-height: 76px;
-      padding: 12px;
+      min-height: 72px;
+      padding: 11px;
       border: 1px solid rgba(0, 218, 243, .16);
       background: rgba(10, 10, 11, .72);
     }
@@ -876,7 +884,7 @@
     .core-chip strong {
       display: block;
       color: var(--ink);
-      font-size: 15px;
+      font-size: 14px;
       line-height: 1.15;
     }
 
@@ -1403,6 +1411,10 @@
         padding: 22px;
       }
 
+      .core-chips {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
       .diagram-node strong {
         font-size: 17px;
       }
@@ -1501,13 +1513,14 @@
         padding: 16px;
       }
 
+      .diagram-row,
+      .core-chips {
+        grid-template-columns: 1fr;
+      }
+
       .faktorial-core {
         min-height: auto;
         padding: 20px;
-      }
-
-      .core-chips {
-        grid-template-columns: 1fr;
       }
 
       .queue {
@@ -1729,28 +1742,30 @@
                 </marker>
               </defs>
               <g fill="none" stroke="#00daf3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#architecture-arrow)" opacity=".78">
-                <path d="M220 178 C330 178 340 250 454 312" />
-                <path d="M220 320 C328 320 352 320 454 320" />
-                <path d="M220 462 C330 462 340 390 454 328" />
-                <path d="M546 312 C662 250 672 178 780 178" />
-                <path d="M546 320 C650 320 672 320 780 320" />
-                <path d="M546 328 C662 390 672 462 780 462" />
+                <path d="M185 168 V206" />
+                <path d="M500 168 V206" />
+                <path d="M815 168 V206" />
+                <path d="M185 444 V500" />
+                <path d="M500 444 V500" />
+                <path d="M815 444 V500" />
               </g>
             </svg>
             <div class="architecture-grid">
-              <div class="diagram-column" aria-label="GitHub layer">
+              <div class="diagram-layer" aria-label="GitHub layer">
                 <div class="diagram-label">Layer 01 / GitHub</div>
-                <div class="diagram-node github">
-                  <span>source</span>
-                  <strong>Issues + Comments</strong>
-                </div>
-                <div class="diagram-node github">
-                  <span>delivery surface</span>
-                  <strong>Pull Requests</strong>
-                </div>
-                <div class="diagram-node github">
-                  <span>runtime signal</span>
-                  <strong>Workflows</strong>
+                <div class="diagram-row">
+                  <div class="diagram-node github">
+                    <span>source</span>
+                    <strong>Issues + Comments</strong>
+                  </div>
+                  <div class="diagram-node github">
+                    <span>delivery surface</span>
+                    <strong>Pull Requests</strong>
+                  </div>
+                  <div class="diagram-node github">
+                    <span>runtime signal</span>
+                    <strong>Workflows</strong>
+                  </div>
                 </div>
               </div>
 
@@ -1787,19 +1802,21 @@
                 </div>
               </div>
 
-              <div class="diagram-column" aria-label="Agent runtime layer">
+              <div class="diagram-layer" aria-label="Agent runtime layer">
                 <div class="diagram-label">Layer 03 / Agents</div>
-                <div class="diagram-node agent">
-                  <span>runtime</span>
-                  <strong>Claude Code</strong>
-                </div>
-                <div class="diagram-node agent">
-                  <span>runtime</span>
-                  <strong>Codex</strong>
-                </div>
-                <div class="diagram-node agent">
-                  <span>runtime</span>
-                  <strong>CoPilot</strong>
+                <div class="diagram-row">
+                  <div class="diagram-node agent">
+                    <span>runtime</span>
+                    <strong>Claude Code</strong>
+                  </div>
+                  <div class="diagram-node agent">
+                    <span>runtime</span>
+                    <strong>Codex</strong>
+                  </div>
+                  <div class="diagram-node agent">
+                    <span>runtime</span>
+                    <strong>CoPilot</strong>
+                  </div>
                 </div>
               </div>
             </div>
@@ -2078,7 +2095,7 @@ If estimated scope is >1000 statements or touches >3 modules:
 <div class="flex flex-wrap items-center gap-4 mb-6">
 <div class="text-xl font-black text-[#c3f5ff] tracking-[0.25em] uppercase">FAKTORIAL.AI</div>
 <div class="h-5 w-px bg-primary/20 hidden sm:block"></div>
-<img src="https://asynkron.se/img/asynkron.png" alt="Asynkron" class="h-6 w-auto opacity-80"/>
+<img src="https://asynkron.se/img/asynkron.png" alt="Asynkron" class="h-6 w-auto"/>
 </div>
 <p class="text-[#bac9cc]/70 text-sm leading-relaxed max-w-xl">
 Autonomous engineering delivery by Asynkron AB, the distributed-systems team behind Proto.Actor.

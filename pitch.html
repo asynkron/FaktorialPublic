@@ -853,8 +853,8 @@
 
     .learning {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: 28px;
+      grid-template-columns: minmax(320px, .82fr) minmax(0, 1.18fr);
+      gap: 32px;
       align-items: stretch;
     }
 
@@ -907,17 +907,23 @@
 
     .memory-card {
       overflow: hidden;
+      box-shadow: 0 22px 70px var(--shadow);
+    }
+
+    .memory-card .panel-title {
+      min-height: 78px;
+      padding: 18px 28px;
     }
 
     .code-window {
       margin: 0;
-      padding: 20px;
+      padding: 28px 30px 32px;
       overflow-x: auto;
       color: #dde4db;
       font-family: var(--font-mono);
-      font-size: 13px;
-      line-height: 1.7;
-      white-space: pre;
+      font-size: clamp(14px, 1.05vw, 16px);
+      line-height: 1.6;
+      white-space: pre-wrap;
     }
 
     .code-window .green { color: var(--green); }
@@ -935,12 +941,50 @@
 
     .integration {
       min-width: 0;
-      padding: 20px 16px;
+      padding: 22px 16px 20px;
       border-right: 1px solid var(--line-soft);
     }
 
     .integration:last-child {
       border-right: 0;
+    }
+
+    .integration-logo-frame {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 66px;
+      margin-bottom: 18px;
+      padding: 12px 14px;
+      border: 1px solid rgba(0, 218, 243, .14);
+      background:
+        linear-gradient(135deg, rgba(0, 218, 243, .08), rgba(255, 171, 243, .04)),
+        #0a0a0b;
+    }
+
+    .integration-logo {
+      width: auto;
+      max-width: 156px;
+      max-height: 38px;
+      object-fit: contain;
+      object-position: left center;
+    }
+
+    .integration-logo.github {
+      max-width: 134px;
+    }
+
+    .integration-logo.faktorial {
+      max-width: 164px;
+      max-height: 44px;
+    }
+
+    .integration-logo.openobserve {
+      max-width: 162px;
+    }
+
+    .integration-logo.datadog {
+      max-width: 142px;
     }
 
     .integration .mono {
@@ -1609,21 +1653,33 @@
 
           <aside class="memory-card">
             <div class="panel-title">
-              <span>learn-output.md</span>
+              <span>skills/coverage-slicer/SKILL.md</span>
               <span class="pill green">committed</span>
             </div>
-            <pre class="code-window"><span class="quiet"># ADR-0142</span>
-<span class="green">Decision:</span> Scope coverage issues per module.
+            <pre class="code-window"><span class="quiet"># Coverage Slicer</span>
+Use this skill when an issue asks for coverage, mutation testing, or broad test-hardening across several modules.
 
-<span class="cyan">Signal:</span> two retries exceeded turn budget
-<span class="cyan">Evidence:</span> issue #693, CI duration, worker logs
+<span class="cyan">## Signal captured</span>
+- issue: #693
+- evidence: CI duration, worker logs, retry history
+- failure mode: one agent tried to own too much surface area
+- result: two retries exceeded the turn budget
 
-<span class="amber">New rule:</span>
-When creating coverage work,
-split by module if >1000 statements.
+<span class="amber">## Rule</span>
+If estimated scope is >1000 statements or touches >3 modules:
+1. map affected modules first
+2. create one child issue per module
+3. cap each PR to one module and one test type
+4. leave a parent comment linking evidence
 
-<span class="green">Follow-up:</span>
-Create issue: optimize slow auth tests.</pre>
+<span class="green">## Guardrails for next agents</span>
+- do not start implementation before slicing
+- do not mix auth, billing, and API coverage in one PR
+- prefer the smallest failing test first
+
+<span class="green">## Output</span>
+- labels: coverage, module:&lt;name&gt;, agent-ready
+- follow-up issue: optimize slow auth tests</pre>
           </aside>
         </div>
       </section>
@@ -1637,26 +1693,41 @@ Create issue: optimize slow auth tests.</pre>
 
           <div class="integrations" aria-label="Integration surfaces">
             <div class="integration">
+              <div class="integration-logo-frame">
+                <img class="integration-logo github" src="logos/github.png" alt="GitHub logo" loading="lazy" />
+              </div>
               <span class="mono">source</span>
               <strong>GitHub</strong>
               <p>Issues, labels, branches, PRs, comments, and CI state.</p>
             </div>
             <div class="integration">
+              <div class="integration-logo-frame">
+                <img class="integration-logo faktorial" src="logos/faktorial.png" alt="Faktorial logo" loading="lazy" />
+              </div>
               <span class="mono">runtime</span>
               <strong>Faktorial</strong>
               <p>Local state, workers, worktrees, issue logs, and evidence.</p>
             </div>
             <div class="integration">
+              <div class="integration-logo-frame">
+                <img class="integration-logo openobserve" src="logos/openobserve.png" alt="OpenObserve logo" loading="lazy" />
+              </div>
               <span class="mono">telemetry</span>
               <strong>OpenObserve</strong>
               <p>Logs, metrics, and traces from runtime-owned boundaries.</p>
             </div>
             <div class="integration">
+              <div class="integration-logo-frame">
+                <img class="integration-logo datadog" src="logos/datadog.png" alt="Datadog logo" loading="lazy" />
+              </div>
               <span class="mono">integration</span>
               <strong>Datadog</strong>
               <p>Natural ingest surface for production signals.</p>
             </div>
             <div class="integration">
+              <div class="integration-logo-frame">
+                <img class="integration-logo grafana" src="logos/grafana.png" alt="Grafana logo" loading="lazy" />
+              </div>
               <span class="mono">integration</span>
               <strong>Grafana</strong>
               <p>Dashboard layer for teams already living in metrics.</p>

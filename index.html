@@ -1,15 +1,16 @@
-<!DOCTYPE html>
-
-<html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Faktorial - Autonomous Engineering Delivery</title>
-<link rel="icon" href="https://asynkron.se/img/favicon.ico" type="image/x-icon"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="header.css" rel="stylesheet"/>
-<script id="tailwind-config">
+<!doctype html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Faktorial.AI - Automate your backlog</title>
+  <meta name="description" content="Faktorial automates your backlog from GitHub issue to tested PR, merge, and lessons learned back into your engineering system." />
+  <link rel="icon" href="https://asynkron.se/img/favicon.ico" type="image/x-icon" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+  <link href="header.css" rel="stylesheet" />
+  <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
@@ -78,21 +79,1678 @@
             },
         }
     </script>
-<style>
-        body {
-            background-color: #131314;
-            color: #e5e2e3;
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-        }
-        .radial-glow {
-            background: radial-gradient(circle at 50% 50%, rgba(0, 218, 243, 0.15) 0%, rgba(19, 19, 20, 0) 70%);
-        }
-        .data-bracket-border {
-            border-left: 2px solid #00daf3;
-            border-top: 2px solid #00daf3;
-        }
-        
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #131314;
+      --ink: #e5e2e3;
+      --muted: #bac9cc;
+      --quiet: #849396;
+      --panel: #0e0e0f;
+      --panel-2: #1c1b1c;
+      --panel-3: #201f20;
+      --line: rgba(0, 218, 243, .22);
+      --line-soft: rgba(0, 218, 243, .1);
+      --line-strong: rgba(0, 218, 243, .34);
+      --panel-glass: rgba(28, 31, 33, .88);
+      --panel-deep: rgba(9, 10, 11, .96);
+      --cyan: #00daf3;
+      --green: #4ade80;
+      --amber: #ffabf3;
+      --coral: #ffb4ab;
+      --blue: #c3f5ff;
+      --violet: #ffabf3;
+      --danger: #ffb4ab;
+      --shadow: rgba(0, 0, 0, .45);
+      --font-body: "Inter", system-ui, sans-serif;
+      --font-display: "Space Grotesk", system-ui, sans-serif;
+      --font-mono: "Space Grotesk", "SFMono-Regular", Consolas, monospace;
+      --radius: 0;
+      --max: 1240px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-width: 320px;
+      margin: 0;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(0, 218, 243, .12), transparent 36%),
+        linear-gradient(180deg, #0e0e0f 0%, var(--bg) 42%, #0e0e0f 100%);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.5;
+      letter-spacing: 0;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      background-image:
+        linear-gradient(rgba(0, 218, 243, .08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 218, 243, .08) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: linear-gradient(to bottom, black, transparent 88%);
+      pointer-events: none;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      opacity: .16;
+      background-image:
+        radial-gradient(circle at 78% 20%, rgba(255, 171, 243, .22), transparent 28%),
+        radial-gradient(circle at 28% 0%, rgba(0, 218, 243, .22), transparent 32%);
+      pointer-events: none;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    img,
+    svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .shell {
+      overflow: hidden;
+      padding-top: 80px;
+    }
+
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      min-height: 80px;
+      padding: 0 28px;
+      border-bottom: 1px solid rgba(0, 218, 243, .1);
+      background: rgba(19, 19, 20, .4);
+      backdrop-filter: blur(24px);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      min-width: 0;
+      font-weight: 800;
+    }
+
+    .brand img {
+      width: 166px;
+      height: 48px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 16px rgba(0, 218, 243, .16));
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: var(--muted);
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn,
+    .icon-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel-2);
+      color: var(--ink);
+      font-weight: 800;
+      font-family: var(--font-display);
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      box-shadow: none;
+    }
+
+    .btn {
+      padding: 0 15px;
+    }
+
+    .icon-btn {
+      width: 42px;
+      padding: 0;
+    }
+
+    .btn.primary {
+      border-color: transparent;
+      background: #00e5ff;
+      color: #00626e;
+    }
+
+    .btn.ghost {
+      color: var(--muted);
+    }
+
+    .btn:hover,
+    .icon-btn:hover {
+      transform: translateY(-1px);
+      text-decoration: none;
+    }
+
+    .section {
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    #what {
+      background:
+        radial-gradient(ellipse 70% 48% at 50% 0%, rgba(0, 218, 243, .12), transparent 66%),
+        linear-gradient(180deg, #0a0b0c 0%, #101112 46%, #0b0c0d 100%);
+      border-top: 1px solid rgba(0, 218, 243, .18);
+      border-bottom-color: rgba(0, 218, 243, .2);
+    }
+
+    .inner {
+      width: min(var(--max), calc(100vw - 48px));
+      margin: 0 auto;
+      padding: 112px 0;
+    }
+
+    .page-band > .page-inner {
+      width: min(var(--max), calc(100vw - 48px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 690px;
+      overflow: hidden;
+      border-bottom: 1px solid var(--line);
+      background:
+        radial-gradient(ellipse 65% 55% at 50% 96%, rgba(0, 218, 243, .16), transparent 62%),
+        linear-gradient(180deg, #050506 0%, #101112 100%);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: auto -10% -38% -10%;
+      height: 52%;
+      z-index: -1;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(0, 218, 243, .25), transparent 48%),
+        repeating-linear-gradient(90deg, rgba(0, 218, 243, .2) 0 1px, transparent 1px 86px);
+      transform: skewY(-4deg);
+      opacity: .8;
+    }
+
+    .hero-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.02fr) minmax(360px, .98fr);
+      gap: 44px;
+      align-items: center;
+      width: min(var(--max), calc(100vw - 48px));
+      margin: 0 auto;
+      padding: 68px 0 82px;
+    }
+
+    .hero-layout > * {
+      min-width: 0;
+    }
+
+    .hero-copy {
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero-copy .proof-line {
+      margin-top: auto;
+    }
+
+    #pitch .hero-layout {
+      align-items: end;
+    }
+
+    #pitch .hero-copy {
+      align-self: end;
+      display: block;
+    }
+
+    #pitch .hero-copy .proof-line {
+      margin-top: 34px;
+    }
+
+    .eyebrow,
+    .chip,
+    .label,
+    .mono {
+      font-family: var(--font-mono);
+      letter-spacing: 0;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 22px;
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .45em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 9px;
+      height: 1px;
+      border-radius: 0;
+      background: var(--cyan);
+      box-shadow: 0 0 18px rgba(0, 218, 243, .7);
+    }
+
+    .shell main h1,
+    .shell main h2,
+    .shell main h3,
+    .shell main p {
+      margin-top: 0;
+    }
+
+    .shell main h1,
+    .shell main h2,
+    .shell main h3 {
+      font-family: var(--font-display);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .shell main h1 {
+      max-width: 860px;
+      margin-bottom: 22px;
+      font-size: clamp(52px, 4.6vw, 72px);
+      line-height: .97;
+      font-weight: 900;
+      letter-spacing: .05em;
+      overflow-wrap: break-word;
+    }
+
+    .lead {
+      max-width: 680px;
+      margin-bottom: 30px;
+      color: var(--muted);
+      font-size: 22px;
+      line-height: 1.42;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    .proof-line {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      width: min(730px, 100%);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(14, 14, 15, .82);
+    }
+
+    .proof {
+      min-width: 0;
+      padding: 15px 16px;
+      border-right: 1px solid var(--line-soft);
+    }
+
+    .proof:last-child {
+      border-right: 0;
+    }
+
+    .proof strong {
+      display: block;
+      margin-bottom: 5px;
+      font-family: var(--font-mono);
+      color: var(--primary, var(--cyan));
+      font-size: 24px;
+      letter-spacing: .08em;
+      line-height: 1.1;
+    }
+
+    .proof span {
+      color: var(--quiet);
+      font-size: 13px;
+    }
+
+    .status-board {
+      position: relative;
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(180deg, rgba(28, 27, 28, .92), rgba(10, 10, 11, .96)),
+        var(--panel);
+      box-shadow: 0 22px 80px var(--shadow);
+    }
+
+    .status-board::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      z-index: -1;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(0, 218, 243, .42), transparent 34%, rgba(255, 171, 243, .22));
+    }
+
+    .board-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line-soft);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+
+    .board-top > span:nth-child(2) {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .window-dots {
+      display: inline-flex;
+      gap: 6px;
+    }
+
+    .window-dots span {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--line);
+    }
+
+    .window-dots span:nth-child(1) { background: var(--danger); }
+    .window-dots span:nth-child(2) { background: var(--violet); }
+    .window-dots span:nth-child(3) { background: var(--green); }
+
+    .pipeline-track {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      min-height: 154px;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .stage {
+      position: relative;
+      min-width: 0;
+      padding: 16px 14px;
+      border-right: 1px solid var(--line-soft);
+    }
+
+    .stage:last-child {
+      border-right: 0;
+    }
+
+    .stage::before {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 4px;
+      margin-bottom: 15px;
+      border-radius: 999px;
+      background: var(--stage-color);
+    }
+
+    .stage .label {
+      color: var(--stage-color);
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .stage strong {
+      display: block;
+      margin: 8px 0 4px;
+      font-size: 15px;
+      line-height: 1.25;
+    }
+
+    .stage small {
+      color: var(--quiet);
+    }
+
+    .stage.investigate { --stage-color: var(--blue); }
+    .stage.build { --stage-color: var(--violet); }
+    .stage.verify { --stage-color: var(--amber); }
+    .stage.deploy { --stage-color: var(--cyan); }
+    .stage.learn { --stage-color: var(--green); }
+
+    .queue {
+      padding: 16px;
+    }
+
+    .queue-row {
+      display: grid;
+      grid-template-columns: 78px minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      min-height: 48px;
+      border-bottom: 1px solid rgba(245, 242, 232, .08);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+
+    .queue-row:last-child {
+      border-bottom: 0;
+    }
+
+    .queue-row strong {
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 800;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 24px;
+      padding: 0 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--panel-2);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .pill.green {
+      border-color: rgba(74, 222, 128, .5);
+      color: var(--green);
+    }
+
+    .pill.cyan {
+      border-color: rgba(0, 218, 243, .5);
+      color: var(--cyan);
+    }
+
+    .pill.amber {
+      border-color: rgba(255, 171, 243, .55);
+      color: var(--amber);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 420px);
+      gap: 30px;
+      align-items: end;
+      margin-bottom: 32px;
+    }
+
+    .shell main h2 {
+      max-width: 920px;
+      margin-bottom: 0;
+      font-size: clamp(38px, 3.8vw, 58px);
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .section-copy {
+      margin-bottom: 0;
+      color: #d2dde0;
+      font-size: 18px;
+    }
+
+    .capability-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border: 1px solid rgba(0, 218, 243, .34);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(180deg, rgba(35, 38, 40, .96), rgba(16, 17, 18, .98));
+      box-shadow: 0 28px 90px rgba(0, 0, 0, .38);
+    }
+
+    .capability {
+      min-width: 0;
+      padding: 24px;
+      border-right: 1px solid rgba(0, 218, 243, .18);
+    }
+
+    .capability:last-child {
+      border-right: 0;
+    }
+
+    .capability svg {
+      width: 34px;
+      height: 34px;
+      margin-bottom: 18px;
+      color: var(--accent);
+      filter: drop-shadow(0 0 14px color-mix(in srgb, var(--accent) 36%, transparent));
+    }
+
+    .shell main .capability h3 {
+      color: #f3f1f2;
+      margin-bottom: 10px;
+      font-size: 25px;
+      line-height: 1.16;
+    }
+
+    .capability p {
+      margin-bottom: 0;
+      color: #d0d9dc;
+    }
+
+    .capability:nth-child(1) { --accent: var(--coral); }
+    .capability:nth-child(2) { --accent: var(--cyan); }
+    .capability:nth-child(3) { --accent: var(--green); }
+    .capability:nth-child(4) { --accent: var(--amber); }
+
+    .flow-band {
+      background:
+        linear-gradient(180deg, rgba(255, 171, 243, .04), rgba(0, 218, 243, .04)),
+        #0e0e0f;
+    }
+
+    .flow-layout {
+      display: grid;
+      grid-template-columns: minmax(330px, .82fr) minmax(0, 1.18fr);
+      gap: 44px;
+      align-items: end;
+    }
+
+    .flow-copy {
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+    }
+
+    .flow-copy h2 {
+      margin-bottom: 18px;
+    }
+
+    .flow-copy p {
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .rules-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .rule {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      min-height: 52px;
+      padding: 10px 12px;
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius);
+      background: rgba(28, 27, 28, .7);
+    }
+
+    .rule svg {
+      width: 24px;
+      height: 24px;
+      color: var(--green);
+    }
+
+    .rule span {
+      color: var(--muted);
+    }
+
+    .flow-diagram {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #0a0a0b;
+      overflow: hidden;
+      box-shadow: 0 24px 70px var(--shadow);
+    }
+
+    .flow-diagram svg {
+      width: 100%;
+      height: auto;
+    }
+
+    #flow .flow-diagram svg {
+      max-height: 100%;
+    }
+
+    .architecture-diagram {
+      position: relative;
+      min-height: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #0a0a0b;
+      overflow: hidden;
+      box-shadow: 0 24px 70px var(--shadow);
+    }
+
+    .architecture-diagram::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 48%, rgba(0, 218, 243, .18), transparent 34%),
+        linear-gradient(rgba(0, 218, 243, .05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 218, 243, .05) 1px, transparent 1px);
+      background-size: auto, 34px 34px, 34px 34px;
+      opacity: .85;
+      pointer-events: none;
+    }
+
+    .architecture-wires {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .architecture-wires path {
+      animation: wire-flow 5s linear infinite;
+      stroke-dasharray: 9 12;
+    }
+
+    .architecture-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      gap: 22px;
+      min-height: 100%;
+      padding: 24px;
+      align-items: center;
+    }
+
+    .diagram-layer {
+      display: grid;
+      gap: 10px;
+    }
+
+    .diagram-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .diagram-label {
+      color: var(--quiet);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+    }
+
+    .diagram-node {
+      min-height: 92px;
+      padding: 14px;
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius);
+      background: rgba(19, 19, 20, .88);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04);
+    }
+
+    .diagram-node span,
+    .core-chip span {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--quiet);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .diagram-node strong {
+      display: block;
+      color: var(--ink);
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1.05;
+      text-transform: uppercase;
+    }
+
+    .diagram-node.github {
+      border-color: rgba(195, 245, 255, .22);
+    }
+
+    .diagram-node.agent {
+      border-color: rgba(255, 171, 243, .22);
+    }
+
+    .faktorial-core {
+      position: relative;
+      display: grid;
+      gap: 16px;
+      width: min(760px, 100%);
+      min-height: 242px;
+      justify-self: center;
+      padding: 22px;
+      border: 1px solid rgba(0, 218, 243, .42);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 50% 36%, rgba(0, 218, 243, .22), transparent 38%),
+        linear-gradient(180deg, rgba(28, 27, 28, .94), rgba(10, 10, 11, .96));
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, .03) inset,
+        0 26px 80px rgba(0, 0, 0, .5);
+    }
+
+    .core-title {
+      align-self: center;
+      text-align: center;
+    }
+
+    .core-title span {
+      color: var(--cyan);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+    }
+
+    .core-title strong {
+      display: block;
+      margin-top: 8px;
+      color: var(--ink);
+      font-family: var(--font-display);
+      font-size: clamp(27px, 2.1vw, 36px);
+      font-weight: 900;
+      letter-spacing: .06em;
+      line-height: .92;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .core-chips {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .core-chip {
+      min-height: 72px;
+      padding: 11px;
+      border: 1px solid rgba(0, 218, 243, .16);
+      background: rgba(10, 10, 11, .72);
+    }
+
+    .core-chip strong {
+      display: block;
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.15;
+    }
+
+    @keyframes wire-flow {
+      to {
+        stroke-dashoffset: -84;
+      }
+    }
+
+    .scope-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(340px, .78fr);
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .scope-builder,
+    .autonomy {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(28, 27, 28, .82);
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 54px;
+      padding: 0 16px;
+      border-bottom: 1px solid var(--line-soft);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .scope-body {
+      padding: 18px;
+    }
+
+    .control-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 0 12px;
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius);
+      background: var(--panel-2);
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .toggle input {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--cyan);
+    }
+
+    .branch-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .selectlike {
+      min-height: 54px;
+      padding: 10px 12px;
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+
+    .selectlike span {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--quiet);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .selectlike strong {
+      display: block;
+      overflow-wrap: anywhere;
+    }
+
+    .autonomy {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .autonomy-body {
+      display: grid;
+      flex: 1;
+      align-content: center;
+      gap: 18px;
+      padding: 22px;
+    }
+
+    .slider {
+      position: relative;
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--green), var(--cyan) 52%, var(--violet));
+    }
+
+    .slider::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 24px;
+      height: 24px;
+      border: 3px solid #0a0a0b;
+      border-radius: 50%;
+      background: var(--cyan);
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, .24);
+    }
+
+    .autonomy-scale {
+      display: flex;
+      justify-content: space-between;
+      color: var(--quiet);
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+
+    .autonomy-callout {
+      margin: 0;
+      padding: 15px;
+      border: 1px solid rgba(255, 171, 243, .28);
+      border-radius: var(--radius);
+      background: rgba(255, 171, 243, .06);
+      color: var(--muted);
+    }
+
+    .learning {
+      display: grid;
+      grid-template-columns: minmax(320px, .82fr) minmax(0, 1.18fr);
+      gap: 32px;
+      align-items: stretch;
+    }
+
+    .lesson-card,
+    .memory-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(28, 27, 28, .82);
+    }
+
+    .lesson-card {
+      padding: 24px;
+    }
+
+    .shell main .lesson-card h3 {
+      margin-bottom: 16px;
+      font-size: clamp(34px, 3.4vw, 50px);
+      line-height: 1;
+    }
+
+    .lesson-card p {
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .lesson-steps {
+      display: grid;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .lesson-step {
+      display: grid;
+      grid-template-columns: 58px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      min-height: 48px;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .lesson-step:last-child {
+      border-bottom: 0;
+    }
+
+    .lesson-step b {
+      color: var(--green);
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+
+    .memory-card {
+      overflow: hidden;
+      box-shadow: 0 22px 70px var(--shadow);
+    }
+
+    .memory-card .panel-title {
+      min-height: 78px;
+      padding: 18px 28px;
+    }
+
+    .code-window {
+      margin: 0;
+      padding: 28px 30px 32px;
+      overflow-x: auto;
+      color: #dde4db;
+      font-family: var(--font-mono);
+      font-size: clamp(14px, 1.05vw, 16px);
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .code-window .green { color: var(--green); }
+    .code-window .cyan { color: var(--cyan); }
+    .code-window .amber { color: var(--amber); }
+    .code-window .quiet { color: var(--quiet); }
+
+    .integrations {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(28, 27, 28, .82);
+    }
+
+    .integration {
+      min-width: 0;
+      padding: 22px 16px 20px;
+      border-right: 1px solid var(--line-soft);
+    }
+
+    .integration:last-child {
+      border-right: 0;
+    }
+
+    .integration-logo-frame {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 66px;
+      margin-bottom: 18px;
+      padding: 12px 14px;
+      border: 1px solid rgba(0, 218, 243, .14);
+      background:
+        linear-gradient(135deg, rgba(0, 218, 243, .08), rgba(255, 171, 243, .04)),
+        #0a0a0b;
+    }
+
+    .integration-logo {
+      width: auto;
+      max-width: 156px;
+      max-height: 38px;
+      object-fit: contain;
+      object-position: left center;
+    }
+
+    .integration-logo.github {
+      max-width: 134px;
+    }
+
+    .integration-logo.faktorial {
+      max-width: 164px;
+      max-height: 44px;
+    }
+
+    .integration-logo.openobserve {
+      max-width: 162px;
+    }
+
+    .integration-logo.datadog {
+      max-width: 142px;
+    }
+
+    .integration .mono {
+      color: var(--quiet);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .integration strong {
+      display: block;
+      margin: 8px 0 6px;
+      font-size: 18px;
+    }
+
+    .integration p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .note {
+      margin-top: 18px;
+      color: var(--quiet);
+      font-size: 14px;
+    }
+
+    .closing {
+      position: relative;
+      background: #0e0e0f;
+    }
+
+    .closing .inner {
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(320px, .62fr);
+      gap: 44px;
+      align-items: center;
+    }
+
+    .shell main .closing h2 {
+      max-width: 980px;
+      font-size: clamp(42px, 4.2vw, 64px);
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+
+    .closing p {
+      max-width: 700px;
+      color: var(--muted);
+      font-size: 20px;
+    }
+
+    .pitch-card {
+      border: 1px solid rgba(52, 216, 235, .36);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(160deg, rgba(0, 218, 243, .12), rgba(255, 171, 243, .06)),
+        #0a0a0b;
+      padding: 24px;
+      box-shadow: 0 22px 70px var(--shadow);
+    }
+
+    .pitch-card .mono {
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .pitch-card blockquote {
+      margin: 16px 0 0;
+      color: var(--ink);
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 850;
+      line-height: 1.15;
+    }
+
+    .site-footer {
+      border-top: 1px solid var(--line-soft);
+      background: #0e0e0f;
+      color: var(--muted);
+    }
+
+    .footer-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(220px, .55fr) minmax(220px, .7fr);
+      gap: 34px;
+      width: min(var(--max), calc(100vw - 48px));
+      margin: 0 auto;
+      padding: 42px 0 28px;
+    }
+
+    .footer-brand {
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .footer-logo {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .footer-logo.faktorial {
+      width: 190px;
+      height: 64px;
+      object-fit: contain;
+      object-position: left center;
+    }
+
+    .footer-logo.asynkron {
+      width: 190px;
+      height: 48px;
+      object-fit: contain;
+      object-position: left center;
+    }
+
+    .footer-logo.protoactor {
+      width: 180px;
+      height: 46px;
+      margin-bottom: 12px;
+      object-fit: contain;
+      object-position: left center;
+    }
+
+    .footer-brand p {
+      max-width: 520px;
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .footer-actions,
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .footer-col h2 {
+      margin: 0 0 14px;
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.2;
+    }
+
+    .footer-col p {
+      margin: 0 0 8px;
+      color: var(--muted);
+    }
+
+    .footer-links a,
+    .footer-actions a {
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .proto-link {
+      display: block;
+      width: fit-content;
+      margin-bottom: 6px;
+    }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      width: min(var(--max), calc(100vw - 48px));
+      margin: 0 auto;
+      padding: 18px 0 24px;
+      border-top: 1px solid var(--line-soft);
+      color: var(--quiet);
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+
+    .icon {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+    }
+
+    #pitch {
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 100%, rgba(0, 218, 243, .18), transparent 64%),
+        linear-gradient(180deg, #050506 0%, #0d1011 54%, #090a0b 100%);
+    }
+
+    #pitch .proof-line,
+    #pitch .status-board {
+      border-color: var(--line-strong);
+      background:
+        linear-gradient(180deg, rgba(28, 31, 33, .9), rgba(9, 10, 11, .96));
+      box-shadow:
+        0 28px 90px rgba(0, 0, 0, .42),
+        inset 0 1px 0 rgba(255, 255, 255, .04);
+    }
+
+    #what .section-head {
+      margin-bottom: 38px;
+    }
+
+    #what .capability {
+      background:
+        linear-gradient(180deg, rgba(36, 39, 41, .74), rgba(14, 15, 16, .2));
+    }
+
+    #what .capability p,
+    #control .section-copy,
+    .flow-copy p,
+    .lesson-card p,
+    .integration p {
+      color: #d3dde0;
+    }
+
+    .flow-band,
+    #control,
+    #learn,
+    main > .section:not(.flow-band):not(.closing):not(#what) {
+      background:
+        radial-gradient(ellipse 84% 44% at 50% 0%, rgba(0, 218, 243, .055), transparent 68%),
+        linear-gradient(180deg, #0c0d0e 0%, #111213 50%, #0b0c0d 100%);
+    }
+
+    .architecture-diagram,
+    .flow-diagram,
+    .scope-builder,
+    .autonomy,
+    .lesson-card,
+    .memory-card,
+    .integrations {
+      border-color: var(--line-strong);
+      background:
+        linear-gradient(180deg, var(--panel-glass), var(--panel-deep));
+      box-shadow:
+        0 26px 80px rgba(0, 0, 0, .38),
+        inset 0 1px 0 rgba(255, 255, 255, .035);
+    }
+
+    .rule,
+    .toggle,
+    .selectlike,
+    .diagram-node,
+    .core-chip,
+    .integration-logo-frame {
+      border-color: rgba(0, 218, 243, .18);
+      background:
+        linear-gradient(180deg, rgba(24, 27, 29, .88), rgba(9, 10, 11, .78));
+    }
+
+    #fit,
+    #proof,
+    #models,
+    #asynkron {
+      padding-top: 108px;
+      padding-bottom: 108px;
+      border-color: rgba(0, 218, 243, .16);
+      background:
+        radial-gradient(ellipse 78% 42% at 50% 0%, rgba(0, 218, 243, .06), transparent 70%),
+        linear-gradient(180deg, #0b0c0d 0%, #111213 52%, #0b0c0d 100%);
+    }
+
+    #proof,
+    #asynkron {
+      background:
+        radial-gradient(ellipse 72% 44% at 50% 0%, rgba(255, 171, 243, .045), transparent 72%),
+        linear-gradient(180deg, #090a0b 0%, #101112 54%, #090a0b 100%);
+    }
+
+    #fit h2,
+    #proof h2,
+    #models h2,
+    #asynkron h2 {
+      max-width: 920px;
+      font-size: clamp(34px, 3.8vw, 58px);
+      line-height: 1;
+      letter-spacing: .08em;
+    }
+
+    #fit p,
+    #proof p,
+    #models p,
+    #asynkron p {
+      color: #d2dde0;
+    }
+
+    #fit .page-inner > div:nth-of-type(2) > div:nth-child(2) > div,
+    #fit .page-inner > h3 + .grid > div,
+    #proof .page-inner > .grid > div,
+    #models .page-inner > .grid > div,
+    #asynkron .page-inner > .grid > div:last-child {
+      border-color: rgba(0, 218, 243, .24);
+      background:
+        linear-gradient(180deg, rgba(27, 30, 32, .92), rgba(10, 11, 12, .92));
+      box-shadow:
+        0 20px 60px rgba(0, 0, 0, .28),
+        inset 0 1px 0 rgba(255, 255, 255, .035);
+    }
+
+    #models .page-inner > .grid > div:nth-child(2),
+    #fit .page-inner > div:nth-of-type(2) > div:nth-child(2) > div:nth-child(2),
+    #fit .page-inner > h3 + .grid > div:nth-child(n+5),
+    #proof .page-inner > .grid > div:nth-child(-n+2) {
+      border-color: rgba(255, 171, 243, .24);
+    }
+
+    #fit .page-inner > h3 + .grid > div {
+      display: flex;
+      min-height: 124px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    #fit .page-inner > h3 + .grid > div .material-symbols-outlined {
+      margin-bottom: 0;
+    }
+
+    #fit .page-inner > .flex:first-child,
+    #proof .page-inner > .flex:first-child,
+    #models .page-inner > .flex:first-child,
+    #asynkron .page-inner > .flex:first-child {
+      margin-bottom: 22px;
+    }
+
+    @media (max-width: 1020px) {
+      .hero-layout,
+      .flow-layout,
+      .scope-panel,
+      .learning,
+      .closing .inner,
+      .section-head {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: auto;
+      }
+
+      .shell main h1 {
+        font-size: 50px;
+      }
+
+      .shell main h2,
+      .shell main .lesson-card h3,
+      .shell main .closing h2 {
+        font-size: 42px;
+      }
+
+      .capability-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .capability:nth-child(2) {
+        border-right: 0;
+      }
+
+      .capability:nth-child(1),
+      .capability:nth-child(2) {
+        border-bottom: 1px solid var(--line-soft);
+      }
+
+      .integrations {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .integration:nth-child(2n) {
+        border-right: 0;
+      }
+
+      .integration {
+        border-bottom: 1px solid var(--line-soft);
+      }
+
+      .integration:last-child {
+        grid-column: 1 / -1;
+        border-bottom: 0;
+      }
+
+      .architecture-grid {
+        min-height: 520px;
+        gap: 18px;
+        padding: 22px;
+      }
+
+      .core-chips {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .diagram-node strong {
+        font-size: 17px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topbar {
+        padding: 0 16px;
+      }
+
+      .nav {
+        display: none;
+      }
+
+      .btn.ghost {
+        display: none;
+      }
+
+      .inner,
+      .hero-layout,
+      .page-band > .page-inner {
+        width: min(100% - 28px, var(--max));
+      }
+
+      .inner {
+        padding: 58px 0;
+      }
+
+      .hero-layout {
+        padding-top: 42px;
+      }
+
+      .shell main h1 {
+        font-size: 38px;
+      }
+
+      .shell main h2,
+      .shell main .lesson-card h3,
+      .shell main .closing h2 {
+        font-size: 32px;
+        line-height: 1;
+      }
+
+      .lead {
+        font-size: 19px;
+      }
+
+      .proof-line,
+      .capability-grid,
+      .control-grid,
+      .branch-row,
+      .integrations {
+        grid-template-columns: 1fr;
+      }
+
+      .proof,
+      .capability,
+      .integration {
+        border-right: 0;
+        border-bottom: 1px solid var(--line-soft);
+      }
+
+      .proof:last-child,
+      .capability:last-child,
+      .integration:last-child {
+        border-bottom: 0;
+      }
+
+      .status-board {
+        margin-bottom: 22px;
+      }
+
+      .pipeline-track {
+        display: flex;
+        min-height: 150px;
+        overflow-x: auto;
+        scroll-snap-type: x proximity;
+      }
+
+      .stage {
+        flex: 0 0 156px;
+        border-right: 1px solid var(--line-soft);
+        scroll-snap-align: start;
+      }
+
+      .stage:last-child {
+        border-right: 0;
+      }
+
+      .architecture-wires {
+        display: none;
+      }
+
+      .architecture-grid {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        padding: 16px;
+      }
+
+      .diagram-row,
+      .core-chips {
+        grid-template-columns: 1fr;
+      }
+
+      .faktorial-core {
+        min-height: auto;
+        padding: 20px;
+      }
+
+      .queue {
+        display: none;
+      }
+
+      .queue-row {
+        grid-template-columns: 62px minmax(0, 1fr);
+      }
+
+      .queue-row .pill:last-child {
+        grid-column: 2;
+        justify-self: start;
+      }
+
+      .pitch-card blockquote {
+        font-size: 22px;
+      }
+
+      .footer-inner {
+        grid-template-columns: 1fr;
+        width: min(100% - 28px, var(--max));
+        padding-top: 34px;
+      }
+
+      .footer-bottom {
+        align-items: flex-start;
+        flex-direction: column;
+        width: min(100% - 28px, var(--max));
+      }
+    }
+
         /* CSS-only 3D Tron Tunnel */
         .tunnel-container {
             position: absolute;
@@ -245,63 +1903,94 @@
                 margin-bottom: -11%;
             }
         }
-    </style>
+
+        #hero .hero-content {
+            width: 100%;
+        }
+
+        #hero h1 {
+            max-width: none;
+            margin: 0 0 2rem;
+            font: inherit;
+            line-height: normal;
+            letter-spacing: 0;
+            overflow-wrap: normal;
+            text-transform: none;
+        }
+
+        #hero .hero-logo {
+            width: min(1220px, 96vw);
+            max-width: none;
+        }
+
+        @media (max-width: 767px) {
+            #hero .hero-logo {
+                width: min(780px, 96vw);
+                transform: none;
+                margin-bottom: 0;
+            }
+        }
+  </style>
 </head>
-<body class="selection:bg-primary-container selection:text-on-primary-container">
-<!-- TopAppBar -->
-<header class="site-header">
-<a class="site-header__brand" href="index.html" aria-label="Faktorial home">
-<img class="site-header__brand-mark" src="faktorialai-plain.png" alt="Faktorial.AI"/>
-<span class="site-header__brand-copy">
-<span class="site-header__brand-title">Faktorial.AI</span>
-<span class="site-header__brand-subtitle">Asynkron autonomous engineering</span>
-</span>
-</a>
-<nav class="site-header__primary" aria-label="Primary">
-<a class="site-header__link" href="index.html" aria-current="page">Overview</a>
-<a class="site-header__link" href="pitch.html">Pitch</a>
-<a class="site-header__link" href="bokabra.html">Case</a>
-<div class="site-header__menu" data-nav-menu>
-<button class="site-header__link site-header__menu-trigger" type="button" data-nav-trigger aria-expanded="false" aria-controls="site-sections-index">
-Sections
-<span class="site-header__caret" aria-hidden="true"></span>
-</button>
-<div class="site-header__dropdown" id="site-sections-index" data-nav-panel hidden>
-<a class="site-header__dropdown-link" href="#models">Models</a>
-<a class="site-header__dropdown-link" href="#fit">Fit</a>
-<a class="site-header__dropdown-link" href="#pipeline">Pipeline</a>
-<a class="site-header__dropdown-link" href="#control">Control</a>
-</div>
-</div>
-</nav>
-<div class="site-header__actions">
-<a class="site-header__cta" href="mailto:info@asynkron.se?subject=Faktorial%20Pilot%20Inquiry&body=Hi%2C%0A%0AWe%27re%20interested%20in%20running%20a%20Faktorial%20pilot.%0A%0ACompany%3A%20%0ARepo%20size%20(approx)%3A%20%0ABacklog%20size%3A%20%0A%0AThanks">Run a Pilot</a>
-<div class="site-header__menu site-header__menu--mobile" data-nav-menu>
-<button class="site-header__icon-button" type="button" data-nav-trigger aria-expanded="false" aria-controls="mobile-nav-index">
-Menu
-<span class="site-header__icon-stack" aria-hidden="true"><span></span><span></span><span></span></span>
-</button>
-<div class="site-header__mobile-panel" id="mobile-nav-index" data-nav-panel hidden>
-<div class="site-header__mobile-group">
-<span class="site-header__mobile-label">Pages</span>
-<a class="site-header__mobile-link" href="index.html" aria-current="page">Overview</a>
-<a class="site-header__mobile-link" href="pitch.html">Pitch</a>
-<a class="site-header__mobile-link" href="bokabra.html">Case</a>
-</div>
-<div class="site-header__mobile-group">
-<span class="site-header__mobile-label">Sections</span>
-<a class="site-header__mobile-link" href="#models">Models</a>
-<a class="site-header__mobile-link" href="#fit">Fit</a>
-<a class="site-header__mobile-link" href="#pipeline">Pipeline</a>
-<a class="site-header__mobile-link" href="#control">Control</a>
-</div>
-</div>
-</div>
-</div>
-</header>
-<main class="relative pt-20">
-<!-- Hero Section with 3D Tron Tunnel -->
-<section class="relative min-h-[921px] flex flex-col items-center justify-center overflow-hidden bg-black">
+<body>
+  <div class="shell" id="top">
+    <header class="site-header">
+      <a class="site-header__brand" href="index.html" aria-label="Faktorial home">
+        <img class="site-header__brand-mark" src="faktorialai-plain.png" alt="Faktorial.AI" />
+        <span class="site-header__brand-copy">
+          <span class="site-header__brand-title">Faktorial.AI</span>
+          <span class="site-header__brand-subtitle">Asynkron autonomous engineering</span>
+        </span>
+      </a>
+      <nav class="site-header__primary" aria-label="Primary">
+        <a class="site-header__link" href="index.html" aria-current="page">Overview</a>
+        <a class="site-header__link" href="bokabra.html">Case</a>
+        <div class="site-header__menu" data-nav-menu>
+          <button class="site-header__link site-header__menu-trigger" type="button" data-nav-trigger aria-expanded="false" aria-controls="site-sections-home">
+            Sections
+            <span class="site-header__caret" aria-hidden="true"></span>
+          </button>
+          <div class="site-header__dropdown" id="site-sections-home" data-nav-panel hidden>
+            <a class="site-header__dropdown-link" href="#what">What it does</a>
+            <a class="site-header__dropdown-link" href="#asynkron">Proto.Actor team</a>
+            <a class="site-header__dropdown-link" href="#models">Two modes</a>
+            <a class="site-header__dropdown-link" href="#flow">Flow</a>
+            <a class="site-header__dropdown-link" href="#control">Scope</a>
+            <a class="site-header__dropdown-link" href="#learn">Learning</a>
+            <a class="site-header__dropdown-link" href="#proof">Proof</a>
+          </div>
+        </div>
+      </nav>
+      <div class="site-header__actions">
+        <a class="site-header__cta" href="mailto:info@asynkron.se?subject=Faktorial%20Pilot%20Inquiry&body=Hi%2C%0A%0AWe%27re%20interested%20in%20running%20a%20Faktorial%20pilot.%0A%0ACompany%3A%20%0ARepo%20size%20(approx)%3A%20%0ABacklog%20size%3A%20%0A%0AThanks">Run a Pilot</a>
+        <div class="site-header__menu site-header__menu--mobile" data-nav-menu>
+          <button class="site-header__icon-button" type="button" data-nav-trigger aria-expanded="false" aria-controls="mobile-nav-home">
+            Menu
+            <span class="site-header__icon-stack" aria-hidden="true"><span></span><span></span><span></span></span>
+          </button>
+          <div class="site-header__mobile-panel" id="mobile-nav-home" data-nav-panel hidden>
+            <div class="site-header__mobile-group">
+              <span class="site-header__mobile-label">Pages</span>
+              <a class="site-header__mobile-link" href="index.html" aria-current="page">Overview</a>
+              <a class="site-header__mobile-link" href="bokabra.html">Case</a>
+            </div>
+            <div class="site-header__mobile-group">
+              <span class="site-header__mobile-label">Sections</span>
+              <a class="site-header__mobile-link" href="#what">What it does</a>
+              <a class="site-header__mobile-link" href="#asynkron">Proto.Actor team</a>
+              <a class="site-header__mobile-link" href="#models">Two modes</a>
+              <a class="site-header__mobile-link" href="#flow">Flow</a>
+              <a class="site-header__mobile-link" href="#control">Scope</a>
+              <a class="site-header__mobile-link" href="#learn">Learning</a>
+              <a class="site-header__mobile-link" href="#proof">Proof</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+<section id="hero" class="relative min-h-[921px] flex flex-col items-center justify-center overflow-hidden bg-black" aria-labelledby="hero-title">
 <!-- 3D Tunnel Background -->
 <div class="tunnel-container pointer-events-none opacity-60">
 <div class="tunnel-wrap">
@@ -317,9 +2006,9 @@ Menu
 <div class="globe-wrap"><div class="globe"></div></div>
 <!-- Legibility Overlay -->
 <div class="absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background z-[2]"></div>
-<div class="relative z-10 text-center px-4">
+<div class="hero-content relative z-10 text-center px-4">
 <div class="py-8 rounded-3xl">
-<h1 class="mb-8 relative z-10">
+<h1 id="hero-title" class="mb-8 relative z-10">
 <img src="faktorialai.png" alt="Faktorial.AI" class="hero-logo mx-auto drop-shadow-[0_0_28px_rgba(0,218,243,0.35)]" decoding="async" fetchpriority="high"/>
 </h1>
 <div class="max-w-3xl mx-auto space-y-6">
@@ -351,145 +2040,480 @@ Menu
 </div>
 <div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background to-transparent z-10"></div>
 </section>
-<!-- Category Contrast -->
-<section class="py-16 px-8 bg-background border-y border-primary/10">
-<div class="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-    <div class="border-l-2 border-primary/30 pl-6">
-        <h2 class="font-headline font-bold uppercase tracking-[0.15em] text-sm text-primary mb-3">Not A Copilot</h2>
-        <p class="text-on-surface-variant text-sm leading-relaxed">Autocomplete helps a developer type. Faktorial takes a GitHub issue through investigation, tests, implementation, CI, and PR review.</p>
-    </div>
-    <div class="border-l-2 border-primary/30 pl-6">
-        <h2 class="font-headline font-bold uppercase tracking-[0.15em] text-sm text-primary mb-3">Not Black-Box SaaS</h2>
-        <p class="text-on-surface-variant text-sm leading-relaxed">Runs locally, follows your repo rules, and leaves the evidence chain where your team already works.</p>
-    </div>
-    <div class="border-l-2 border-tertiary-fixed-dim/30 pl-6">
-        <h2 class="font-headline font-bold uppercase tracking-[0.15em] text-sm text-tertiary-fixed-dim mb-3">Not Traditional Outsourcing</h2>
-        <p class="text-on-surface-variant text-sm leading-relaxed">Whether your team runs it or Asynkron does, the operating model stays issue-driven, test-backed, and reviewable in GitHub.</p>
-    </div>
-</div>
-</section>
-<!-- Asynkron Credibility -->
-<section id="asynkron" class="py-24 px-8 bg-surface-container-lowest border-y border-primary/10">
-<div class="max-w-[1400px] mx-auto">
-<div class="flex items-center gap-4 mb-6">
-<span class="text-primary font-bold tracking-[0.5em] uppercase text-xs">Asynkron_Origin</span>
-<div class="h-px flex-grow bg-primary/10"></div>
-</div>
-<div class="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-12 items-center">
-    <div>
-        <img src="https://asynkron.se/img/asynkron.png" alt="Asynkron" class="h-12 w-auto max-w-[320px] object-contain mb-10"/>
-        <h2 class="font-headline text-3xl md:text-5xl font-black tracking-[0.1em] uppercase mb-6">
-            Created By The Team Behind <span class="text-primary-fixed-dim">Proto.Actor.</span>
-        </h2>
-        <p class="text-on-surface-variant text-lg leading-relaxed max-w-3xl">
-            Asynkron brings distributed-systems experience from high-scale, mission-critical platforms across finance, industrial automation, and real-time communications into Faktorial's delivery model.
-        </p>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="border-l-2 border-primary/30 bg-surface-container-low p-8">
-            <img src="https://asynkron.se/img/protoactor.png" alt="Proto.Actor" class="h-14 w-auto max-w-full object-contain object-left mb-8"/>
-            <h3 class="font-headline font-bold uppercase tracking-[0.15em] text-sm text-primary mb-4">Flagship Framework</h3>
-            <p class="text-on-surface-variant text-sm leading-relaxed">
-                Proto.Actor is Asynkron's actor framework for .NET and Go, built for resilient distributed systems with message-driven actors, virtual actors, and clustering.
-            </p>
-        </div>
-        <div class="border-l-2 border-tertiary-fixed-dim/30 bg-surface-container-low p-8">
-            <h3 class="font-headline font-bold uppercase tracking-[0.15em] text-sm text-tertiary-fixed-dim mb-4">Why It Matters</h3>
-            <p class="text-on-surface-variant text-sm leading-relaxed">
-                Faktorial comes from a team used to production runtimes, long-running workflows, observability, and controlled automation rather than one-off code generation demos.
-            </p>
-        </div>
-    </div>
-</div>
-</div>
-</section>
-<!-- ══════ SECTION 2: Two Ways To Ship ══════ -->
-<section id="models" class="py-28 px-8 bg-surface-container-lowest border-y border-primary/10 relative">
-<div class="max-w-[1400px] mx-auto">
-<div class="flex items-center gap-4 mb-6">
-    <span class="text-primary font-bold tracking-[0.5em] uppercase text-xs">Service_Models</span>
-    <div class="h-px flex-grow bg-primary/10"></div>
-</div>
-<h2 class="font-headline text-3xl md:text-5xl font-black tracking-[0.1em] uppercase mb-6">
-    Two Ways To Ship.<br/><span class="text-primary-fixed-dim">One Standard Of Proof.</span>
-</h2>
-<p class="text-on-surface-variant text-lg max-w-2xl mb-16">
-    Use Faktorial inside your existing GitHub workflow with your engineers reviewing PRs, or use Faktorial Managed when you want Asynkron to run the delivery loop. Same pipeline, same quality gates, same traceability.
-</p>
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-    <!-- Self-service -->
-    <div class="border border-primary/20 p-10 relative group hover:border-primary/40 transition-all flex flex-col">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-        <div class="flex items-center gap-3 mb-6">
-            <span class="material-symbols-outlined text-primary text-2xl" data-icon="handshake">handshake</span>
-            <h3 class="font-headline font-black uppercase tracking-[0.15em] text-lg text-primary">Your Team + Faktorial</h3>
-        </div>
-        <p class="text-on-surface-variant text-sm leading-relaxed mb-8">
-            Best when you already have a development team and want more delivery capacity inside the workflow you use today. Your team owns priorities, architecture, reviews, and merge decisions. Faktorial handles scoped implementation work.
-        </p>
-        <div class="space-y-4 mb-8">
-            <div class="flex items-start gap-3"><span class="text-primary text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">Your team owns priorities and merge decisions</span></div>
-            <div class="flex items-start gap-3"><span class="text-primary text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">Faktorial handles scoped implementation issues</span></div>
-            <div class="flex items-start gap-3"><span class="text-primary text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">PRs arrive with tests and evidence</span></div>
-            <div class="flex items-start gap-3"><span class="text-primary text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">Works inside your existing repo workflow</span></div>
-        </div>
-        <div class="mt-auto">
-            <a href="mailto:info@asynkron.se?subject=Faktorial%20Pilot%20Inquiry&body=Hi%2C%0A%0AWe%27re%20interested%20in%20running%20a%20Faktorial%20pilot.%0A%0ACompany%3A%20%0ARepo%20size%20(approx)%3A%20%0ABacklog%20size%3A%20%0A%0AThanks" class="px-8 py-3 bg-primary-container text-on-primary-container font-bold uppercase tracking-[0.15em] text-sm hover:shadow-[0_0_20px_rgba(0,218,243,0.3)] transition-all active:scale-[0.98] inline-block">Start with 10 issues</a>
-        </div>
-    </div>
-    <!-- Managed -->
-    <div class="border border-tertiary-fixed-dim/20 p-10 relative group hover:border-tertiary-fixed-dim/40 transition-all flex flex-col">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-tertiary-fixed-dim/5 blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-        <div class="flex items-center gap-3 mb-6">
-            <span class="material-symbols-outlined text-tertiary-fixed-dim text-2xl" data-icon="engineering">engineering</span>
-            <h3 class="font-headline font-black uppercase tracking-[0.15em] text-lg text-tertiary-fixed-dim">Faktorial Managed</h3>
-        </div>
-        <p class="text-on-surface-variant text-sm leading-relaxed mb-8">
-            Best when you want Asynkron to run the operating loop. You file or approve issues; senior engineers supervise Faktorial, handle escalations, and deliver review-ready code.
-        </p>
-        <div class="space-y-4 mb-8">
-            <div class="flex items-start gap-3"><span class="text-tertiary-fixed-dim text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">Asynkron runs the pipeline</span></div>
-            <div class="flex items-start gap-3"><span class="text-tertiary-fixed-dim text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">We supervise agents and handle escalations</span></div>
-            <div class="flex items-start gap-3"><span class="text-tertiary-fixed-dim text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">You approve scope and merge decisions</span></div>
-            <div class="flex items-start gap-3"><span class="text-tertiary-fixed-dim text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">Capacity scales by backlog, not headcount</span></div>
-        </div>
-        <div class="mt-auto">
-            <a href="mailto:info@asynkron.se?subject=Faktorial%20Managed%20Service&body=Hi%2C%0A%0AWe%27re%20interested%20in%20Faktorial%20Managed%20by%20Asynkron.%0A%0ACompany%3A%20%0AWhat%20we%20need%20help%20with%3A%20%0A%0AThanks" class="px-8 py-3 border border-tertiary-fixed-dim/30 text-tertiary-fixed-dim font-bold uppercase tracking-[0.15em] text-sm hover:bg-tertiary-fixed-dim/5 transition-all active:scale-[0.98] inline-block">Contact Us</a>
-        </div>
-    </div>
-</div>
+      <section class="hero" id="pitch" aria-labelledby="pitch-title">
+        <div class="hero-layout">
+          <div class="hero-copy">
+            <div class="eyebrow">GitHub-native agent factory</div>
+            <h1 id="pitch-title">Automate your backlog.</h1>
+            <p class="lead">Faktorial takes issues from “should get done” to tested PR, merge, and lessons learned back into the system. You choose labels, branch, quality gates, and how autonomous it is allowed to be.</p>
+            <div class="proof-line" id="pitch-proof" aria-label="Faktorial proof points">
+              <div class="proof">
+                <strong>3000+</strong>
+                <span>internal issues delivered</span>
+              </div>
+              <div class="proof">
+                <strong>17 min</strong>
+                <span>internal median issue resolution</span>
+              </div>
+              <div class="proof">
+                <strong>PR-first</strong>
+                <span>human approval by default</span>
+              </div>
+            </div>
+          </div>
 
-<!-- Shared foundation -->
-<div class="border-t border-primary/10 pt-12">
-    <h4 class="font-headline font-bold uppercase tracking-[0.15em] text-sm text-center mb-10 text-on-surface-variant">Both models keep control in your repo</h4>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="flex gap-5">
-            <div class="w-10 h-10 flex-shrink-0 border border-primary/20 flex items-center justify-center">
-                <span class="material-symbols-outlined text-primary text-lg">history_edu</span>
+          <aside class="status-board" aria-label="Live backlog automation preview">
+            <div class="board-top">
+              <span class="window-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span>faktorial://queue/live</span>
+              <span class="pill green">6 workers</span>
             </div>
-            <div>
-                <h5 class="font-headline font-bold uppercase tracking-widest text-sm mb-2">Compliance Backlog</h5>
-                <p class="text-on-surface-variant text-sm leading-relaxed">When new requirements emerge, Faktorial can evaluate the repo, identify gaps, and turn the remediation work into issues your team can review and track.</p>
+            <div class="pipeline-track">
+              <div class="stage investigate">
+                <span class="label">Investigate</span>
+                <strong>Maps the blast radius</strong>
+                <small>AC, dependencies, risks</small>
+              </div>
+              <div class="stage build">
+                <span class="label">Build</span>
+                <strong>Writes the test first</strong>
+                <small>branch + worktree</small>
+              </div>
+              <div class="stage verify">
+                <span class="label">Verify</span>
+                <strong>Stops scope creep</strong>
+                <small>CI, test tracking</small>
+              </div>
+              <div class="stage deploy">
+                <span class="label">Deploy</span>
+                <strong>Merges when rules allow</strong>
+                <small>main or dev branch</small>
+              </div>
+              <div class="stage learn">
+                <span class="label">Learn</span>
+                <strong>Creates ADRs/rules</strong>
+                <small>the next run gets better</small>
+              </div>
             </div>
+            <div class="queue">
+              <div class="queue-row">
+                <span class="pill cyan">#1842</span>
+                <strong>Fix flaky payment retry test</strong>
+                <span class="pill amber">verify</span>
+              </div>
+              <div class="queue-row">
+                <span class="pill cyan">#1847</span>
+                <strong>Build booking calendar import</strong>
+                <span class="pill">build</span>
+              </div>
+              <div class="queue-row">
+                <span class="pill cyan">#1851</span>
+                <strong>Investigate slow CI suite</strong>
+                <span class="pill green">learn</span>
+              </div>
+            </div>
+          </aside>
         </div>
-        <div class="flex gap-5">
-            <div class="w-10 h-10 flex-shrink-0 border border-primary/20 flex items-center justify-center">
-                <span class="material-symbols-outlined text-primary text-lg">link</span>
-            </div>
-            <div>
-                <h5 class="font-headline font-bold uppercase tracking-widest text-sm mb-2">Every Decision Has A Paper Trail</h5>
-                <p class="text-on-surface-variant text-sm leading-relaxed">Every change traces back: requirement &rarr; investigation &rarr; acceptance criteria &rarr; tests &rarr; PR &rarr; merge. ADRs capture why. The full evidence chain lives in your repo.</p>
-            </div>
+      </section>
+
+<section class="section" id="what">
+        <div class="inner">
+          <div class="section-head">
+            <h2>A backlog is already a work order. Faktorial makes it executable.</h2>
+            <p class="section-copy">The simple pitch is not “AI writes code”. It is that the team’s existing work can flow through a controlled factory: debugging, development, verification, and learning.</p>
+          </div>
+
+          <div class="capability-grid">
+            <article class="capability">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M8 8h8M8 12h8M9 20h6M5 4h14v12l-4 4H5V4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <h3>Bug fixes and debugging</h3>
+              <p>Agents read the issue, code, tests, CI, and logs. When they find the root cause, they propose or deliver a PR with evidence.</p>
+            </article>
+            <article class="capability">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="m8 9-4 3 4 3M16 9l4 3-4 3M14 5l-4 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <h3>Development</h3>
+              <p>UI, backend, integrations, migrations, and test coverage move from acceptance criteria to branch, commit, and PR.</p>
+            </article>
+            <article class="capability">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 3v5m0 8v5M4.5 7.5 8 11m8 2 3.5 3.5M3 12h5m8 0h5M4.5 16.5 8 13m8-2 3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" />
+              </svg>
+              <h3>Self-learning</h3>
+              <p>Retries, friction, and good decisions become ADRs, new agent rules, or tasks that improve the next delivery.</p>
+            </article>
+            <article class="capability">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                <path d="m8.5 12 2.2 2.2 4.8-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <h3>You decide the scope</h3>
+              <p>Run on selected labels, selected sizes, the full backlog, or only a pilot. PR-only or auto-merge is a control.</p>
+            </article>
+          </div>
         </div>
-    </div>
-</div>
-</div>
-</section>
+      </section>
 
 <!-- ══════ SECTION 3: Fit Guide ══════ -->
-<section id="fit" class="py-24 px-8">
-<div class="max-w-[1400px] mx-auto">
+<section class="section flow-band architecture-section">
+        <div class="inner flow-layout">
+          <div class="flow-copy">
+            <div class="eyebrow">Control plane</div>
+            <h2>Faktorial sits between work and workers.</h2>
+            <p>GitHub remains the source of truth. Faktorial reads the work, applies rules and compliance, then dispatches the right agent runtime with the right process and evidence requirements.</p>
+            <div class="rules-list">
+              <div class="rule">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                <span>GitHub Issues, comments, PRs, and workflows flow into the same control plane.</span>
+              </div>
+              <div class="rule">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                <span>Rules, compliance specs, MCP integrations, monitoring, and process live in Faktorial.</span>
+              </div>
+              <div class="rule">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                <span>Claude Code, Codex, and CoPilot execute under the same operating envelope.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="architecture-diagram" aria-label="Three layer Faktorial orchestration diagram">
+            <svg class="architecture-wires" viewBox="0 0 1000 640" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <marker id="architecture-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="#00daf3" />
+                </marker>
+              </defs>
+              <g fill="none" stroke="#00daf3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#architecture-arrow)" opacity=".78">
+                <path d="M185 168 V206" />
+                <path d="M500 168 V206" />
+                <path d="M815 168 V206" />
+                <path d="M185 444 V500" />
+                <path d="M500 444 V500" />
+                <path d="M815 444 V500" />
+              </g>
+            </svg>
+            <div class="architecture-grid">
+              <div class="diagram-layer" aria-label="GitHub layer">
+                <div class="diagram-label">Layer 01 / GitHub</div>
+                <div class="diagram-row">
+                  <div class="diagram-node github">
+                    <span>source</span>
+                    <strong>Issues + Comments</strong>
+                  </div>
+                  <div class="diagram-node github">
+                    <span>delivery surface</span>
+                    <strong>Pull Requests</strong>
+                  </div>
+                  <div class="diagram-node github">
+                    <span>runtime signal</span>
+                    <strong>Workflows</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div class="faktorial-core" aria-label="Faktorial orchestration layer">
+                <div class="core-title">
+                  <span>Layer 02 / Center</span>
+                  <strong>Faktorial</strong>
+                </div>
+                <div class="core-chips">
+                  <div class="core-chip">
+                    <span>control</span>
+                    <strong>Orchestration</strong>
+                  </div>
+                  <div class="core-chip">
+                    <span>visibility</span>
+                    <strong>Monitoring</strong>
+                  </div>
+                  <div class="core-chip">
+                    <span>extension</span>
+                    <strong>3rd-party MCP integration</strong>
+                  </div>
+                  <div class="core-chip">
+                    <span>policy</span>
+                    <strong>Rules</strong>
+                  </div>
+                  <div class="core-chip">
+                    <span>governance</span>
+                    <strong>Compliance specs</strong>
+                  </div>
+                  <div class="core-chip">
+                    <span>delivery</span>
+                    <strong>Process</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div class="diagram-layer" aria-label="Agent runtime layer">
+                <div class="diagram-label">Layer 03 / Agents</div>
+                <div class="diagram-row">
+                  <div class="diagram-node agent">
+                    <span>runtime</span>
+                    <strong>Claude Code</strong>
+                  </div>
+                  <div class="diagram-node agent">
+                    <span>runtime</span>
+                    <strong>Codex</strong>
+                  </div>
+                  <div class="diagram-node agent">
+                    <span>runtime</span>
+                    <strong>CoPilot</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+<section class="section flow-band" id="flow">
+        <div class="inner flow-layout">
+          <div class="flow-copy">
+            <div class="eyebrow">From issue to lesson</div>
+            <h2>Every job gets a traceable life.</h2>
+            <p>Faktorial isolates each issue in its own branch and worktree. Investigation sets the boundaries, build does the work, verify keeps scope and test evidence honest, deploy handles merge, and learn writes back what the system should remember.</p>
+            <div class="rules-list">
+              <div class="rule">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                <span>One issue, one concern, one PR.</span>
+              </div>
+              <div class="rule">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                <span>Tests and acceptance criteria must line up.</span>
+              </div>
+              <div class="rule">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                <span>New friction becomes new knowledge, not scope creep.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flow-diagram" aria-label="Issue to PR to learn diagram">
+            <svg viewBox="0 20 920 528" role="img" aria-labelledby="flow-title flow-desc">
+              <title id="flow-title">Faktorial delivery flow</title>
+              <desc id="flow-desc">A diagram showing backlog issue through investigate, build, verify, deploy, learn and back into rules.</desc>
+              <defs>
+                <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="#849396" />
+                </marker>
+                <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#000" flood-opacity=".35" />
+                </filter>
+              </defs>
+              <rect width="920" height="580" fill="#0a0a0b" />
+              <g>
+                <rect x="42" y="52" width="836" height="152" fill="#1c1b1c" fill-opacity=".32" stroke="#1f3034" />
+                <rect x="42" y="204" width="836" height="164" fill="#131314" fill-opacity=".58" stroke="#1f3034" />
+                <rect x="42" y="368" width="836" height="146" fill="#1c1b1c" fill-opacity=".32" stroke="#1f3034" />
+                <text x="62" y="78" fill="#849396" font-family="monospace" font-size="11" font-weight="700">PLAN</text>
+                <text x="62" y="230" fill="#849396" font-family="monospace" font-size="11" font-weight="700">SHIP</text>
+                <text x="62" y="394" fill="#849396" font-family="monospace" font-size="11" font-weight="700">IMPROVE</text>
+              </g>
+
+              <g filter="url(#softShadow)">
+                <rect x="96" y="92" width="176" height="92" rx="6" fill="#1c1b1c" stroke="#3b494c" />
+                <text x="122" y="126" fill="#00daf3" font-family="monospace" font-size="13" font-weight="700">BACKLOG</text>
+                <text x="122" y="155" fill="#e5e2e3" font-family="Space Grotesk, system-ui, sans-serif" font-size="20" font-weight="800">GitHub issue</text>
+
+                <rect x="372" y="92" width="176" height="92" rx="6" fill="#1c1b1c" stroke="#c3f5ff" />
+                <text x="398" y="126" fill="#c3f5ff" font-family="monospace" font-size="13" font-weight="700">INVESTIGATE</text>
+                <text x="398" y="155" fill="#e5e2e3" font-family="Space Grotesk, system-ui, sans-serif" font-size="20" font-weight="800">AC + scope</text>
+
+                <rect x="648" y="92" width="176" height="92" rx="6" fill="#1c1b1c" stroke="#ffabf3" />
+                <text x="674" y="126" fill="#ffabf3" font-family="monospace" font-size="13" font-weight="700">BUILD</text>
+                <text x="674" y="155" fill="#e5e2e3" font-family="Space Grotesk, system-ui, sans-serif" font-size="20" font-weight="800">Tests + code</text>
+
+                <rect x="648" y="244" width="176" height="92" rx="6" fill="#1c1b1c" stroke="#ffabf3" />
+                <text x="674" y="278" fill="#ffabf3" font-family="monospace" font-size="13" font-weight="700">VERIFY</text>
+                <text x="674" y="307" fill="#e5e2e3" font-family="Space Grotesk, system-ui, sans-serif" font-size="20" font-weight="800">Quality gates</text>
+
+                <rect x="372" y="244" width="176" height="92" rx="6" fill="#1c1b1c" stroke="#00daf3" />
+                <text x="398" y="278" fill="#00daf3" font-family="monospace" font-size="13" font-weight="700">DEPLOY</text>
+                <text x="398" y="307" fill="#e5e2e3" font-family="Space Grotesk, system-ui, sans-serif" font-size="20" font-weight="800">Merge rules</text>
+
+                <rect x="96" y="244" width="176" height="92" rx="6" fill="#1c1b1c" stroke="#4ade80" />
+                <text x="122" y="278" fill="#4ade80" font-family="monospace" font-size="13" font-weight="700">LEARN</text>
+                <text x="122" y="307" fill="#e5e2e3" font-family="Space Grotesk, system-ui, sans-serif" font-size="20" font-weight="800">ADR + rules</text>
+
+                <rect x="96" y="416" width="728" height="76" rx="6" fill="#201f20" stroke="#3b494c" />
+                <text x="134" y="448" fill="#849396" font-family="monospace" font-size="13" font-weight="700">IMPROVE</text>
+                <text x="134" y="474" fill="#e5e2e3" font-family="Space Grotesk, system-ui, sans-serif" font-size="19" font-weight="800">New rules, new tasks, faster next run</text>
+              </g>
+
+              <g fill="none" stroke="#849396" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)">
+                <path d="M272 138H364" />
+                <path d="M548 138H640" />
+                <path d="M736 184V236" />
+                <path d="M648 290H556" />
+                <path d="M372 290H280" />
+                <path d="M184 336V408" />
+              </g>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+<section class="section" id="control">
+        <div class="inner">
+          <div class="section-head">
+            <h2>Autonomy is a control. Not a religion.</h2>
+            <p class="section-copy">You choose what may happen, where it may happen, and when a human must approve the work.</p>
+          </div>
+
+          <div class="scope-panel">
+            <div class="scope-builder">
+              <div class="panel-title">
+                <span>Scope builder</span>
+                <span class="pill cyan">pilot-safe</span>
+              </div>
+              <div class="scope-body">
+                <div class="control-grid" aria-label="Example backlog scope filters">
+                  <label class="toggle"><input type="checkbox" checked /> bugs</label>
+                  <label class="toggle"><input type="checkbox" checked /> tests</label>
+                  <label class="toggle"><input type="checkbox" checked /> UI</label>
+                  <label class="toggle"><input type="checkbox" /> backend</label>
+                  <label class="toggle"><input type="checkbox" /> integrations</label>
+                  <label class="toggle"><input type="checkbox" /> tech debt</label>
+                </div>
+                <div class="branch-row">
+                  <div class="selectlike">
+                    <span>Branch target</span>
+                    <strong>develop/faktorial-pilot</strong>
+                  </div>
+                  <div class="selectlike">
+                    <span>Allowed action</span>
+                    <strong>Open PR, wait for approval</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <aside class="autonomy" aria-label="Autonomy setting">
+              <div class="panel-title">
+                <span>Autonomy level</span>
+                <span class="pill amber">level 2</span>
+              </div>
+              <div class="autonomy-body">
+                <div class="slider" aria-hidden="true"></div>
+                <div class="autonomy-scale">
+                  <span>PR only</span>
+                  <span>Approval gates</span>
+                  <span>Auto-merge</span>
+                </div>
+                <p class="autonomy-callout">Start with labels such as <strong>bug</strong>, <strong>size:S</strong>, and <strong>test-coverage</strong>. As trust builds, the same pipeline can get more authority.</p>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+<section class="section" id="learn">
+        <div class="inner learning">
+          <article class="lesson-card">
+            <div class="eyebrow">Self-learning</div>
+            <h3>The most important part is what happens after merge.</h3>
+            <p>Faktorial captures signals from development and turns them into usable assets: rules for agents, ADRs for humans, and new issues for improvements that do not belong in the same PR.</p>
+            <div class="lesson-steps">
+              <div class="lesson-step"><b>01</b><span>CI was slow or flaky.</span></div>
+              <div class="lesson-step"><b>02</b><span>Learn analyzes the pattern and writes the root cause.</span></div>
+              <div class="lesson-step"><b>03</b><span>The system creates a task: optimize test performance.</span></div>
+              <div class="lesson-step"><b>04</b><span>The next agent run gets a new preventive rule.</span></div>
+            </div>
+          </article>
+
+          <aside class="memory-card">
+            <div class="panel-title">
+              <span>skills/coverage-slicer/SKILL.md</span>
+              <span class="pill green">committed</span>
+            </div>
+            <pre class="code-window"><span class="quiet"># Coverage Slicer</span>
+Use this skill when an issue asks for coverage, mutation testing, or broad test-hardening across several modules.
+
+<span class="cyan">## Signal captured</span>
+- issue: #693
+- evidence: CI duration, worker logs, retry history
+- failure mode: one agent tried to own too much surface area
+- result: two retries exceeded the turn budget
+
+<span class="amber">## Rule</span>
+If estimated scope is >1000 statements or touches >3 modules:
+1. map affected modules first
+2. create one child issue per module
+3. cap each PR to one module and one test type
+4. leave a parent comment linking evidence
+
+<span class="green">## Guardrails for next agents</span>
+- do not start implementation before slicing
+- do not mix auth, billing, and API coverage in one PR
+- prefer the smallest failing test first
+
+<span class="green">## Output</span>
+- labels: coverage, module:&lt;name&gt;, agent-ready
+- follow-up issue: optimize slow auth tests</pre>
+          </aside>
+        </div>
+      </section>
+
+<section class="section">
+        <div class="inner">
+          <div class="section-head">
+            <h2>Plug in where the team already works.</h2>
+            <p class="section-copy">GitHub, CI, local logs, and the Faktorial dashboard are the core. Datadog and Grafana connect as integrations for teams already living in logs and metrics.</p>
+          </div>
+
+          <div class="integrations" aria-label="Integration surfaces">
+            <div class="integration">
+              <div class="integration-logo-frame">
+                <img class="integration-logo github" src="logos/github.png" alt="GitHub logo" loading="lazy" />
+              </div>
+              <span class="mono">source</span>
+              <strong>GitHub</strong>
+              <p>Issues, labels, branches, PRs, comments, and CI state.</p>
+            </div>
+            <div class="integration">
+              <div class="integration-logo-frame">
+                <img class="integration-logo faktorial" src="logos/faktorial.png" alt="Faktorial logo" loading="lazy" />
+              </div>
+              <span class="mono">runtime</span>
+              <strong>Faktorial</strong>
+              <p>Local state, workers, worktrees, issue logs, and evidence.</p>
+            </div>
+            <div class="integration">
+              <div class="integration-logo-frame">
+                <img class="integration-logo openobserve" src="logos/openobserve.png" alt="OpenObserve logo" loading="lazy" />
+              </div>
+              <span class="mono">telemetry</span>
+              <strong>OpenObserve</strong>
+              <p>Logs, metrics, and traces from runtime-owned boundaries.</p>
+            </div>
+            <div class="integration">
+              <div class="integration-logo-frame">
+                <img class="integration-logo datadog" src="logos/datadog.png" alt="Datadog logo" loading="lazy" />
+              </div>
+              <span class="mono">integration</span>
+              <strong>Datadog</strong>
+              <p>Natural ingest surface for production signals.</p>
+            </div>
+            <div class="integration">
+              <div class="integration-logo-frame">
+                <img class="integration-logo grafana" src="logos/grafana.png" alt="Grafana logo" loading="lazy" />
+              </div>
+              <span class="mono">integration</span>
+              <strong>Grafana</strong>
+              <p>Dashboard layer for teams already living in metrics.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+<section id="fit" class="py-24 page-band">
+<div class="page-inner">
 <div class="flex items-center gap-4 mb-6">
     <span class="text-primary font-bold tracking-[0.5em] uppercase text-xs">Fit_Guide</span>
     <div class="h-px flex-grow bg-primary/10"></div>
@@ -554,9 +2578,11 @@ Menu
 </div>
 </div>
 </section>
+
+
 <!-- Pilot Proof -->
-<section id="proof" class="py-24 px-8 bg-surface-container-lowest border-y border-primary/10 relative">
-<div class="max-w-[1400px] mx-auto">
+<section id="proof" class="py-24 page-band bg-surface-container-lowest border-y border-primary/10 relative">
+<div class="page-inner">
 <div class="flex items-center gap-4 mb-6">
 <span class="text-tertiary-fixed-dim font-bold tracking-[0.5em] uppercase text-xs">Pilot_Proof</span>
 <div class="h-px flex-grow bg-tertiary-fixed-dim/20"></div>
@@ -587,405 +2613,120 @@ Menu
 </div>
 </div>
 </section>
-<!-- How It Works — Pipeline -->
-<section id="pipeline" class="py-32 px-8 relative overflow-hidden">
-<div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(180deg, #0e0e0f 0%, #131314 30%, #131314 70%, #0e0e0f 100%);"></div>
-<div class="relative z-10 max-w-[1400px] mx-auto">
+
+<!-- ══════ SECTION 2: Two Ways To Ship ══════ -->
+<section id="models" class="py-28 page-band bg-surface-container-lowest border-y border-primary/10 relative">
+<div class="page-inner">
 <div class="flex items-center gap-4 mb-6">
-<span class="text-tertiary-fixed-dim font-bold tracking-[0.5em] uppercase text-xs">How_It_Works</span>
-<div class="h-px flex-grow bg-tertiary-fixed-dim/20"></div>
+    <span class="text-primary font-bold tracking-[0.5em] uppercase text-xs">Service_Models</span>
+    <div class="h-px flex-grow bg-primary/10"></div>
 </div>
 <h2 class="font-headline text-3xl md:text-5xl font-black tracking-[0.1em] uppercase mb-6">
-From Backlog To Verified Delivery.<br/><span class="text-primary-fixed-dim">Then To Main.</span>
-</h2>
-<p class="text-on-surface-variant text-lg max-w-2xl mb-20">
-Each delivery run moves through five stages. Scope, tests, review, CI, and learning stay visible at each step. When judgment is needed, the work pauses and asks for a decision.
-</p>
-
-<!-- Pipeline Stages -->
-<div class="grid grid-cols-1 md:grid-cols-5 gap-0 relative">
-<!-- Connecting line -->
-<div class="hidden md:block absolute top-12 left-[10%] right-[10%] h-px bg-gradient-to-r from-primary/40 via-primary/20 to-primary/40 z-0"></div>
-
-<!-- Stage 1: Investigate -->
-<div class="relative z-10 flex flex-col items-center text-center group">
-<div class="w-24 h-24 border border-primary/30 bg-surface-container-lowest flex items-center justify-center mb-6 group-hover:border-primary/80 group-hover:shadow-[0_0_20px_rgba(0,218,243,0.15)] transition-all duration-500">
-<span class="material-symbols-outlined text-primary text-3xl" data-icon="search_insights">search_insights</span>
-</div>
-<h4 class="font-headline font-bold uppercase tracking-[0.2em] text-sm text-primary mb-2">Investigate</h4>
-<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Reads the issue, maps affected files and dependencies, defines the intended scope, and writes acceptance criteria</p>
-</div>
-
-<!-- Stage 2: Build -->
-<div class="relative z-10 flex flex-col items-center text-center group">
-<div class="w-24 h-24 border border-primary/30 bg-surface-container-lowest flex items-center justify-center mb-6 group-hover:border-primary/80 group-hover:shadow-[0_0_20px_rgba(0,218,243,0.15)] transition-all duration-500">
-<span class="material-symbols-outlined text-primary text-3xl" data-icon="code">code</span>
-</div>
-<h4 class="font-headline font-bold uppercase tracking-[0.2em] text-sm text-primary mb-2">Build</h4>
-<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Writes failing tests from acceptance criteria, implements code, runs the suite, and opens a pull request</p>
-</div>
-
-<!-- Stage 3: Verify -->
-<div class="relative z-10 flex flex-col items-center text-center group">
-<div class="w-24 h-24 border border-primary/30 bg-surface-container-lowest flex items-center justify-center mb-6 group-hover:border-primary/80 group-hover:shadow-[0_0_20px_rgba(0,218,243,0.15)] transition-all duration-500">
-<span class="material-symbols-outlined text-primary text-3xl" data-icon="verified">verified</span>
-</div>
-<h4 class="font-headline font-bold uppercase tracking-[0.2em] text-sm text-primary mb-2">Verify</h4>
-<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Checks CI status, acceptance-criteria coverage, approved scope, test quality, and security scan results</p>
-</div>
-
-<!-- Stage 4: Deploy -->
-<div class="relative z-10 flex flex-col items-center text-center group">
-<div class="w-24 h-24 border border-primary/30 bg-surface-container-lowest flex items-center justify-center mb-6 group-hover:border-primary/80 group-hover:shadow-[0_0_20px_rgba(0,218,243,0.15)] transition-all duration-500">
-<span class="material-symbols-outlined text-primary text-3xl" data-icon="rocket_launch">rocket_launch</span>
-</div>
-<h4 class="font-headline font-bold uppercase tracking-[0.2em] text-sm text-primary mb-2">Deploy</h4>
-<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Confirms CI is green, approvals are in, and no conflicts remain. Then merges according to your repo rules</p>
-</div>
-
-<!-- Stage 5: Learn -->
-<div class="relative z-10 flex flex-col items-center text-center group">
-<div class="w-24 h-24 border border-tertiary-fixed-dim/30 bg-surface-container-lowest flex items-center justify-center mb-6 group-hover:border-tertiary-fixed-dim/80 group-hover:shadow-[0_0_20px_rgba(255,171,243,0.15)] transition-all duration-500">
-<span class="material-symbols-outlined text-tertiary-fixed-dim text-3xl" data-icon="psychology">psychology</span>
-</div>
-<h4 class="font-headline font-bold uppercase tracking-[0.2em] text-sm text-tertiary-fixed-dim mb-2">Learn</h4>
-<p class="text-on-surface-variant text-xs leading-relaxed px-2 max-w-[180px]">Commits decision notes and preventive rules from the run so future issues follow what was learned</p>
-</div>
-</div>
-</div>
-</section>
-
-<!-- Autonomous Agents Deep Dive -->
-<section id="agents" class="py-32 px-8 bg-surface-container-lowest border-y border-primary/10 relative">
-<div class="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
-<div class="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full blur-[160px] opacity-5 bg-primary"></div>
-<div class="absolute -bottom-40 -left-40 w-[400px] h-[400px] rounded-full blur-[120px] opacity-5 bg-tertiary-fixed-dim"></div>
-</div>
-<div class="relative z-10 max-w-[1400px] mx-auto">
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
-
-<!-- Left: Content -->
-<div>
-<div class="flex items-center gap-4 mb-6">
-<span class="text-primary font-bold tracking-[0.5em] uppercase text-xs">Delivery_Engine</span>
-<div class="h-px flex-grow bg-primary/10"></div>
-</div>
-<h2 class="font-headline text-3xl md:text-5xl font-black tracking-[0.1em] uppercase mb-8">
-Controlled Execution.<br/><span class="text-primary-fixed-dim">Human Approval.</span>
-</h2>
-<p class="text-on-surface-variant text-lg mb-10 leading-relaxed">
-Each issue runs in an isolated workspace, writes tests, implements code, and opens a PR. Multiple issues can move in parallel. When the system is stuck or uncertain, it escalates and waits for your decision.
-</p>
-
-<div class="space-y-6">
-<div class="flex gap-4 items-start p-5 bg-surface-container border-l-2 border-primary/40 hover:border-primary transition-colors">
-<span class="material-symbols-outlined text-primary text-xl mt-0.5" data-icon="commit">commit</span>
-<div>
-<h5 class="font-headline font-bold text-sm uppercase tracking-widest mb-1">Issue Isolation</h5>
-<p class="text-on-surface-variant text-sm">Each issue gets its own git worktree. Parallel work, no file conflicts, no coordination overhead. Real commits, real PRs, clean git history.</p>
-</div>
-</div>
-<div class="flex gap-4 items-start p-5 bg-surface-container border-l-2 border-primary/40 hover:border-primary transition-colors">
-<span class="material-symbols-outlined text-primary text-xl mt-0.5" data-icon="target">target</span>
-<div>
-<h5 class="font-headline font-bold text-sm uppercase tracking-widest mb-1">Scoped Change Protection</h5>
-<p class="text-on-surface-variant text-sm">The investigate stage declares which files should change. Verify blocks the PR if the diff exceeds that scope. No surprise side effects.</p>
-</div>
-</div>
-<div class="flex gap-4 items-start p-5 bg-surface-container border-l-2 border-tertiary-fixed-dim/40 hover:border-tertiary-fixed-dim transition-colors">
-<span class="material-symbols-outlined text-tertiary-fixed-dim text-xl mt-0.5" data-icon="auto_fix_high">auto_fix_high</span>
-<div>
-<h5 class="font-headline font-bold text-sm uppercase tracking-widest mb-1">Self-Correcting Runs</h5>
-<p class="text-on-surface-variant text-sm">When tests fail, the system diagnoses the error and fixes it. Runtime failures feed back into the delivery loop instead of becoming noise in your inbox.</p>
-</div>
-</div>
-</div>
-</div>
-
-<!-- Right: Visual — Terminal-style agent log -->
-<div class="relative">
-<div class="bg-[#0a0a0b] border border-primary/10 overflow-hidden">
-<!-- Terminal header -->
-<div class="flex items-center gap-2 px-4 py-3 bg-surface-container-lowest border-b border-primary/10">
-<div class="w-2.5 h-2.5 rounded-full bg-error/60"></div>
-<div class="w-2.5 h-2.5 rounded-full bg-tertiary-fixed-dim/60"></div>
-<div class="w-2.5 h-2.5 rounded-full bg-primary-fixed-dim/60"></div>
-<span class="ml-3 text-[10px] text-outline tracking-widest uppercase font-mono">worker-3 // issue #259</span>
-</div>
-<!-- Terminal body -->
-<div class="p-6 font-mono text-xs leading-relaxed space-y-1.5 text-on-surface-variant/70">
-<div><span class="text-primary-fixed-dim">14:31:02</span> <span class="text-outline">│</span> Picked up issue <span class="text-primary">#259</span> — add retry logic to webhook handler</div>
-<div><span class="text-primary-fixed-dim">14:31:04</span> <span class="text-outline">│</span> <span class="text-[#facc15]">investigate</span> → mapping scope... 6 files</div>
-<div><span class="text-primary-fixed-dim">14:31:12</span> <span class="text-outline">│</span> Posted investigation comment with 4 ACs</div>
-<div><span class="text-primary-fixed-dim">14:31:15</span> <span class="text-outline">│</span> <span class="text-[#4ade80]">build</span> → writing tests for AC-1..AC-4</div>
-<div><span class="text-primary-fixed-dim">14:32:41</span> <span class="text-outline">│</span> Wrote 3 files, +87 -12 lines</div>
-<div><span class="text-primary-fixed-dim">14:32:44</span> <span class="text-outline">│</span> pytest... <span class="text-[#4ade80]">18 passed</span></div>
-<div><span class="text-primary-fixed-dim">14:32:48</span> <span class="text-outline">│</span> ruff... <span class="text-[#4ade80]">clean</span> · mypy... <span class="text-[#4ade80]">0 errors</span></div>
-<div><span class="text-primary-fixed-dim">14:32:52</span> <span class="text-outline">│</span> <span class="text-[#facc15]">verify</span> → checking quality gates</div>
-<div><span class="text-primary-fixed-dim">14:33:01</span> <span class="text-outline">│</span> Opened PR <span class="text-primary">#287</span> — CI running</div>
-<div><span class="text-primary-fixed-dim">14:34:18</span> <span class="text-outline">│</span> CI <span class="text-[#4ade80]">passed</span> — all checks green</div>
-<div><span class="text-primary-fixed-dim">14:34:20</span> <span class="text-outline">│</span> AC traceability: <span class="text-[#4ade80]">4/4 mapped</span></div>
-<div><span class="text-primary-fixed-dim">14:34:21</span> <span class="text-outline">│</span> Scope: <span class="text-[#4ade80]">3/3 files in scope</span></div>
-<div><span class="text-primary-fixed-dim">14:34:22</span> <span class="text-outline">│</span> <span class="text-primary-fixed-dim">deploy</span> → merging to main</div>
-<div><span class="text-primary-fixed-dim">14:34:25</span> <span class="text-outline">│</span> Merged to <span class="text-primary">main</span></div>
-<div><span class="text-primary-fixed-dim">14:34:26</span> <span class="text-outline">│</span> <span class="text-tertiary-fixed-dim">learn</span> → writing ADR, no rule needed</div>
-<div class="pt-2"><span class="text-primary-fixed-dim">14:34:30</span> <span class="text-outline">│</span> Issue <span class="text-primary">#259</span> closed. Cycle: <span class="text-primary font-bold">3m 28s</span></div>
-<div><span class="text-primary-fixed-dim animate-pulse">▊</span></div>
-</div>
-</div>
-<!-- Decorative label -->
-<div class="absolute -bottom-3 -right-3 px-4 py-1.5 bg-primary-container text-on-primary-container text-[9px] font-bold uppercase tracking-[0.3em]">
-Live Delivery Log
-</div>
-</div>
-</div>
-
-</div>
-</section>
-
-<!-- Control Plane -->
-<section id="control" class="py-32 px-8 relative">
-<div class="max-w-[1400px] mx-auto">
-<div class="flex items-center gap-4 mb-6">
-<span class="text-primary font-bold tracking-[0.5em] uppercase text-xs">Control_&amp;_Observability</span>
-<div class="h-px flex-grow bg-primary/10"></div>
-</div>
-<h2 class="font-headline text-3xl md:text-5xl font-black tracking-[0.1em] uppercase mb-6">
-Local Command Center.<br/><span class="text-tertiary-fixed-dim">Full Audit Trail.</span>
+    Two Ways To Ship.<br/><span class="text-primary-fixed-dim">One Standard Of Proof.</span>
 </h2>
 <p class="text-on-surface-variant text-lg max-w-2xl mb-16">
-A local status dashboard shows the issue queue, worker states, and recent events in real time. It reads from local state in your environment, with no external status service required. Reviewers can see what is running, what is blocked, and what evidence backs each PR.
+    Use Faktorial inside your existing GitHub workflow with your engineers reviewing PRs, or use Faktorial Managed when you want Asynkron to run the delivery loop. Same pipeline, same quality gates, same traceability.
 </p>
 
-<!-- Queue kanban mockup -->
-<div class="bg-[#0a0a0b] border border-primary/10 overflow-hidden">
-<div class="flex items-center justify-between px-5 py-3 border-b border-primary/10 bg-surface-container-lowest">
-    <div class="flex items-center gap-6 text-[10px] uppercase tracking-widest font-mono">
-        <span class="text-on-surface-variant border-b border-on-surface-variant pb-1">Queue</span>
-        <span class="text-outline">Workers</span>
-        <span class="text-outline">Logs</span>
-        <span class="text-outline">Metrics</span>
-    </div>
-    <span class="flex items-center gap-1.5 text-[9px] text-[#4ade80] tracking-widest uppercase font-mono"><span class="w-1.5 h-1.5 rounded-full bg-[#4ade80] inline-block"></span> Live</span>
-</div>
-<!-- Kanban columns -->
-<div class="grid grid-cols-5 divide-x divide-primary/5 min-h-[300px]">
-    <!-- Investigate -->
-    <div class="p-3">
-        <div class="flex items-center justify-between mb-3">
-            <span class="text-[9px] uppercase tracking-widest text-[#facc15] font-mono flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-[#facc15]"></span> Investigate</span>
-            <span class="text-[9px] text-outline font-mono">3</span>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <!-- Self-service -->
+    <div class="border border-primary/20 p-10 relative group hover:border-primary/40 transition-all flex flex-col">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+        <div class="flex items-center gap-3 mb-6">
+            <span class="material-symbols-outlined text-primary text-2xl" data-icon="handshake">handshake</span>
+            <h3 class="font-headline font-black uppercase tracking-[0.15em] text-lg text-primary">Your Team + Faktorial</h3>
         </div>
-        <div class="space-y-2">
-            <div class="bg-surface-container-low border border-primary/5 p-2.5">
-                <div class="flex items-center gap-1.5 mb-1"><span class="text-primary text-[10px] font-mono font-bold">#214</span><span class="px-1 py-0.5 bg-[#4ade80]/15 text-[#4ade80] text-[7px] uppercase">w2</span><span class="px-1 py-0.5 bg-error/15 text-error text-[7px] uppercase">p1</span></div>
-                <div class="text-[9px] text-on-surface-variant leading-snug">PSD2 SCA retry on 3DS timeout</div>
-            </div>
-            <div class="bg-surface-container-low border border-primary/5 p-2.5">
-                <div class="flex items-center gap-1.5 mb-1"><span class="text-primary text-[10px] font-mono font-bold">#218</span><span class="px-1 py-0.5 bg-outline/10 text-outline text-[7px] uppercase">queued</span></div>
-                <div class="text-[9px] text-on-surface-variant leading-snug">Add IBAN validation for SEPA transfers</div>
-            </div>
-            <div class="bg-surface-container-low border border-primary/5 p-2.5">
-                <div class="flex items-center gap-1.5 mb-1"><span class="text-primary text-[10px] font-mono font-bold">#220</span><span class="px-1 py-0.5 bg-outline/10 text-outline text-[7px] uppercase">queued</span></div>
-                <div class="text-[9px] text-on-surface-variant leading-snug">Rate-limit login attempts per IP</div>
-            </div>
+        <p class="text-on-surface-variant text-sm leading-relaxed mb-8">
+            Best when you already have a development team and want more delivery capacity inside the workflow you use today. Your team owns priorities, architecture, reviews, and merge decisions. Faktorial handles scoped implementation work.
+        </p>
+        <div class="space-y-4 mb-8">
+            <div class="flex items-start gap-3"><span class="text-primary text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">Your team owns priorities and merge decisions</span></div>
+            <div class="flex items-start gap-3"><span class="text-primary text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">Faktorial handles scoped implementation issues</span></div>
+            <div class="flex items-start gap-3"><span class="text-primary text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">PRs arrive with tests and evidence</span></div>
+            <div class="flex items-start gap-3"><span class="text-primary text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">Works inside your existing repo workflow</span></div>
+        </div>
+        <div class="mt-auto">
+            <a href="mailto:info@asynkron.se?subject=Faktorial%20Pilot%20Inquiry&body=Hi%2C%0A%0AWe%27re%20interested%20in%20running%20a%20Faktorial%20pilot.%0A%0ACompany%3A%20%0ARepo%20size%20(approx)%3A%20%0ABacklog%20size%3A%20%0A%0AThanks" class="px-8 py-3 bg-primary-container text-on-primary-container font-bold uppercase tracking-[0.15em] text-sm hover:shadow-[0_0_20px_rgba(0,218,243,0.3)] transition-all active:scale-[0.98] inline-block">Start with 10 issues</a>
         </div>
     </div>
-    <!-- Build -->
-    <div class="p-3">
-        <div class="flex items-center justify-between mb-3">
-            <span class="text-[9px] uppercase tracking-widest text-[#4ade80] font-mono flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-[#4ade80]"></span> Build</span>
-            <span class="text-[9px] text-outline font-mono">3</span>
+    <!-- Managed -->
+    <div class="border border-tertiary-fixed-dim/20 p-10 relative group hover:border-tertiary-fixed-dim/40 transition-all flex flex-col">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-tertiary-fixed-dim/5 blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+        <div class="flex items-center gap-3 mb-6">
+            <span class="material-symbols-outlined text-tertiary-fixed-dim text-2xl" data-icon="engineering">engineering</span>
+            <h3 class="font-headline font-black uppercase tracking-[0.15em] text-lg text-tertiary-fixed-dim">Faktorial Managed</h3>
         </div>
-        <div class="space-y-2">
-            <div class="bg-surface-container-low border border-primary/5 p-2.5">
-                <div class="flex items-center gap-1.5 mb-1"><span class="text-primary text-[10px] font-mono font-bold">#209</span><span class="px-1 py-0.5 bg-[#4ade80]/15 text-[#4ade80] text-[7px] uppercase">w1</span></div>
-                <div class="text-[9px] text-on-surface-variant leading-snug">KYC document upload endpoint</div>
-                <div class="text-[8px] text-outline mt-1">+126 -80 &middot; 4 files</div>
-            </div>
-            <div class="bg-surface-container-low border border-primary/5 p-2.5">
-                <div class="flex items-center gap-1.5 mb-1"><span class="text-primary text-[10px] font-mono font-bold">#211</span><span class="px-1 py-0.5 bg-[#4ade80]/15 text-[#4ade80] text-[7px] uppercase">w3</span></div>
-                <div class="text-[9px] text-on-surface-variant leading-snug">Transaction fraud score threshold</div>
-                <div class="text-[8px] text-outline mt-1">+37 -12 &middot; 2 files</div>
-            </div>
-            <div class="bg-surface-container-low border border-primary/5 p-2.5">
-                <div class="flex items-center gap-1.5 mb-1"><span class="text-primary text-[10px] font-mono font-bold">#215</span><span class="px-1 py-0.5 bg-[#4ade80]/15 text-[#4ade80] text-[7px] uppercase">w4</span></div>
-                <div class="text-[9px] text-on-surface-variant leading-snug">Multi-currency account balances API</div>
-                <div class="text-[8px] text-outline mt-1">+204 -45 &middot; 6 files</div>
-            </div>
+        <p class="text-on-surface-variant text-sm leading-relaxed mb-8">
+            Best when you want Asynkron to run the operating loop. You file or approve issues; senior engineers supervise Faktorial, handle escalations, and deliver review-ready code.
+        </p>
+        <div class="space-y-4 mb-8">
+            <div class="flex items-start gap-3"><span class="text-tertiary-fixed-dim text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">Asynkron runs the pipeline</span></div>
+            <div class="flex items-start gap-3"><span class="text-tertiary-fixed-dim text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">We supervise agents and handle escalations</span></div>
+            <div class="flex items-start gap-3"><span class="text-tertiary-fixed-dim text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">You approve scope and merge decisions</span></div>
+            <div class="flex items-start gap-3"><span class="text-tertiary-fixed-dim text-sm mt-0.5">&#10003;</span><span class="text-on-surface-variant text-sm">Capacity scales by backlog, not headcount</span></div>
+        </div>
+        <div class="mt-auto">
+            <a href="mailto:info@asynkron.se?subject=Faktorial%20Managed%20Service&body=Hi%2C%0A%0AWe%27re%20interested%20in%20Faktorial%20Managed%20by%20Asynkron.%0A%0ACompany%3A%20%0AWhat%20we%20need%20help%20with%3A%20%0A%0AThanks" class="px-8 py-3 border border-tertiary-fixed-dim/30 text-tertiary-fixed-dim font-bold uppercase tracking-[0.15em] text-sm hover:bg-tertiary-fixed-dim/5 transition-all active:scale-[0.98] inline-block">Contact Us</a>
         </div>
     </div>
-    <!-- Verify -->
-    <div class="p-3">
-        <div class="flex items-center justify-between mb-3">
-            <span class="text-[9px] uppercase tracking-widest text-primary-fixed-dim font-mono flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary-fixed-dim"></span> Verify</span>
-            <span class="text-[9px] text-outline font-mono">2</span>
-        </div>
-        <div class="space-y-2">
-            <div class="bg-surface-container-low border border-primary/5 p-2.5">
-                <div class="flex items-center gap-1.5 mb-1"><span class="text-primary text-[10px] font-mono font-bold">#206</span><span class="px-1 py-0.5 bg-primary-fixed-dim/15 text-primary-fixed-dim text-[7px] uppercase">CI</span></div>
-                <div class="text-[9px] text-on-surface-variant leading-snug">Standing order scheduler</div>
-                <div class="text-[8px] text-[#4ade80] mt-1">AC 3/3 &middot; scope ok</div>
-            </div>
-            <div class="bg-surface-container-low border border-primary/5 p-2.5">
-                <div class="flex items-center gap-1.5 mb-1"><span class="text-primary text-[10px] font-mono font-bold">#208</span><span class="px-1 py-0.5 bg-primary-fixed-dim/15 text-primary-fixed-dim text-[7px] uppercase">CI</span></div>
-                <div class="text-[9px] text-on-surface-variant leading-snug">PII masking in audit logs</div>
-                <div class="text-[8px] text-[#4ade80] mt-1">AC 5/5 &middot; security scan clean</div>
-            </div>
-        </div>
-    </div>
-    <!-- Deploy -->
-    <div class="p-3">
-        <div class="flex items-center justify-between mb-3">
-            <span class="text-[9px] uppercase tracking-widest text-primary-fixed-dim font-mono flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary-fixed-dim"></span> Deploy</span>
-            <span class="text-[9px] text-outline font-mono">1</span>
-        </div>
-        <div class="space-y-2">
-            <div class="bg-surface-container-low border border-[#4ade80]/20 p-2.5">
-                <div class="flex items-center gap-1.5 mb-1"><span class="text-primary text-[10px] font-mono font-bold">#203</span><span class="px-1 py-0.5 bg-[#4ade80]/15 text-[#4ade80] text-[7px] uppercase">ready</span></div>
-                <div class="text-[9px] text-on-surface-variant leading-snug">OAuth2 token refresh flow</div>
-                <div class="text-[8px] text-[#4ade80] mt-1">CI green &middot; merging</div>
-            </div>
-        </div>
-    </div>
-    <!-- Learn -->
-    <div class="p-3">
-        <div class="flex items-center justify-between mb-3">
-            <span class="text-[9px] uppercase tracking-widest text-tertiary-fixed-dim font-mono flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed-dim"></span> Learn</span>
-            <span class="text-[9px] text-outline font-mono">2</span>
-        </div>
-        <div class="space-y-2">
-            <div class="bg-surface-container-low border border-tertiary-fixed-dim/10 p-2.5">
-                <div class="flex items-center gap-1.5 mb-1"><span class="text-primary text-[10px] font-mono font-bold">#199</span><span class="px-1 py-0.5 bg-tertiary-fixed-dim/15 text-tertiary-fixed-dim text-[7px] uppercase">ADR</span></div>
-                <div class="text-[9px] text-on-surface-variant leading-snug">Webhook idempotency keys</div>
-                <div class="text-[8px] text-tertiary-fixed-dim mt-1">writing ADR-0041</div>
-            </div>
-            <div class="bg-surface-container-low border border-tertiary-fixed-dim/10 p-2.5">
-                <div class="flex items-center gap-1.5 mb-1"><span class="text-primary text-[10px] font-mono font-bold">#201</span><span class="px-1 py-0.5 bg-tertiary-fixed-dim/15 text-tertiary-fixed-dim text-[7px] uppercase">rule</span></div>
-                <div class="text-[9px] text-on-surface-variant leading-snug">Card BIN validation regex</div>
-                <div class="text-[8px] text-tertiary-fixed-dim mt-1">creating rule &middot; 2 retries detected</div>
-            </div>
-        </div>
-    </div>
-</div>
 </div>
 
 </div>
 </section>
 
-<!-- Self-Learning: ADRs, Rules, Spec-Test Sync -->
-<section class="py-32 px-8 relative">
-<div class="max-w-[1400px] mx-auto">
+<section class="section closing" id="closing">
+        <div class="inner">
+          <div>
+            <div class="eyebrow">Elevator pitch</div>
+            <h2>The backlog becomes a production system.</h2>
+            <p>The point is simple: Faktorial is not a chatbot and not a code generator. It is a controlled delivery factory that can work continuously on the backlog you already have.</p>
+            <div class="hero-actions">
+              <a class="btn primary" href="mailto:info@asynkron.se?subject=Faktorial%20Pilot%20Inquiry&body=Hi%2C%0A%0AWe%27re%20interested%20in%20running%20a%20Faktorial%20pilot.%0A%0ACompany%3A%20%0ARepo%20size%20(approx)%3A%20%0ABacklog%20size%3A%20%0A%0AThanks">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                Run pilot
+              </a>
+              <a class="btn" href="#top">Back to top</a>
+            </div>
+          </div>
+          <aside class="pitch-card">
+            <div class="mono">30 seconds</div>
+            <blockquote>Faktorial automates your backlog. You choose scope and rules; agents debug, build, test, open PRs, merge when allowed, and learn from every delivery.</blockquote>
+          </aside>
+        </div>
+      </section>
+
+<section id="asynkron" class="py-24 page-band bg-surface-container-lowest border-y border-primary/10">
+<div class="page-inner">
 <div class="flex items-center gap-4 mb-6">
-    <span class="text-tertiary-fixed-dim font-bold tracking-[0.5em] uppercase text-xs">Continuous_Learning</span>
-    <div class="h-px flex-grow bg-tertiary-fixed-dim/10"></div>
+<span class="text-primary font-bold tracking-[0.5em] uppercase text-xs">Asynkron_Origin</span>
+<div class="h-px flex-grow bg-primary/10"></div>
 </div>
-<h2 class="font-headline text-3xl md:text-5xl font-black tracking-[0.1em] uppercase mb-6">
-    Every delivery makes <br/>the next one <span class="text-tertiary-fixed-dim">better.</span>
-</h2>
-<p class="text-on-surface-variant text-lg max-w-2xl mb-16">
-    The learn stage runs after every merge. It captures what happened, why it mattered, and what to do differently next time as repo-committed decision records and preventive rules.
-</p>
-
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-
-<!-- Left: How spec-test-sync works -->
-<div>
-    <h4 class="font-headline font-bold uppercase tracking-widest text-sm mb-6 text-primary">Test Evidence Check</h4>
-    <p class="text-on-surface-variant text-sm leading-relaxed mb-6">
-        A background check audits closed issues. If an issue has acceptance criteria but no matching test evidence, it raises a follow-up alert so gaps do not quietly disappear.
-    </p>
-
-    <!-- Spec-test-sync mockup -->
-    <div class="bg-[#0a0a0b] border border-primary/10 overflow-hidden">
-        <div class="flex items-center gap-2 px-4 py-2.5 border-b border-primary/10 bg-surface-container-lowest">
-            <span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim"></span>
-            <span class="text-[10px] text-outline tracking-widest uppercase font-mono">sentinel // spec-test-sync</span>
-        </div>
-        <div class="p-5 font-mono text-[10px] leading-[2] text-on-surface-variant/70">
-            <div><span class="text-outline">│</span> Scanning closed issues with ACs...</div>
-            <div><span class="text-outline">│</span> Issue <span class="text-primary">#693</span> — 6 ACs, no direct PR evidence</div>
-            <div><span class="text-outline">│</span> Checking child issues...</div>
-            <div><span class="text-outline">│</span>&ensp; <span class="text-primary">#723</span> AC-1 (worker.py) → <span class="text-[#4ade80]">merged</span></div>
-            <div><span class="text-outline">│</span>&ensp; <span class="text-primary">#724</span> AC-2 (github.py) → <span class="text-[#4ade80]">merged</span></div>
-            <div><span class="text-outline">│</span>&ensp; <span class="text-primary">#725</span> AC-3 (server.py) → <span class="text-[#4ade80]">merged</span></div>
-            <div><span class="text-outline">│</span> AC-4..AC-6 → <span class="text-[#4ade80]">enforced per-issue in child builds</span></div>
-            <div><span class="text-outline">│</span> Evidence chain: <span class="text-[#4ade80]">6/6 ACs satisfied</span></div>
-            <div><span class="text-outline">│</span> Result: <span class="text-[#4ade80]">no alert needed</span></div>
-        </div>
+<div class="grid grid-cols-1 lg:grid-cols-[0.95fr_1.05fr] gap-12 items-center">
+    <div>
+        <img src="https://asynkron.se/img/asynkron.png" alt="Asynkron" class="h-12 w-auto max-w-[320px] object-contain mb-10"/>
+        <h2 class="font-headline text-3xl md:text-5xl font-black tracking-[0.1em] uppercase mb-6">
+            Created By The Team Behind <span class="text-primary-fixed-dim">Proto.Actor.</span>
+        </h2>
+        <p class="text-on-surface-variant text-lg leading-relaxed max-w-3xl">
+            Asynkron brings distributed-systems experience from high-scale, mission-critical platforms across finance, industrial automation, and real-time communications into Faktorial's delivery model.
+        </p>
     </div>
-</div>
-
-<!-- Right: ADR + Rule mockups -->
-<div>
-    <h4 class="font-headline font-bold uppercase tracking-widest text-sm mb-6 text-tertiary-fixed-dim">Decision Records &amp; Preventive Rules</h4>
-    <p class="text-on-surface-variant text-sm leading-relaxed mb-6">
-        When the learn stage detects retries, friction, or non-trivial decisions, it writes an Architecture Decision Record and a preventive rule. Both are committed to the repo and applied to future runs.
-    </p>
-
-    <!-- ADR mockup -->
-    <div class="bg-[#0a0a0b] border border-tertiary-fixed-dim/10 overflow-hidden mb-4">
-        <div class="flex items-center gap-2 px-4 py-2.5 border-b border-tertiary-fixed-dim/10 bg-surface-container-lowest">
-            <span class="text-[10px] text-outline tracking-widest uppercase font-mono">docs/adrs/0096-scope-coverage-per-module.md</span>
-        </div>
-        <div class="p-4 font-mono text-[10px] leading-[1.9] text-on-surface-variant/70">
-            <div><span class="text-tertiary-fixed-dim"># ADR-0096:</span> Scope coverage issues per module</div>
-            <div><span class="text-outline">Status:</span> accepted</div>
-            <div><span class="text-outline">Issue:</span> <span class="text-primary">#693</span></div>
-            <div class="mt-2"><span class="text-outline">## Context</span></div>
-            <div>Bundling 3 large modules into one coverage issue</div>
-            <div>exceeded the 50-turn limit twice before succeeding.</div>
-            <div class="mt-2"><span class="text-outline">## Decision</span></div>
-            <div>Scope each coverage issue to a single module.</div>
-        </div>
+    <div class="border-l-2 border-primary/30 bg-surface-container-low p-8">
+        <img src="https://asynkron.se/img/protoactor.png" alt="Proto.Actor" class="h-14 w-auto max-w-full object-contain object-left mb-8"/>
+        <h3 class="font-headline font-bold uppercase tracking-[0.15em] text-sm text-primary mb-4">Flagship Framework</h3>
+        <p class="text-on-surface-variant text-sm leading-relaxed">
+            Proto.Actor is Asynkron's actor framework for .NET and Go, built for resilient distributed systems with message-driven actors, virtual actors, and clustering.
+        </p>
     </div>
-
-    <!-- Rule mockup -->
-    <div class="bg-[#0a0a0b] border border-tertiary-fixed-dim/10 overflow-hidden">
-        <div class="flex items-center gap-2 px-4 py-2.5 border-b border-tertiary-fixed-dim/10 bg-surface-container-lowest">
-            <span class="text-[10px] text-outline tracking-widest uppercase font-mono">.claude/rules/025-scope-coverage-per-module.md</span>
-        </div>
-        <div class="p-4 font-mono text-[10px] leading-[1.9] text-on-surface-variant/70">
-            <div>When creating coverage improvement issues,</div>
-            <div>scope each issue to a <span class="text-tertiary-fixed-dim">single module</span>.</div>
-            <div class="mt-1.5">For modules with &gt;1000 statements, expect</div>
-            <div>2-3x the turns of a typical feature issue.</div>
-            <div class="mt-1.5"><span class="text-outline">Reason:</span> Issue <span class="text-primary">#693</span> bundled 3 modules,</div>
-            <div>was killed and split. See ADR-0096.</div>
-        </div>
-    </div>
-</div>
-
 </div>
 </div>
 </section>
-
-<!-- CTA -->
-<section class="py-32 px-8 text-center relative overflow-hidden">
-<div class="absolute inset-0 opacity-[0.06] pointer-events-none">
-<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary rounded-full blur-[120px]"></div>
-</div>
-<div class="relative z-10 max-w-3xl mx-auto">
-<h2 class="font-headline font-black text-4xl md:text-6xl uppercase tracking-[0.1em] mb-6">
-    Start With Real Issues.<br/><span class="text-primary-fixed-dim">Measure Real Output.</span>
-</h2>
-<p class="text-on-surface-variant text-lg mb-12 max-w-xl mx-auto">
-    Bring a bounded set of backlog items. Whether your team runs the pipeline or ours does, every accepted issue ships with tests, traceability, and a reviewable PR.
-</p>
-<div class="inline-flex flex-col sm:flex-row gap-4 items-center">
-<a href="mailto:info@asynkron.se?subject=Faktorial%20Pilot%20Inquiry&body=Hi%2C%0A%0AWe%27re%20interested%20in%20running%20a%20Faktorial%20pilot.%0A%0ACompany%3A%20%0ARepo%20size%20(approx)%3A%20%0ABacklog%20size%3A%20%0A%0AThanks" class="px-14 py-5 bg-primary-container text-on-primary-container font-black uppercase tracking-[0.2em] text-sm hover:shadow-[0_0_30px_rgba(0,218,243,0.3)] transition-all active:scale-[0.98] inline-block">
-    Run a Pilot
-</a>
-<a href="mailto:info@asynkron.se?subject=Faktorial%20Managed%20Service&body=Hi%2C%0A%0AWe%27re%20interested%20in%20Faktorial%20Managed%20by%20Asynkron.%0A%0ACompany%3A%20%0AWhat%20we%20need%20help%20with%3A%20%0A%0AThanks" class="px-14 py-5 border border-tertiary-fixed-dim/20 text-tertiary-fixed-dim font-bold uppercase tracking-[0.2em] text-sm hover:bg-tertiary-fixed-dim/5 transition-colors inline-block">
-    Talk Managed Service
-</a>
-</div>
-</div>
-</section>
-</main>
+    </main>
 <!-- Footer -->
-<footer class="w-full py-16 px-8 bg-[#0e0e0f] border-t border-[#00daf3]/10">
-<div class="max-w-[1400px] mx-auto">
+<footer class="w-full py-16 page-band bg-[#0e0e0f] border-t border-[#00daf3]/10">
+<div class="page-inner">
 <div class="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr_1fr] gap-12">
 <div>
 <div class="flex flex-wrap items-center gap-4 mb-6">
@@ -1040,27 +2781,34 @@ Autonomous engineering delivery by Asynkron AB, the distributed-systems team beh
 </div>
 </div>
 </footer>
-<script src="header.js"></script>
-<script>
-    // Parallax: globe + glow scroll slower than content
+  </div>
+  <script src="header.js"></script>
+  <script>
+    // Parallax: globe + glow scroll slower than content.
     (function() {
-        const els = document.querySelectorAll('.globe-wrap, .globe-glow, .globe-wash');
-        let ticking = false;
-        window.addEventListener('scroll', function() {
-            if (!ticking) {
-                requestAnimationFrame(function() {
-                    const s = window.scrollY;
-                    const offset = s * 0.4; // moves at 60% of scroll speed (1 - 0.4)
-                    for (let i = 0; i < els.length; i++) {
-                        els[i].style.transform = (els[i].classList.contains('globe-wrap')
-                            ? 'translateX(-50%) translateY(-' + offset + 'px)'
-                            : 'translateY(-' + offset + 'px)');
-                    }
-                    ticking = false;
-                });
-                ticking = true;
-            }
+      const els = document.querySelectorAll('.globe-wrap, .globe-glow, .globe-wash');
+      let ticking = false;
+
+      window.addEventListener('scroll', function() {
+        if (ticking) {
+          return;
+        }
+
+        requestAnimationFrame(function() {
+          const offset = window.scrollY * 0.4;
+
+          for (let i = 0; i < els.length; i += 1) {
+            els[i].style.transform = els[i].classList.contains('globe-wrap')
+              ? 'translateX(-50%) translateY(-' + offset + 'px)'
+              : 'translateY(-' + offset + 'px)';
+          }
+
+          ticking = false;
         });
+
+        ticking = true;
+      });
     })();
-</script>
-</body></html>
+  </script>
+</body>
+</html>

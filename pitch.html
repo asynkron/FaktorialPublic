@@ -663,6 +663,10 @@
       align-items: center;
     }
 
+    .architecture-section .flow-layout {
+      grid-template-columns: minmax(300px, .68fr) minmax(0, 1.32fr);
+    }
+
     .flow-copy h2 {
       margin-bottom: 18px;
     }
@@ -711,6 +715,175 @@
     .flow-diagram svg {
       width: 100%;
       height: auto;
+    }
+
+    .architecture-diagram {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #0a0a0b;
+      overflow: hidden;
+      box-shadow: 0 24px 70px var(--shadow);
+    }
+
+    .architecture-diagram::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 48%, rgba(0, 218, 243, .18), transparent 34%),
+        linear-gradient(rgba(0, 218, 243, .05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 218, 243, .05) 1px, transparent 1px);
+      background-size: auto, 34px 34px, 34px 34px;
+      opacity: .85;
+      pointer-events: none;
+    }
+
+    .architecture-wires {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .architecture-wires path {
+      animation: wire-flow 5s linear infinite;
+      stroke-dasharray: 9 12;
+    }
+
+    .architecture-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: minmax(145px, .72fr) minmax(260px, 1.18fr) minmax(145px, .72fr);
+      gap: 18px;
+      min-height: 560px;
+      padding: 24px;
+      align-items: center;
+    }
+
+    .diagram-column {
+      display: grid;
+      gap: 16px;
+    }
+
+    .diagram-label {
+      color: var(--quiet);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+    }
+
+    .diagram-node {
+      min-height: 86px;
+      padding: 15px;
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius);
+      background: rgba(19, 19, 20, .88);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04);
+    }
+
+    .diagram-node span,
+    .core-chip span {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--quiet);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .diagram-node strong {
+      display: block;
+      color: var(--ink);
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1.05;
+      text-transform: uppercase;
+    }
+
+    .diagram-node.github {
+      border-color: rgba(195, 245, 255, .22);
+    }
+
+    .diagram-node.agent {
+      border-color: rgba(255, 171, 243, .22);
+    }
+
+    .faktorial-core {
+      position: relative;
+      display: grid;
+      gap: 18px;
+      min-height: 430px;
+      padding: 28px;
+      border: 1px solid rgba(0, 218, 243, .42);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 50% 36%, rgba(0, 218, 243, .22), transparent 38%),
+        linear-gradient(180deg, rgba(28, 27, 28, .94), rgba(10, 10, 11, .96));
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, .03) inset,
+        0 26px 80px rgba(0, 0, 0, .5);
+    }
+
+    .core-title {
+      align-self: center;
+      text-align: center;
+    }
+
+    .core-title span {
+      color: var(--cyan);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+    }
+
+    .core-title strong {
+      display: block;
+      margin-top: 8px;
+      color: var(--ink);
+      font-family: var(--font-display);
+      font-size: clamp(28px, 2.3vw, 38px);
+      font-weight: 900;
+      letter-spacing: .06em;
+      line-height: .92;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .core-chips {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .core-chip {
+      min-height: 76px;
+      padding: 12px;
+      border: 1px solid rgba(0, 218, 243, .16);
+      background: rgba(10, 10, 11, .72);
+    }
+
+    .core-chip strong {
+      display: block;
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.15;
+    }
+
+    @keyframes wire-flow {
+      to {
+        stroke-dashoffset: -84;
+      }
     }
 
     .scope-panel {
@@ -1223,6 +1396,16 @@
         grid-column: 1 / -1;
         border-bottom: 0;
       }
+
+      .architecture-grid {
+        min-height: 520px;
+        gap: 18px;
+        padding: 22px;
+      }
+
+      .diagram-node strong {
+        font-size: 17px;
+      }
     }
 
     @media (max-width: 760px) {
@@ -1308,6 +1491,25 @@
         border-right: 0;
       }
 
+      .architecture-wires {
+        display: none;
+      }
+
+      .architecture-grid {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        padding: 16px;
+      }
+
+      .faktorial-core {
+        min-height: auto;
+        padding: 20px;
+      }
+
+      .core-chips {
+        grid-template-columns: 1fr;
+      }
+
       .queue {
         display: none;
       }
@@ -1354,7 +1556,7 @@
       </nav>
       <div class="top-actions">
         <a class="btn ghost" href="#proof">Proof</a>
-        <a class="btn primary" href="#closing">
+        <a class="btn primary" href="mailto:info@asynkron.se?subject=Faktorial%20Pilot%20Inquiry&body=Hi%2C%0A%0AWe%27re%20interested%20in%20running%20a%20Faktorial%20pilot.%0A%0ACompany%3A%20%0ARepo%20size%20(approx)%3A%20%0ABacklog%20size%3A%20%0A%0AThanks">
           <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
@@ -1492,6 +1694,114 @@
               <h3>You decide the scope</h3>
               <p>Run on selected labels, selected sizes, the full backlog, or only a pilot. PR-only or auto-merge is a control.</p>
             </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section flow-band architecture-section">
+        <div class="inner flow-layout">
+          <div class="flow-copy">
+            <div class="eyebrow">Control plane</div>
+            <h2>Faktorial sits between work and workers.</h2>
+            <p>GitHub remains the source of truth. Faktorial reads the work, applies rules and compliance, then dispatches the right agent runtime with the right process and evidence requirements.</p>
+            <div class="rules-list">
+              <div class="rule">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                <span>GitHub Issues, comments, PRs, and workflows flow into the same control plane.</span>
+              </div>
+              <div class="rule">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                <span>Rules, compliance specs, MCP integrations, monitoring, and process live in Faktorial.</span>
+              </div>
+              <div class="rule">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                <span>Claude Code, Codex, and CoPilot execute under the same operating envelope.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="architecture-diagram" aria-label="Three layer Faktorial orchestration diagram">
+            <svg class="architecture-wires" viewBox="0 0 1000 640" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <marker id="architecture-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="#00daf3" />
+                </marker>
+              </defs>
+              <g fill="none" stroke="#00daf3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#architecture-arrow)" opacity=".78">
+                <path d="M220 178 C330 178 340 250 454 312" />
+                <path d="M220 320 C328 320 352 320 454 320" />
+                <path d="M220 462 C330 462 340 390 454 328" />
+                <path d="M546 312 C662 250 672 178 780 178" />
+                <path d="M546 320 C650 320 672 320 780 320" />
+                <path d="M546 328 C662 390 672 462 780 462" />
+              </g>
+            </svg>
+            <div class="architecture-grid">
+              <div class="diagram-column" aria-label="GitHub layer">
+                <div class="diagram-label">Layer 01 / GitHub</div>
+                <div class="diagram-node github">
+                  <span>source</span>
+                  <strong>Issues + Comments</strong>
+                </div>
+                <div class="diagram-node github">
+                  <span>delivery surface</span>
+                  <strong>Pull Requests</strong>
+                </div>
+                <div class="diagram-node github">
+                  <span>runtime signal</span>
+                  <strong>Workflows</strong>
+                </div>
+              </div>
+
+              <div class="faktorial-core" aria-label="Faktorial orchestration layer">
+                <div class="core-title">
+                  <span>Layer 02 / Center</span>
+                  <strong>Faktorial</strong>
+                </div>
+                <div class="core-chips">
+                  <div class="core-chip">
+                    <span>control</span>
+                    <strong>Orchestration</strong>
+                  </div>
+                  <div class="core-chip">
+                    <span>visibility</span>
+                    <strong>Monitoring</strong>
+                  </div>
+                  <div class="core-chip">
+                    <span>extension</span>
+                    <strong>3rd-party MCP integration</strong>
+                  </div>
+                  <div class="core-chip">
+                    <span>policy</span>
+                    <strong>Rules</strong>
+                  </div>
+                  <div class="core-chip">
+                    <span>governance</span>
+                    <strong>Compliance specs</strong>
+                  </div>
+                  <div class="core-chip">
+                    <span>delivery</span>
+                    <strong>Process</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div class="diagram-column" aria-label="Agent runtime layer">
+                <div class="diagram-label">Layer 03 / Agents</div>
+                <div class="diagram-node agent">
+                  <span>runtime</span>
+                  <strong>Claude Code</strong>
+                </div>
+                <div class="diagram-node agent">
+                  <span>runtime</span>
+                  <strong>Codex</strong>
+                </div>
+                <div class="diagram-node agent">
+                  <span>runtime</span>
+                  <strong>CoPilot</strong>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -1743,11 +2053,11 @@ If estimated scope is >1000 statements or touches >3 modules:
             <h2>The backlog becomes a production system.</h2>
             <p>That is where the pitch lands: Faktorial is not a chatbot and not a code generator. It is a controlled delivery factory that can work continuously on the backlog you already have.</p>
             <div class="hero-actions">
-              <a class="btn primary" href="https://faktorial.ai">
+              <a class="btn primary" href="mailto:info@asynkron.se?subject=Faktorial%20Pilot%20Inquiry&body=Hi%2C%0A%0AWe%27re%20interested%20in%20running%20a%20Faktorial%20pilot.%0A%0ACompany%3A%20%0ARepo%20size%20(approx)%3A%20%0ABacklog%20size%3A%20%0A%0AThanks">
                 <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
-                faktorial.ai
+                Run pilot
               </a>
               <a class="btn" href="#top">Back to top</a>
             </div>

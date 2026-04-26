@@ -117,7 +117,7 @@ func (s *server) handleGitHubSetup(w http.ResponseWriter, r *http.Request) {
 	}
 	if err := s.setupConfigured(); err != nil {
 		log.Printf("github setup config missing: %v", err)
-		renderSetupError(w, http.StatusServiceUnavailable, "Faktorial GitHub setup is not configured yet.")
+		renderSetupError(w, http.StatusOK, "Faktorial GitHub setup is not configured yet.")
 		return
 	}
 

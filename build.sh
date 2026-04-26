@@ -4,6 +4,7 @@ set -eu
 image="rogeralsing/faktorialpublic"
 tag="${1:-latest}"
 full_image="${image}:${tag}"
+platform="${DOCKER_PLATFORM:-linux/amd64}"
 
 if ! command -v docker >/dev/null 2>&1; then
   echo "docker is not installed or not on PATH" >&2
@@ -42,17 +43,10 @@ EOF
 fi
 rm -f "${docker_check_log}"
 
-echo "Building ${full_image}"
-docker build --progress=plain -t "${full_image}" .
+echo "Building and pushing ${full_image} for ${platform}"
+docker buildx build --platform "${platform}" --provenance=false --progress=plain -t "${full_image}" --push .
 
 if [ "${tag}" != "latest" ]; then
-  docker tag "${full_image}" "${image}:latest"
-fi
-
-echo "Pushing ${full_image}"
-docker push "${full_image}"
-
-if [ "${tag}" != "latest" ]; then
-  echo "Pushing ${image}:latest"
-  docker push "${image}:latest"
+  echo "Building and pushing ${image}:latest for ${platform}"
+  docker buildx build --platform "${platform}" --provenance=false --progress=plain -t "${image}:latest" --push .
 fi

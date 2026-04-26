@@ -7,9 +7,11 @@ Public Faktorial website plus the hosted GitHub App installation endpoint.
 - `GET /` serves the public Faktorial page.
 - `GET /bokabra.html` and `GET /pitch.html` serve existing static pages.
 - `GET /healthz` returns `200 OK`.
+- `GET /login?callback=http://127.0.0.1:<port>/callback` starts CLI GitHub login.
+- `GET /api/me` returns the logged-in GitHub user for a Faktorial bearer token.
 - `GET /setup?installation_id=...&setup_action=install` verifies the GitHub App installation and stores it in Supabase/Postgres.
 - `GET /github/setup?installation_id=...&setup_action=install` is kept as a compatibility alias.
-- `GET /callback` is a harmless user-OAuth placeholder. It is only used if OAuth during installation is enabled in the GitHub App settings.
+- `GET /callback` completes GitHub OAuth login and redirects back to the CLI callback.
 
 ## GitHub App Settings
 
@@ -27,6 +29,8 @@ Required:
 ```bash
 GITHUB_APP_ID=123456
 GITHUB_APP_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----..."
+GITHUB_OAUTH_CLIENT_ID=Ov23li...
+GITHUB_OAUTH_CLIENT_SECRET=...
 DATABASE_URL="postgresql://postgres:...@...supabase.co:5432/postgres"
 ```
 
@@ -38,6 +42,9 @@ PUBLIC_BASE_URL=https://faktorial.ai
 ```
 
 `GITHUB_APP_PRIVATE_KEY` can contain literal newlines or escaped `\n` sequences.
+
+The GitHub App callback URL must include `https://faktorial.ai/callback` for
+CLI login to work.
 
 ## Database
 

@@ -16,6 +16,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"strconv"
 	"strings"
@@ -41,6 +42,8 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/healthz", app.handleHealthz)
+	mux.HandleFunc("/login", app.handleLogin)
+	mux.HandleFunc("/api/me", app.handleAPIIdentity)
 	mux.HandleFunc("/setup", app.handleGitHubSetup)
 	mux.HandleFunc("/github/setup", app.handleGitHubSetup)
 	mux.HandleFunc("/callback", app.handleGitHubCallback)
@@ -60,12 +63,14 @@ func main() {
 }
 
 type config struct {
-	Port             string
-	PublicBaseURL    string
-	GitHubAppID      string
-	GitHubPrivateKey *rsa.PrivateKey
-	GitHubKeyError   error
-	DatabaseURL      string
+	Port              string
+	PublicBaseURL     string
+	GitHubAppID       string
+	GitHubPrivateKey  *rsa.PrivateKey
+	GitHubKeyError    error
+	GitHubOAuthID     string
+	GitHubOAuthSecret string
+	DatabaseURL       string
 }
 
 func loadConfig() (*config, error) {
@@ -85,12 +90,14 @@ func loadConfig() (*config, error) {
 		port = "8080"
 	}
 	return &config{
-		Port:             port,
-		PublicBaseURL:    strings.TrimRight(os.Getenv("PUBLIC_BASE_URL"), "/"),
-		GitHubAppID:      appID,
-		GitHubPrivateKey: key,
-		GitHubKeyError:   keyErr,
-		DatabaseURL:      dbURL,
+		Port:              port,
+		PublicBaseURL:     strings.TrimRight(os.Getenv("PUBLIC_BASE_URL"), "/"),
+		GitHubAppID:       appID,
+		GitHubPrivateKey:  key,
+		GitHubKeyError:    keyErr,
+		GitHubOAuthID:     strings.TrimSpace(os.Getenv("GITHUB_OAUTH_CLIENT_ID")),
+		GitHubOAuthSecret: strings.TrimSpace(os.Getenv("GITHUB_OAUTH_CLIENT_SECRET")),
+		DatabaseURL:       dbURL,
 	}, nil
 }
 
@@ -165,8 +172,53 @@ func (s *server) handleGitHubCallback(w http.ResponseWriter, r *http.Request) {
 		renderSetupError(w, http.StatusOK, "Faktorial user authorization is not enabled for this GitHub App.")
 		return
 	}
-	log.Printf("github oauth callback received but OAuth exchange is not configured")
-	renderSetupError(w, http.StatusOK, "Faktorial received the GitHub authorization callback, but user OAuth is not configured yet.")
+	if err := s.authConfigured(); err != nil {
+		log.Printf("github oauth callback config missing: %v", err)
+		renderSetupError(w, http.StatusOK, "Faktorial login is not configured yet.")
+		return
+	}
+	state := strings.TrimSpace(r.URL.Query().Get("state"))
+	loginState, err := s.consumeLoginState(r.Context(), state)
+	if err != nil {
+		log.Printf("github oauth state invalid: %v", err)
+		renderSetupError(w, http.StatusBadRequest, "Login expired. Run faktorial login again.")
+		return
+	}
+	accessToken, err := s.exchangeGitHubOAuthCode(r.Context(), code)
+	if err != nil {
+		log.Printf("github oauth exchange failed: %v", err)
+		renderSetupError(w, http.StatusBadGateway, "GitHub login failed.")
+		return
+	}
+	user, err := s.fetchGitHubUser(r.Context(), accessToken)
+	if err != nil {
+		log.Printf("github oauth user lookup failed: %v", err)
+		renderSetupError(w, http.StatusBadGateway, "Could not read your GitHub identity.")
+		return
+	}
+	sessionToken, err := randomToken(32)
+	if err != nil {
+		log.Printf("session token generation failed: %v", err)
+		renderSetupError(w, http.StatusInternalServerError, "Could not create a Faktorial session.")
+		return
+	}
+	if err := s.storeSession(r.Context(), user, sessionToken); err != nil {
+		log.Printf("session store failed: %v", err)
+		renderSetupError(w, http.StatusInternalServerError, "Could not save your Faktorial session.")
+		return
+	}
+	redirectURL, err := url.Parse(loginState.LocalCallbackURL)
+	if err != nil {
+		log.Printf("stored callback url invalid: %v", err)
+		renderSetupError(w, http.StatusInternalServerError, "Stored login callback is invalid.")
+		return
+	}
+	q := redirectURL.Query()
+	q.Set("state", loginState.CLIState)
+	q.Set("token", sessionToken)
+	q.Set("login", user.Login)
+	redirectURL.RawQuery = q.Encode()
+	http.Redirect(w, r, redirectURL.String(), http.StatusFound)
 }
 
 func (s *server) fetchInstallation(ctx context.Context, installationID int64) (*githubInstallation, error) {

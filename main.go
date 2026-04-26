@@ -417,25 +417,93 @@ var setupSuccessTemplate = template.Must(template.New("setup-success").Parse(`<!
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Faktorial connected</title>
+  <title>Faktorial is connected</title>
   <style>
-    body { margin: 0; font: 16px/1.5 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #17202a; background: #f7f9fb; }
-    main { max-width: 520px; margin: 12vh auto; padding: 32px; background: #fff; border: 1px solid #dde5ee; border-radius: 8px; }
-    h1 { margin: 0 0 12px; font-size: 28px; line-height: 1.15; }
-    p { margin: 0 0 16px; }
-    dl { display: grid; grid-template-columns: max-content 1fr; gap: 8px 16px; margin: 20px 0 0; }
-    dt { color: #607086; }
-    dd { margin: 0; font-weight: 600; }
+    :root { color-scheme: dark; --bg: #0e0e0f; --panel: #161719; --panel-2: #202326; --text: #eef4f6; --muted: #a8b7bd; --line: rgba(0, 218, 243, .24); --cyan: #00daf3; --green: #4ade80; }
+    * { box-sizing: border-box; }
+    body { min-width: 320px; margin: 0; font: 16px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: var(--text); background: radial-gradient(circle at 50% 0%, rgba(0, 218, 243, .12), transparent 34%), linear-gradient(180deg, #090a0b 0%, var(--bg) 100%); }
+    main { width: min(960px, calc(100% - 40px)); margin: 9vh auto; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 18px; color: var(--green); font-size: 13px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .dot { width: 10px; height: 10px; background: var(--green); box-shadow: 0 0 22px rgba(74, 222, 128, .55); }
+    h1 { max-width: 760px; margin: 0 0 14px; font-size: clamp(38px, 7vw, 76px); line-height: .96; letter-spacing: 0; }
+    .lead { max-width: 680px; margin: 0 0 34px; color: var(--muted); font-size: 19px; }
+    .grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(280px, .95fr); gap: 18px; align-items: start; }
+    section, aside { border: 1px solid var(--line); background: rgba(22, 23, 25, .82); box-shadow: 0 22px 70px rgba(0, 0, 0, .34); }
+    section { padding: 26px; }
+    aside { padding: 24px; }
+    h2 { margin: 0 0 18px; font-size: 18px; letter-spacing: 0; }
+    ol { display: grid; gap: 16px; margin: 0; padding: 0; list-style: none; counter-reset: step; }
+    li { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 14px; align-items: start; counter-increment: step; }
+    li::before { content: counter(step); display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid var(--line); color: var(--cyan); font-weight: 900; }
+    h3 { margin: 1px 0 8px; font-size: 16px; }
+    p { margin: 0; color: var(--muted); }
+    code, pre { font: 14px/1.45 "SFMono-Regular", Consolas, ui-monospace, monospace; }
+    pre { overflow-x: auto; margin: 10px 0 0; padding: 14px; border: 1px solid rgba(255,255,255,.08); background: #090a0b; color: #d9fbff; }
+    dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 10px 16px; margin: 0; }
+    dt { color: var(--muted); }
+    dd { min-width: 0; margin: 0; font-weight: 700; overflow-wrap: anywhere; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+    a { color: inherit; }
+    .button { display: inline-flex; min-height: 42px; align-items: center; justify-content: center; border: 1px solid var(--line); padding: 0 15px; color: var(--text); font-weight: 800; text-decoration: none; }
+    .button.primary { border-color: rgba(0, 218, 243, .76); background: var(--cyan); color: #001f24; }
+    .note { margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.08); color: var(--muted); font-size: 14px; }
+    @media (max-width: 760px) {
+      main { width: min(100% - 28px, 960px); margin: 40px auto; }
+      .grid { grid-template-columns: 1fr; }
+      h1 { font-size: clamp(36px, 12vw, 54px); }
+      section, aside { padding: 20px; }
+      dl { grid-template-columns: 1fr; gap: 2px 0; }
+      dd { margin-bottom: 10px; }
+    }
   </style>
 </head>
 <body>
   <main>
-    <h1>GitHub connected</h1>
-    <p>Faktorial can now access the selected repositories for {{.AccountLogin}}.</p>
-    <dl>
-      <dt>Account</dt><dd>{{.AccountLogin}} ({{.AccountType}})</dd>
-      <dt>Installation ID</dt><dd>{{.InstallationID}}</dd>
-    </dl>
+    <div class="eyebrow"><span class="dot"></span> GitHub App installed</div>
+    <h1>Faktorial is connected.</h1>
+    <p class="lead">Faktorial can now access the selected repositories for {{.AccountLogin}}. Install the CLI, sign in, then run it inside a GitHub repository.</p>
+    <div class="grid">
+      <section>
+        <h2>Use Faktorial from your terminal</h2>
+        <ol>
+          <li>
+            <div>
+              <h3>Install the CLI</h3>
+              <p>Use npm if you want the packaged installer.</p>
+              <pre><code>npm install -g @asynkron/faktorial</code></pre>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Sign in</h3>
+              <p>This connects your terminal to your GitHub identity.</p>
+              <pre><code>faktorial login</code></pre>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Run it in a repo</h3>
+              <p>Open a repository where the GitHub App is installed.</p>
+              <pre><code>cd path/to/your/repo
+faktorial</code></pre>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <aside>
+        <h2>Connected account</h2>
+        <dl>
+          <dt>Account</dt><dd>{{.AccountLogin}}</dd>
+          <dt>Type</dt><dd>{{.AccountType}}</dd>
+          <dt>Installation</dt><dd>{{.InstallationID}}</dd>
+        </dl>
+        <div class="actions">
+          <a class="button primary" href="https://www.npmjs.com/package/@asynkron/faktorial">npm package</a>
+          <a class="button" href="https://github.com/apps/faktorial-ai/installations/new">Manage install</a>
+        </div>
+        <p class="note">Access is limited to the repositories selected during GitHub App installation. You can change that later from GitHub.</p>
+      </aside>
+    </div>
   </main>
 </body>
 </html>`))

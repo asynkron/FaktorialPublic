@@ -1,5 +1,6 @@
 .env
 .git
 .DS_Store
+**/.DS_Store
 tmp
 faktorial-public-app

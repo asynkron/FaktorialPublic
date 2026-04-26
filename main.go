@@ -17,7 +17,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -33,36 +32,18 @@ func main() {
 		log.Fatalf("config: %v", err)
 	}
 
-	ctx := context.Background()
-	db, err := pgxpool.New(ctx, cfg.DatabaseURL)
-	if err != nil {
-		log.Fatalf("db pool: %v", err)
-	}
-	defer db.Close()
-	if err := db.Ping(ctx); err != nil {
-		log.Fatalf("db ping: %v", err)
-	}
-
 	app := &server{
 		cfg: cfg,
-		db:  db,
 		httpClient: &http.Client{
 			Timeout: 15 * time.Second,
 		},
 	}
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", app.handleIndex)
 	mux.HandleFunc("/healthz", app.handleHealthz)
 	mux.HandleFunc("/github/setup", app.handleGitHubSetup)
-	mux.HandleFunc("/bokabra.html", app.handleStaticFile)
-	mux.HandleFunc("/pitch.html", app.handleStaticFile)
-	mux.HandleFunc("/header.css", app.handleStaticFile)
-	mux.HandleFunc("/header.js", app.handleStaticFile)
-	mux.HandleFunc("/faktorialai.png", app.handleStaticFile)
-	mux.HandleFunc("/faktorialai-plain.png", app.handleStaticFile)
-	mux.Handle("/logos/", http.StripPrefix("/logos/", http.FileServer(http.Dir("logos"))))
-	mux.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
+	mux.HandleFunc("/case.html", app.handleCasePage)
+	mux.Handle("/", http.FileServer(http.Dir("static")))
 
 	srv := &http.Server{
 		Addr:              ":" + cfg.Port,
@@ -81,28 +62,21 @@ type config struct {
 	PublicBaseURL    string
 	GitHubAppID      string
 	GitHubPrivateKey *rsa.PrivateKey
+	GitHubKeyError   error
 	DatabaseURL      string
 }
 
 func loadConfig() (*config, error) {
 	appID := strings.TrimSpace(os.Getenv("GITHUB_APP_ID"))
-	if appID == "" {
-		return nil, errors.New("GITHUB_APP_ID is required")
-	}
 	keyPEM := strings.TrimSpace(os.Getenv("GITHUB_APP_PRIVATE_KEY"))
-	if keyPEM == "" {
-		return nil, errors.New("GITHUB_APP_PRIVATE_KEY is required")
-	}
 	dbURL := strings.TrimSpace(os.Getenv("DATABASE_URL"))
 	if dbURL == "" {
 		dbURL = strings.TrimSpace(os.Getenv("SUPABASE_DATABASE_URL"))
 	}
-	if dbURL == "" {
-		return nil, errors.New("DATABASE_URL or SUPABASE_DATABASE_URL is required")
-	}
-	key, err := parsePrivateKey(strings.ReplaceAll(keyPEM, `\n`, "\n"))
-	if err != nil {
-		return nil, fmt.Errorf("GITHUB_APP_PRIVATE_KEY: %w", err)
+	var key *rsa.PrivateKey
+	var keyErr error
+	if keyPEM != "" {
+		key, keyErr = parsePrivateKey(strings.ReplaceAll(keyPEM, `\n`, "\n"))
 	}
 	port := strings.TrimSpace(os.Getenv("PORT"))
 	if port == "" {
@@ -113,31 +87,14 @@ func loadConfig() (*config, error) {
 		PublicBaseURL:    strings.TrimRight(os.Getenv("PUBLIC_BASE_URL"), "/"),
 		GitHubAppID:      appID,
 		GitHubPrivateKey: key,
+		GitHubKeyError:   keyErr,
 		DatabaseURL:      dbURL,
 	}, nil
 }
 
 type server struct {
 	cfg        *config
-	db         *pgxpool.Pool
 	httpClient *http.Client
-}
-
-func (s *server) handleIndex(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		http.NotFound(w, r)
-		return
-	}
-	http.ServeFile(w, r, "index.html")
-}
-
-func (s *server) handleStaticFile(w http.ResponseWriter, r *http.Request) {
-	name := strings.TrimPrefix(r.URL.Path, "/")
-	if name == "" || strings.Contains(name, "..") || filepath.Base(name) != name {
-		http.NotFound(w, r)
-		return
-	}
-	http.ServeFile(w, r, name)
 }
 
 func (s *server) handleHealthz(w http.ResponseWriter, _ *http.Request) {
@@ -145,9 +102,22 @@ func (s *server) handleHealthz(w http.ResponseWriter, _ *http.Request) {
 	_, _ = io.WriteString(w, "ok\n")
 }
 
+func (s *server) handleCasePage(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet && r.Method != http.MethodHead {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	http.ServeFile(w, r, "static/bokabra.html")
+}
+
 func (s *server) handleGitHubSetup(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	if err := s.setupConfigured(); err != nil {
+		log.Printf("github setup config missing: %v", err)
+		renderSetupError(w, http.StatusServiceUnavailable, "Faktorial GitHub setup is not configured yet.")
 		return
 	}
 
@@ -221,11 +191,19 @@ func (s *server) fetchInstallation(ctx context.Context, installationID int64) (*
 }
 
 func (s *server) storeInstallation(ctx context.Context, installation *githubInstallation, setupAction string) error {
+	db, err := pgxpool.New(ctx, s.cfg.DatabaseURL)
+	if err != nil {
+		return fmt.Errorf("db pool: %w", err)
+	}
+	defer db.Close()
+	if err := db.Ping(ctx); err != nil {
+		return fmt.Errorf("db ping: %w", err)
+	}
 	permissions, err := json.Marshal(installation.Permissions)
 	if err != nil {
 		return err
 	}
-	_, err = s.db.Exec(ctx, `
+	_, err = db.Exec(ctx, `
 insert into github_app_installations (
     installation_id,
     account_id,
@@ -262,6 +240,26 @@ on conflict (installation_id) do update set
 		installation.SuspendedAt,
 	)
 	return err
+}
+
+func (s *server) setupConfigured() error {
+	var missing []string
+	if strings.TrimSpace(s.cfg.GitHubAppID) == "" {
+		missing = append(missing, "GITHUB_APP_ID")
+	}
+	if s.cfg.GitHubPrivateKey == nil {
+		missing = append(missing, "GITHUB_APP_PRIVATE_KEY")
+	}
+	if strings.TrimSpace(s.cfg.DatabaseURL) == "" {
+		missing = append(missing, "DATABASE_URL")
+	}
+	if len(missing) > 0 {
+		return fmt.Errorf("missing %s", strings.Join(missing, ", "))
+	}
+	if s.cfg.GitHubKeyError != nil {
+		return fmt.Errorf("GITHUB_APP_PRIVATE_KEY: %w", s.cfg.GitHubKeyError)
+	}
+	return nil
 }
 
 type githubInstallation struct {

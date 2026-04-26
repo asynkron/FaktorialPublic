@@ -14,11 +14,7 @@ WORKDIR /app
 USER appuser
 
 COPY --from=build /out/faktorial-public-app /usr/local/bin/faktorial-public-app
-COPY --from=build /src/*.html /app/
-COPY --from=build /src/*.css /app/
-COPY --from=build /src/*.js /app/
-COPY --from=build /src/*.png /app/
-COPY --from=build /src/logos /app/logos
+COPY --from=build /src/static /app/static
 
 ENV PORT=8080
 EXPOSE 8080

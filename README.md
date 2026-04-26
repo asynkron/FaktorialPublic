@@ -53,3 +53,13 @@ go run .
 docker build -t faktorial-public .
 docker run --rm -p 8080:8080 --env-file .env faktorial-public
 ```
+
+To publish the production image:
+
+```bash
+./build.sh
+./build.sh 2026-04-26
+```
+
+The script publishes `rogeralsing/faktorialpublic:<tag>`. When the tag is not
+`latest`, it also updates `rogeralsing/faktorialpublic:latest`.

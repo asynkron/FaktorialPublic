@@ -41,7 +41,9 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/healthz", app.handleHealthz)
+	mux.HandleFunc("/setup", app.handleGitHubSetup)
 	mux.HandleFunc("/github/setup", app.handleGitHubSetup)
+	mux.HandleFunc("/callback", app.handleGitHubCallback)
 	mux.HandleFunc("/case.html", app.handleCasePage)
 	mux.Handle("/", http.FileServer(http.Dir("static")))
 
@@ -151,6 +153,20 @@ func (s *server) handleGitHubSetup(w http.ResponseWriter, r *http.Request) {
 		"InstallationID": installation.ID,
 		"PublicBaseURL":  s.cfg.PublicBaseURL,
 	})
+}
+
+func (s *server) handleGitHubCallback(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	code := strings.TrimSpace(r.URL.Query().Get("code"))
+	if code == "" {
+		renderSetupError(w, http.StatusOK, "Faktorial user authorization is not enabled for this GitHub App.")
+		return
+	}
+	log.Printf("github oauth callback received but OAuth exchange is not configured")
+	renderSetupError(w, http.StatusOK, "Faktorial received the GitHub authorization callback, but user OAuth is not configured yet.")
 }
 
 func (s *server) fetchInstallation(ctx context.Context, installationID int64) (*githubInstallation, error) {

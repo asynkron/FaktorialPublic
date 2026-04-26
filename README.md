@@ -7,14 +7,16 @@ Public Faktorial website plus the hosted GitHub App installation endpoint.
 - `GET /` serves the public Faktorial page.
 - `GET /bokabra.html` and `GET /pitch.html` serve existing static pages.
 - `GET /healthz` returns `200 OK`.
-- `GET /github/setup?installation_id=...&setup_action=install` verifies the GitHub App installation and stores it in Supabase/Postgres.
+- `GET /setup?installation_id=...&setup_action=install` verifies the GitHub App installation and stores it in Supabase/Postgres.
+- `GET /github/setup?installation_id=...&setup_action=install` is kept as a compatibility alias.
+- `GET /callback` is a harmless user-OAuth placeholder. It is only used if OAuth during installation is enabled in the GitHub App settings.
 
 ## GitHub App Settings
 
 For the hosted SaaS app:
 
 - Set **Where can this GitHub App be installed?** to `Any account`.
-- Set **Setup URL** to `https://<your-domain>/github/setup`.
+- Set **Setup URL** to `https://<your-domain>/setup`.
 - Leave **Request user authorization (OAuth) during installation** off unless the SaaS needs to link the installing GitHub user.
 - Leave **Callback URL** empty unless OAuth is enabled.
 

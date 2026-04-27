@@ -11,6 +11,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -108,20 +109,31 @@ func (s *server) handleAPIIdentity(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *server) handleAPIGitHubToken(w http.ResponseWriter, r *http.Request) {
+	defer func() {
+		if recovered := recover(); recovered != nil {
+			log.Printf("api github token panic: %v", recovered)
+			writeJSON(w, http.StatusInternalServerError, map[string]string{"error": "internal error"})
+		}
+	}()
 	if r.Method != http.MethodPost {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
+	start := time.Now()
+	log.Printf("api github token: start")
 	if err := s.setupConfigured(); err != nil {
+		log.Printf("api github token: setup not configured: %v", err)
 		writeJSON(w, http.StatusServiceUnavailable, map[string]string{"error": "github app is not configured"})
 		return
 	}
 	token, ok := bearerToken(r.Header.Get("Authorization"))
 	if !ok {
+		log.Printf("api github token: missing bearer token")
 		writeJSON(w, http.StatusUnauthorized, map[string]string{"error": "missing bearer token"})
 		return
 	}
 	if _, err := s.userForSession(r.Context(), token); err != nil {
+		log.Printf("api github token: invalid session: %T", err)
 		status := http.StatusUnauthorized
 		if !errors.Is(err, pgx.ErrNoRows) {
 			status = http.StatusInternalServerError
@@ -133,24 +145,31 @@ func (s *server) handleAPIGitHubToken(w http.ResponseWriter, r *http.Request) {
 		Repo string `json:"repo"`
 	}
 	if err := json.NewDecoder(io.LimitReader(r.Body, 1<<20)).Decode(&req); err != nil {
+		log.Printf("api github token: invalid json")
 		writeJSON(w, http.StatusBadRequest, map[string]string{"error": "invalid json"})
 		return
 	}
 	owner, name, err := parseRepo(req.Repo)
 	if err != nil {
+		log.Printf("api github token: invalid repo")
 		writeJSON(w, http.StatusBadRequest, map[string]string{"error": "repo must be owner/name"})
 		return
 	}
+	log.Printf("api github token: repo=%s/%s session ok", owner, name)
 	installation, err := s.fetchRepoInstallation(r.Context(), owner, name)
 	if err != nil {
+		log.Printf("api github token: repo=%s/%s installation lookup failed: %v", owner, name, err)
 		writeJSON(w, http.StatusBadGateway, map[string]string{"error": "github app is not installed for this repository"})
 		return
 	}
+	log.Printf("api github token: repo=%s/%s installation=%d", owner, name, installation.ID)
 	accessToken, err := s.mintInstallationAccessToken(r.Context(), installation.ID, name)
 	if err != nil {
+		log.Printf("api github token: repo=%s/%s mint failed: %v", owner, name, err)
 		writeJSON(w, http.StatusBadGateway, map[string]string{"error": "could not mint github token"})
 		return
 	}
+	log.Printf("api github token: repo=%s/%s ok in %s", owner, name, time.Since(start))
 	writeJSON(w, http.StatusOK, map[string]any{
 		"token":      accessToken.Token,
 		"expires_at": accessToken.ExpiresAt,

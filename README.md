@@ -9,6 +9,7 @@ Public Faktorial website plus the hosted GitHub App installation endpoint.
 - `GET /healthz` returns `200 OK`.
 - `GET /login?callback=http://127.0.0.1:<port>/callback` starts CLI GitHub login.
 - `GET /api/me` returns the logged-in GitHub user for a Faktorial bearer token.
+- `POST /api/github/token` exchanges a Faktorial bearer token and `{ "repo": "owner/name" }` for a short-lived GitHub installation token.
 - `GET /setup?installation_id=...&setup_action=install` verifies the GitHub App installation and stores it in Supabase/Postgres.
 - `GET /github/setup?installation_id=...&setup_action=install` is kept as a compatibility alias.
 - `GET /callback` completes GitHub OAuth login and redirects back to the CLI callback.

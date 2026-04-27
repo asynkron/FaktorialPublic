@@ -107,6 +107,56 @@ func (s *server) handleAPIIdentity(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+func (s *server) handleAPIGitHubToken(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	if err := s.setupConfigured(); err != nil {
+		writeJSON(w, http.StatusServiceUnavailable, map[string]string{"error": "github app is not configured"})
+		return
+	}
+	token, ok := bearerToken(r.Header.Get("Authorization"))
+	if !ok {
+		writeJSON(w, http.StatusUnauthorized, map[string]string{"error": "missing bearer token"})
+		return
+	}
+	if _, err := s.userForSession(r.Context(), token); err != nil {
+		status := http.StatusUnauthorized
+		if !errors.Is(err, pgx.ErrNoRows) {
+			status = http.StatusInternalServerError
+		}
+		writeJSON(w, status, map[string]string{"error": "invalid session"})
+		return
+	}
+	var req struct {
+		Repo string `json:"repo"`
+	}
+	if err := json.NewDecoder(io.LimitReader(r.Body, 1<<20)).Decode(&req); err != nil {
+		writeJSON(w, http.StatusBadRequest, map[string]string{"error": "invalid json"})
+		return
+	}
+	owner, name, err := parseRepo(req.Repo)
+	if err != nil {
+		writeJSON(w, http.StatusBadRequest, map[string]string{"error": "repo must be owner/name"})
+		return
+	}
+	installation, err := s.fetchRepoInstallation(r.Context(), owner, name)
+	if err != nil {
+		writeJSON(w, http.StatusBadGateway, map[string]string{"error": "github app is not installed for this repository"})
+		return
+	}
+	accessToken, err := s.mintInstallationAccessToken(r.Context(), installation.ID, name)
+	if err != nil {
+		writeJSON(w, http.StatusBadGateway, map[string]string{"error": "could not mint github token"})
+		return
+	}
+	writeJSON(w, http.StatusOK, map[string]any{
+		"token":      accessToken.Token,
+		"expires_at": accessToken.ExpiresAt,
+	})
+}
+
 func (s *server) authConfigured() error {
 	var missing []string
 	if s.cfg.PublicBaseURL == "" {
@@ -125,6 +175,17 @@ func (s *server) authConfigured() error {
 		return fmt.Errorf("missing %s", strings.Join(missing, ", "))
 	}
 	return nil
+}
+
+func parseRepo(raw string) (owner string, name string, err error) {
+	parts := strings.Split(strings.Trim(strings.TrimSpace(raw), "/"), "/")
+	if len(parts) != 2 || parts[0] == "" || parts[1] == "" {
+		return "", "", errors.New("repo must be owner/name")
+	}
+	if strings.ContainsAny(parts[0], " \t\r\n") || strings.ContainsAny(parts[1], " \t\r\n") {
+		return "", "", errors.New("repo must not contain whitespace")
+	}
+	return parts[0], parts[1], nil
 }
 
 func validateLocalCallbackURL(raw string) error {

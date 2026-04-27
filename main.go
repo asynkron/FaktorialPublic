@@ -25,7 +25,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-const githubAPI = "https://api.github.com"
+var githubAPI = "https://api.github.com"
 
 func main() {
 	cfg, err := loadConfig()
@@ -44,6 +44,7 @@ func main() {
 	mux.HandleFunc("/healthz", app.handleHealthz)
 	mux.HandleFunc("/login", app.handleLogin)
 	mux.HandleFunc("/api/me", app.handleAPIIdentity)
+	mux.HandleFunc("/api/github/token", app.handleAPIGitHubToken)
 	mux.HandleFunc("/setup", app.handleGitHubSetup)
 	mux.HandleFunc("/github/setup", app.handleGitHubSetup)
 	mux.HandleFunc("/callback", app.handleGitHubCallback)
@@ -256,6 +257,94 @@ func (s *server) fetchInstallation(ctx context.Context, installationID int64) (*
 		return nil, fmt.Errorf("github returned installation_id=%d, want %d", installation.ID, installationID)
 	}
 	return &installation, nil
+}
+
+func (s *server) fetchRepoInstallation(ctx context.Context, owner, repo string) (*githubInstallation, error) {
+	jwt, err := signAppJWT(s.cfg.GitHubAppID, s.cfg.GitHubPrivateKey)
+	if err != nil {
+		return nil, err
+	}
+	url := fmt.Sprintf("%s/repos/%s/%s/installation", githubAPI, url.PathEscape(owner), url.PathEscape(repo))
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Accept", "application/vnd.github+json")
+	req.Header.Set("Authorization", "Bearer "+jwt)
+	req.Header.Set("X-GitHub-Api-Version", "2022-11-28")
+
+	resp, err := s.httpClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		return nil, fmt.Errorf("github repo installation lookup status=%d body=%s", resp.StatusCode, strings.TrimSpace(string(body)))
+	}
+	var installation githubInstallation
+	if err := json.Unmarshal(body, &installation); err != nil {
+		return nil, err
+	}
+	if installation.ID == 0 {
+		return nil, errors.New("github repo installation response missing id")
+	}
+	return &installation, nil
+}
+
+type installationAccessToken struct {
+	Token     string    `json:"token"`
+	ExpiresAt time.Time `json:"expires_at"`
+}
+
+func (s *server) mintInstallationAccessToken(ctx context.Context, installationID int64, repo string) (*installationAccessToken, error) {
+	jwt, err := signAppJWT(s.cfg.GitHubAppID, s.cfg.GitHubPrivateKey)
+	if err != nil {
+		return nil, err
+	}
+	payload := map[string][]string{"repositories": []string{repo}}
+	raw, err := json.Marshal(payload)
+	if err != nil {
+		return nil, err
+	}
+	url := fmt.Sprintf("%s/app/installations/%d/access_tokens", githubAPI, installationID)
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, strings.NewReader(string(raw)))
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Accept", "application/vnd.github+json")
+	req.Header.Set("Authorization", "Bearer "+jwt)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("X-GitHub-Api-Version", "2022-11-28")
+
+	resp, err := s.httpClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		return nil, fmt.Errorf("github installation token status=%d body=%s", resp.StatusCode, strings.TrimSpace(string(body)))
+	}
+	var out installationAccessToken
+	if err := json.Unmarshal(body, &out); err != nil {
+		return nil, err
+	}
+	if out.Token == "" {
+		return nil, errors.New("github installation token response missing token")
+	}
+	if out.ExpiresAt.IsZero() {
+		return nil, errors.New("github installation token response missing expires_at")
+	}
+	return &out, nil
 }
 
 func (s *server) storeInstallation(ctx context.Context, installation *githubInstallation, setupAction string) error {

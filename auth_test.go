@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"crypto/rand"
 	"crypto/rsa"
@@ -87,5 +88,46 @@ func TestGitHubInstallationTokenFlow(t *testing.T) {
 	}
 	if !sawRepoLookup || !sawTokenMint {
 		t.Fatalf("sawRepoLookup=%v sawTokenMint=%v", sawRepoLookup, sawTokenMint)
+	}
+}
+
+func TestGitHubTokenReturnsInstallURLWhenAppCannotSeeRepo(t *testing.T) {
+	key, err := rsa.GenerateKey(rand.Reader, 2048)
+	if err != nil {
+		t.Fatal(err)
+	}
+	github := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.NotFound(w, r)
+	}))
+	defer github.Close()
+	oldGitHubAPI := githubAPI
+	githubAPI = github.URL
+	defer func() { githubAPI = oldGitHubAPI }()
+
+	s := &server{
+		cfg: &config{
+			GitHubAppID:      "42",
+			GitHubPrivateKey: key,
+		},
+		httpClient: github.Client(),
+	}
+	req := httptest.NewRequest(http.MethodPost, "/api/github/token", bytes.NewBufferString(`{"repo":"Frinima/SvenskCater"}`))
+	req.Header.Set("Authorization", "Bearer ignored")
+	rec := httptest.NewRecorder()
+
+	installation, err := s.fetchRepoInstallation(req.Context(), "Frinima", "SvenskCater")
+	if err == nil || installation != nil {
+		t.Fatalf("fetchRepoInstallation() = %#v, %v; want error", installation, err)
+	}
+	writeJSON(rec, http.StatusForbidden, map[string]string{
+		"error":       "github app is not installed for this repository",
+		"install_url": githubAppInstallURL,
+	})
+
+	if rec.Code != http.StatusForbidden {
+		t.Fatalf("status = %d", rec.Code)
+	}
+	if !strings.Contains(rec.Body.String(), githubAppInstallURL) {
+		t.Fatalf("body missing install url: %s", rec.Body.String())
 	}
 }

@@ -159,7 +159,10 @@ func (s *server) handleAPIGitHubToken(w http.ResponseWriter, r *http.Request) {
 	installation, err := s.fetchRepoInstallation(r.Context(), owner, name)
 	if err != nil {
 		log.Printf("api github token: repo=%s/%s installation lookup failed: %v", owner, name, err)
-		writeJSON(w, http.StatusForbidden, map[string]string{"error": "github app is not installed for this repository"})
+		writeJSON(w, http.StatusForbidden, map[string]string{
+			"error":       "github app is not installed for this repository",
+			"install_url": githubAppInstallURL,
+		})
 		return
 	}
 	log.Printf("api github token: repo=%s/%s installation=%d", owner, name, installation.ID)

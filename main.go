@@ -27,6 +27,8 @@ import (
 
 var githubAPI = "https://api.github.com"
 
+const githubAppInstallURL = "https://github.com/apps/faktorial-ai/installations/new"
+
 func main() {
 	cfg, err := loadConfig()
 	if err != nil {

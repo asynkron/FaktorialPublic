@@ -159,14 +159,14 @@ func (s *server) handleAPIGitHubToken(w http.ResponseWriter, r *http.Request) {
 	installation, err := s.fetchRepoInstallation(r.Context(), owner, name)
 	if err != nil {
 		log.Printf("api github token: repo=%s/%s installation lookup failed: %v", owner, name, err)
-		writeJSON(w, http.StatusBadGateway, map[string]string{"error": "github app is not installed for this repository"})
+		writeJSON(w, http.StatusForbidden, map[string]string{"error": "github app is not installed for this repository"})
 		return
 	}
 	log.Printf("api github token: repo=%s/%s installation=%d", owner, name, installation.ID)
 	accessToken, err := s.mintInstallationAccessToken(r.Context(), installation.ID, name)
 	if err != nil {
 		log.Printf("api github token: repo=%s/%s mint failed: %v", owner, name, err)
-		writeJSON(w, http.StatusBadGateway, map[string]string{"error": "could not mint github token"})
+		writeJSON(w, http.StatusFailedDependency, map[string]string{"error": "could not mint github token"})
 		return
 	}
 	log.Printf("api github token: repo=%s/%s ok in %s", owner, name, time.Since(start))

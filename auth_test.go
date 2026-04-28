@@ -13,6 +13,36 @@ import (
 	"time"
 )
 
+func TestBokabraCleanRouteServesCasePage(t *testing.T) {
+	s := &server{}
+	req := httptest.NewRequest(http.MethodGet, "/bokabra", nil)
+	rec := httptest.NewRecorder()
+
+	s.routes().ServeHTTP(rec, req)
+
+	if rec.Code != http.StatusOK {
+		t.Fatalf("status = %d, want %d", rec.Code, http.StatusOK)
+	}
+	if !strings.Contains(rec.Body.String(), "BokaBra") {
+		t.Fatalf("body did not look like the BokaBra page")
+	}
+}
+
+func TestBokabraHTMLRedirectsToCleanRoute(t *testing.T) {
+	s := &server{}
+	req := httptest.NewRequest(http.MethodGet, "/bokabra.html?utm_source=test", nil)
+	rec := httptest.NewRecorder()
+
+	s.routes().ServeHTTP(rec, req)
+
+	if rec.Code != http.StatusMovedPermanently {
+		t.Fatalf("status = %d, want %d", rec.Code, http.StatusMovedPermanently)
+	}
+	if got := rec.Header().Get("Location"); got != "/bokabra?utm_source=test" {
+		t.Fatalf("Location = %q, want %q", got, "/bokabra?utm_source=test")
+	}
+}
+
 func TestParseRepo(t *testing.T) {
 	owner, name, err := parseRepo(" Frinima/SvenskCater ")
 	if err != nil {

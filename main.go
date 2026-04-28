@@ -42,20 +42,9 @@ func main() {
 		},
 	}
 
-	mux := http.NewServeMux()
-	mux.HandleFunc("/healthz", app.handleHealthz)
-	mux.HandleFunc("/login", app.handleLogin)
-	mux.HandleFunc("/api/me", app.handleAPIIdentity)
-	mux.HandleFunc("/api/github/token", app.handleAPIGitHubToken)
-	mux.HandleFunc("/setup", app.handleGitHubSetup)
-	mux.HandleFunc("/github/setup", app.handleGitHubSetup)
-	mux.HandleFunc("/callback", app.handleGitHubCallback)
-	mux.HandleFunc("/case.html", app.handleCasePage)
-	mux.Handle("/", http.FileServer(http.Dir("static")))
-
 	srv := &http.Server{
 		Addr:              ":" + cfg.Port,
-		Handler:           mux,
+		Handler:           app.routes(),
 		ReadHeaderTimeout: 10 * time.Second,
 	}
 
@@ -109,9 +98,37 @@ type server struct {
 	httpClient *http.Client
 }
 
+func (s *server) routes() http.Handler {
+	mux := http.NewServeMux()
+	mux.HandleFunc("/healthz", s.handleHealthz)
+	mux.HandleFunc("/login", s.handleLogin)
+	mux.HandleFunc("/api/me", s.handleAPIIdentity)
+	mux.HandleFunc("/api/github/token", s.handleAPIGitHubToken)
+	mux.HandleFunc("/setup", s.handleGitHubSetup)
+	mux.HandleFunc("/github/setup", s.handleGitHubSetup)
+	mux.HandleFunc("/callback", s.handleGitHubCallback)
+	mux.HandleFunc("/bokabra", s.handleCasePage)
+	mux.HandleFunc("/bokabra.html", s.handleBokabraRedirect)
+	mux.HandleFunc("/case.html", s.handleCasePage)
+	mux.Handle("/", http.FileServer(http.Dir("static")))
+	return mux
+}
+
 func (s *server) handleHealthz(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	_, _ = io.WriteString(w, "ok\n")
+}
+
+func (s *server) handleBokabraRedirect(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet && r.Method != http.MethodHead {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	target := "/bokabra"
+	if r.URL.RawQuery != "" {
+		target += "?" + r.URL.RawQuery
+	}
+	http.Redirect(w, r, target, http.StatusMovedPermanently)
 }
 
 func (s *server) handleCasePage(w http.ResponseWriter, r *http.Request) {

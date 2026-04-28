@@ -5,7 +5,7 @@ Public Faktorial website plus the hosted GitHub App installation endpoint.
 ## Routes
 
 - `GET /` serves the public Faktorial page.
-- `GET /bokabra.html` and `GET /pitch.html` serve existing static pages.
+- `GET /bokabra` serves the BokaBra case page; `GET /bokabra.html` redirects there.
 - `GET /healthz` returns `200 OK`.
 - `GET /login?callback=http://127.0.0.1:<port>/callback` starts CLI GitHub login.
 - `GET /api/me` returns the logged-in GitHub user for a Faktorial bearer token.

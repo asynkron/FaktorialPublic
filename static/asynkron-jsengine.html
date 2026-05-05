@@ -559,6 +559,93 @@
       align-items: start;
     }
 
+    .diagram-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .diagram-panel {
+      position: relative;
+      min-width: 0;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(20, 21, 22, .94), rgba(8, 9, 10, .96)),
+        var(--panel);
+      overflow: hidden;
+    }
+
+    .diagram-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 218, 243, .06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 218, 243, .06) 1px, transparent 1px);
+      background-size: 28px 28px;
+      opacity: .72;
+      pointer-events: none;
+    }
+
+    .diagram-panel.featured {
+      grid-column: 1 / -1;
+    }
+
+    .diagram-caption {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 17px 18px;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .diagram-caption h3 {
+      color: var(--cyan-soft);
+      font-size: 14px;
+    }
+
+    .diagram-caption span {
+      color: var(--quiet);
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .diagram-shell {
+      position: relative;
+      z-index: 1;
+      padding: 18px;
+      overflow-x: auto;
+    }
+
+    .diagram-shell .mermaid {
+      min-width: 640px;
+      color: var(--ink);
+      font-family: var(--font-body);
+    }
+
+    .diagram-panel:not(.featured) .diagram-shell .mermaid {
+      min-width: 520px;
+    }
+
+    .diagram-shell svg {
+      width: 100%;
+      max-width: none;
+      height: auto;
+      filter: drop-shadow(0 14px 34px rgba(0, 0, 0, .34));
+    }
+
+    .diagram-note {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
     .timeline {
       display: grid;
       gap: 1px;
@@ -611,6 +698,10 @@
       .walkthrough,
       .stats {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .diagram-grid {
+        grid-template-columns: 1fr;
       }
 
       .flow {
@@ -674,6 +765,15 @@
         grid-template-columns: 1fr;
       }
 
+      .diagram-shell {
+        padding: 14px;
+      }
+
+      .diagram-shell .mermaid,
+      .diagram-panel:not(.featured) .diagram-shell .mermaid {
+        min-width: 680px;
+      }
+
       .metric,
       .proof,
       .stat {
@@ -710,6 +810,7 @@
         <div class="site-header__dropdown" id="site-sections-jsengine" data-nav-panel hidden>
           <a class="site-header__dropdown-link" href="#architecture">Architecture</a>
           <a class="site-header__dropdown-link" href="#execution">Execution</a>
+          <a class="site-header__dropdown-link" href="#diagrams">Diagrams</a>
           <a class="site-header__dropdown-link" href="#runtime">Runtime</a>
           <a class="site-header__dropdown-link" href="#async">Async</a>
           <a class="site-header__dropdown-link" href="#case">Case</a>
@@ -734,6 +835,7 @@
             <span class="site-header__mobile-label">Sections</span>
             <a class="site-header__mobile-link" href="#architecture">Architecture</a>
             <a class="site-header__mobile-link" href="#execution">Execution</a>
+            <a class="site-header__mobile-link" href="#diagrams">Diagrams</a>
             <a class="site-header__mobile-link" href="#runtime">Runtime</a>
             <a class="site-header__mobile-link" href="#async">Async</a>
             <a class="site-header__mobile-link" href="#case">Case</a>
@@ -879,6 +981,136 @@
             </ul>
           </article>
         </div>
+      </div>
+    </section>
+
+    <section id="diagrams" class="section">
+      <div class="inner">
+        <div class="section-head">
+          <div>
+            <span class="kicker">Mechanics diagrams</span>
+            <h2>The interesting parts are state machines.</h2>
+          </div>
+          <p>These diagrams show the engine as cooperating machines: lowering turns syntax into two execution layers, async work moves through the microtask queue, and lexical memory is carried through slots, flat indexes, and pooled environments.</p>
+        </div>
+
+        <div class="diagram-grid">
+          <article class="diagram-panel featured">
+            <div class="diagram-caption">
+              <h3>Lowering pipeline</h3>
+              <span>AST to IR to bytecode</span>
+            </div>
+            <div class="diagram-shell">
+              <pre class="mermaid">
+flowchart LR
+  Source["Source text"] --> AST["Typed AST&lt;br/&gt;nodes + source refs"]
+  AST --> Scope["Scope stamp&lt;br/&gt;scope id + slot index + flat slot id"]
+  Scope --> Plan["ExecutionPlan&lt;br/&gt;statement IR"]
+  Scope --> Expr["ExpressionProgram&lt;br/&gt;stack bytecode"]
+  Expr --> Plan
+  Plan --> Runner["ExecutionPlanRunner&lt;br/&gt;pc + dispatch"]
+  Runner --> Runtime["Runtime&lt;br/&gt;JsValue + JsEnvironment + Realm"]
+  Runner --> Dynamic["Dynamic boundary&lt;br/&gt;eval + with"]
+  Dynamic --> Runtime
+
+  classDef cyan fill:#0b2730,stroke:#00daf3,color:#e8fbff,stroke-width:1px
+  classDef pink fill:#2a1628,stroke:#ffabf3,color:#ffe7fb,stroke-width:1px
+  classDef green fill:#102417,stroke:#58e58b,color:#ddffe8,stroke-width:1px
+  classDef amber fill:#2b2512,stroke:#ffd166,color:#fff4ce,stroke-width:1px
+  class Source,AST,Scope cyan
+  class Plan,Runner green
+  class Expr pink
+  class Runtime,Dynamic amber
+              </pre>
+            </div>
+          </article>
+
+          <article class="diagram-panel">
+            <div class="diagram-caption">
+              <h3>Await and microtasks</h3>
+              <span>Scheduling model</span>
+            </div>
+            <div class="diagram-shell">
+              <pre class="mermaid">
+sequenceDiagram
+  participant JS as JS code
+  participant Runner as Runner
+  participant Await as Await op
+  participant Promise as Promise
+  participant Queue as Microtask queue
+  participant Resume as Resume callback
+
+  JS->>Runner: enter async function
+  Runner->>Await: evaluate AwaitedProgram
+  Await->>Promise: observe promise-like value
+  alt already settled
+    Promise-->>Runner: resolved value
+  else pending
+    Await->>Queue: attach pooled resume callback
+    Runner-->>JS: return outer Promise
+    Promise->>Queue: enqueue reaction job
+    Queue->>Resume: drain permitted epoch
+    Resume->>Runner: continue at saved pc
+  end
+  Runner-->>JS: resolve or reject outer Promise
+              </pre>
+            </div>
+          </article>
+
+          <article class="diagram-panel">
+            <div class="diagram-caption">
+              <h3>Generator states</h3>
+              <span>Pause and resume</span>
+            </div>
+            <div class="diagram-shell">
+              <pre class="mermaid">
+stateDiagram-v2
+  [*] --> SuspendedStart
+  SuspendedStart --> Executing: next(value)
+  Executing --> SuspendedYield: yield or yield*
+  SuspendedYield --> Executing: next(value)
+  SuspendedYield --> Closing: return(value)
+  SuspendedYield --> Throwing: throw(error)
+  Throwing --> Executing: run finally
+  Closing --> Executing: run finally
+  Executing --> Completed: return or end
+  Completed --> [*]
+              </pre>
+            </div>
+          </article>
+
+          <article class="diagram-panel featured">
+            <div class="diagram-caption">
+              <h3>Execution context and slots</h3>
+              <span>Memory model</span>
+            </div>
+            <div class="diagram-shell">
+              <pre class="mermaid">
+flowchart TB
+  Ctx["EvaluationContext&lt;br/&gt;realm + completion + cancellation"] --> Env0["Function environment&lt;br/&gt;slot array"]
+  Env0 --> Env1["Block environment&lt;br/&gt;TDZ + lexical flags"]
+  Env1 --> Captured["Captured closure env&lt;br/&gt;kept alive"]
+  Env0 --> Flat["Flat slot map&lt;br/&gt;cross-scope index"]
+  Flat --> Bytecode["Expression bytecode&lt;br/&gt;LoadIdentifier + StoreIdentifier"]
+  Env1 --> Pool["JsEnvironmentPool&lt;br/&gt;rent / return"]
+  Pool -.-> Captured
+  Bytecode --> Runner["Statement IR runner&lt;br/&gt;instruction handlers"]
+  Runner --> Ctx
+
+  classDef cyan fill:#0b2730,stroke:#00daf3,color:#e8fbff,stroke-width:1px
+  classDef pink fill:#2a1628,stroke:#ffabf3,color:#ffe7fb,stroke-width:1px
+  classDef green fill:#102417,stroke:#58e58b,color:#ddffe8,stroke-width:1px
+  classDef amber fill:#2b2512,stroke:#ffd166,color:#fff4ce,stroke-width:1px
+  class Ctx,Runner cyan
+  class Env0,Env1,Flat green
+  class Bytecode pink
+  class Captured,Pool amber
+              </pre>
+            </div>
+          </article>
+        </div>
+
+        <p class="diagram-note">The diagrams are rendered from Mermaid source in the page, so the architecture can keep evolving with the implementation instead of becoming a stale exported image.</p>
       </div>
     </section>
 
@@ -1088,6 +1320,51 @@
       </div>
     </div>
   </footer>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: "loose",
+      theme: "base",
+      fontFamily: "Space Grotesk, Inter, system-ui, sans-serif",
+      themeVariables: {
+        background: "#08090a",
+        mainBkg: "#141516",
+        secondBkg: "#1b1c1e",
+        tertiaryBkg: "#232529",
+        primaryColor: "#0b2730",
+        primaryTextColor: "#e8fbff",
+        primaryBorderColor: "#00daf3",
+        secondaryColor: "#2a1628",
+        secondaryTextColor: "#ffe7fb",
+        secondaryBorderColor: "#ffabf3",
+        tertiaryColor: "#102417",
+        tertiaryTextColor: "#ddffe8",
+        tertiaryBorderColor: "#58e58b",
+        lineColor: "#00daf3",
+        textColor: "#f0eeee",
+        nodeTextColor: "#f0eeee",
+        edgeLabelBackground: "#111112",
+        clusterBkg: "#111112",
+        clusterBorder: "rgba(0, 218, 243, .35)",
+        actorBkg: "#0b2730",
+        actorBorder: "#00daf3",
+        actorTextColor: "#e8fbff",
+        actorLineColor: "#00daf3",
+        signalColor: "#f0eeee",
+        signalTextColor: "#f0eeee",
+        noteBkgColor: "#2b2512",
+        noteTextColor: "#fff4ce",
+        noteBorderColor: "#ffd166",
+        labelBoxBkgColor: "#141516",
+        labelBoxBorderColor: "#00daf3",
+        labelTextColor: "#f0eeee"
+      }
+    });
+
+    await mermaid.run({ querySelector: ".mermaid" });
+  </script>
   <script src="header.js"></script>
 </body>
 </html>

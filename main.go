@@ -110,6 +110,10 @@ func (s *server) routes() http.Handler {
 	mux.HandleFunc("/bokabra", s.handleCasePage)
 	mux.HandleFunc("/bokabra.html", s.handleBokabraRedirect)
 	mux.HandleFunc("/case.html", s.handleCasePage)
+	mux.HandleFunc("/asynkron-jsengine", s.handleJsEngineCasePage)
+	mux.HandleFunc("/jsengine", s.handleJsEngineCasePage)
+	mux.HandleFunc("/asynkron-jsengine.html", s.handleJsEngineRedirect)
+	mux.HandleFunc("/jsengine.html", s.handleJsEngineRedirect)
 	mux.Handle("/", http.FileServer(http.Dir("static")))
 	return mux
 }
@@ -137,6 +141,26 @@ func (s *server) handleCasePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	http.ServeFile(w, r, "static/bokabra.html")
+}
+
+func (s *server) handleJsEngineRedirect(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet && r.Method != http.MethodHead {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	target := "/asynkron-jsengine"
+	if r.URL.RawQuery != "" {
+		target += "?" + r.URL.RawQuery
+	}
+	http.Redirect(w, r, target, http.StatusMovedPermanently)
+}
+
+func (s *server) handleJsEngineCasePage(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet && r.Method != http.MethodHead {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	http.ServeFile(w, r, "static/asynkron-jsengine.html")
 }
 
 func (s *server) handleGitHubSetup(w http.ResponseWriter, r *http.Request) {

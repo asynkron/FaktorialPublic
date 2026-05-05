@@ -6,6 +6,7 @@ Public Faktorial website plus the hosted GitHub App installation endpoint.
 
 - `GET /` serves the public Faktorial page.
 - `GET /bokabra` serves the BokaBra case page; `GET /bokabra.html` redirects there.
+- `GET /asynkron-jsengine` and `GET /jsengine` serve the Asynkron.JsEngine case page; the `.html` aliases redirect there.
 - `GET /healthz` returns `200 OK`.
 - `GET /login?callback=http://127.0.0.1:<port>/callback` starts CLI GitHub login.
 - `GET /api/me` returns the logged-in GitHub user for a Faktorial bearer token.

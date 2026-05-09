@@ -43,6 +43,40 @@ func TestBokabraHTMLRedirectsToCleanRoute(t *testing.T) {
 	}
 }
 
+func TestComparisonCleanRoutesServeProductSheet(t *testing.T) {
+	s := &server{}
+	for _, path := range []string{"/comparison", "/product-sheet"} {
+		req := httptest.NewRequest(http.MethodGet, path, nil)
+		rec := httptest.NewRecorder()
+
+		s.routes().ServeHTTP(rec, req)
+
+		if rec.Code != http.StatusOK {
+			t.Fatalf("%s status = %d, want %d", path, rec.Code, http.StatusOK)
+		}
+		if !strings.Contains(rec.Body.String(), "Product comparison | Faktorial") {
+			t.Fatalf("%s body did not look like the comparison product sheet", path)
+		}
+	}
+}
+
+func TestComparisonHTMLRedirectsToCleanRoute(t *testing.T) {
+	s := &server{}
+	for _, path := range []string{"/comparison.html?utm_source=test", "/product-sheet.html?utm_source=test"} {
+		req := httptest.NewRequest(http.MethodGet, path, nil)
+		rec := httptest.NewRecorder()
+
+		s.routes().ServeHTTP(rec, req)
+
+		if rec.Code != http.StatusMovedPermanently {
+			t.Fatalf("%s status = %d, want %d", path, rec.Code, http.StatusMovedPermanently)
+		}
+		if got := rec.Header().Get("Location"); got != "/comparison?utm_source=test" {
+			t.Fatalf("%s Location = %q, want %q", path, got, "/comparison?utm_source=test")
+		}
+	}
+}
+
 func TestParseRepo(t *testing.T) {
 	owner, name, err := parseRepo(" Frinima/SvenskCater ")
 	if err != nil {

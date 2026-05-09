@@ -1,0 +1,893 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Product comparison | Faktorial</title>
+  <meta name="description" content="Compare Lovable and Faktorial: app builder for new web apps versus virtual engineering team for existing software systems, issues, tests, and pull requests." />
+  <link rel="icon" href="https://asynkron.se/img/favicon.ico" type="image/x-icon" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" />
+  <link href="header.css" rel="stylesheet" />
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-container": "#00e5ff",
+            "on-primary-container": "#00626e",
+            "primary-fixed-dim": "#00daf3",
+            "primary": "#c3f5ff",
+            "tertiary-fixed-dim": "#ffabf3"
+          },
+          "fontFamily": {
+            "headline": ["Space Grotesk", "system-ui", "sans-serif"],
+            "body": ["Inter", "system-ui", "sans-serif"],
+            "label": ["Space Grotesk", "system-ui", "sans-serif"]
+          }
+        },
+      },
+    }
+  </script>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #111112;
+      --bg-deep: #08090a;
+      --panel: #141516;
+      --panel-2: #1b1c1e;
+      --panel-3: #232529;
+      --ink: #f0eeee;
+      --muted: #c5d3d5;
+      --quiet: #88989c;
+      --line: rgba(0, 218, 243, .24);
+      --line-soft: rgba(0, 218, 243, .11);
+      --cyan: #00daf3;
+      --cyan-soft: #9cf0ff;
+      --pink: #ffabf3;
+      --green: #58e58b;
+      --amber: #ffd166;
+      --danger: #ffb4ab;
+      --font-body: "Inter", system-ui, sans-serif;
+      --font-display: "Space Grotesk", system-ui, sans-serif;
+      --max: 1240px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-width: 320px;
+      margin: 0;
+      background:
+        linear-gradient(180deg, #050506 0%, var(--bg) 38%, #090a0b 100%);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.55;
+      letter-spacing: 0;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      background-image:
+        linear-gradient(rgba(0, 218, 243, .075) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 218, 243, .075) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to bottom, black 0%, transparent 86%);
+      pointer-events: none;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(circle at 76% 12%, rgba(255, 171, 243, .17), transparent 31%),
+        radial-gradient(circle at 18% 6%, rgba(0, 218, 243, .16), transparent 34%);
+      opacity: .78;
+      pointer-events: none;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    main {
+      padding-top: 80px;
+      overflow: hidden;
+    }
+
+    .section {
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .inner {
+      width: min(var(--max), calc(100vw - 48px));
+      margin: 0 auto;
+      padding: 96px 0;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 700px;
+      border-bottom: 1px solid var(--line);
+      background:
+        radial-gradient(ellipse 62% 42% at 50% 100%, rgba(0, 218, 243, .19), transparent 64%),
+        linear-gradient(180deg, #050506 0%, #111214 100%);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: auto -10% -34% -10%;
+      height: 52%;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(0, 218, 243, .2), transparent 52%),
+        repeating-linear-gradient(90deg, rgba(0, 218, 243, .2) 0 1px, transparent 1px 88px);
+      transform: skewY(-4deg);
+      opacity: .82;
+    }
+
+    .hero .inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, .95fr) minmax(380px, 1.05fr);
+      gap: 42px;
+      align-items: center;
+      padding: 76px 0 88px;
+    }
+
+    .eyebrow,
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--cyan);
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .34em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow {
+      margin-bottom: 22px;
+      letter-spacing: .42em;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 10px;
+      height: 1px;
+      background: var(--cyan);
+      box-shadow: 0 0 18px rgba(0, 218, 243, .7);
+    }
+
+    .kicker {
+      display: block;
+      margin-bottom: 14px;
+      letter-spacing: .28em;
+    }
+
+    main h1,
+    main h2,
+    main h3 {
+      margin: 0;
+      font-family: var(--font-display);
+      letter-spacing: .06em;
+      line-height: 1.02;
+      text-transform: uppercase;
+    }
+
+    main h1 {
+      max-width: 780px;
+      font-size: clamp(48px, 5vw, 78px);
+      font-weight: 900;
+    }
+
+    main h2 {
+      max-width: 920px;
+      font-size: clamp(32px, 3.2vw, 52px);
+      font-weight: 900;
+    }
+
+    main h1 .accent,
+    main h2 .accent,
+    .product-card strong .accent {
+      color: var(--cyan-soft);
+    }
+
+    main h1 .accent,
+    main h2 .accent,
+    .product-card strong .accent {
+      display: block;
+    }
+
+    main h2 .accent.pink,
+    .product-card.faktorial strong .accent {
+      color: var(--pink);
+    }
+
+    main h3 {
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    .lead {
+      max-width: 720px;
+      margin-top: 24px;
+      color: var(--muted);
+      font-size: 21px;
+      line-height: 1.42;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 16px;
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      color: var(--ink);
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .btn.primary {
+      border-color: transparent;
+      background: var(--cyan);
+      color: #00363d;
+    }
+
+    .split-panel {
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(27, 28, 30, .94), rgba(8, 9, 10, .98)),
+        var(--panel);
+      box-shadow: 0 24px 90px rgba(0, 0, 0, .46);
+    }
+
+    .split-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 15px 18px;
+      border-bottom: 1px solid var(--line-soft);
+      color: var(--muted);
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .split-grid,
+    .use-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .product-card {
+      min-width: 0;
+      padding: 26px;
+      border-right: 1px solid var(--line-soft);
+    }
+
+    .product-card:last-child {
+      border-right: 0;
+    }
+
+    .product-card small,
+    .stat small {
+      display: block;
+      color: var(--quiet);
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .product-card strong {
+      display: block;
+      margin-top: 12px;
+      color: var(--ink);
+      font-family: var(--font-display);
+      font-size: clamp(30px, 3vw, 44px);
+      font-weight: 900;
+      letter-spacing: .04em;
+      line-height: 1.04;
+      text-transform: uppercase;
+    }
+
+    .product-card.faktorial strong .accent {
+      font-size: clamp(28px, 2.55vw, 38px);
+    }
+
+    .product-card p {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border-top: 1px solid var(--line-soft);
+    }
+
+    .stat {
+      min-width: 0;
+      padding: 18px 20px;
+      border-right: 1px solid var(--line-soft);
+    }
+
+    .stat:last-child {
+      border-right: 0;
+    }
+
+    .stat strong {
+      display: block;
+      margin-top: 8px;
+      color: var(--green);
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: .06em;
+      line-height: 1.05;
+      text-transform: uppercase;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(260px, .75fr) minmax(0, 1fr);
+      gap: 42px;
+      align-items: end;
+      margin-bottom: 42px;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .positioning {
+      display: grid;
+      grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .positioning-card {
+      padding: 28px;
+      border: 1px solid var(--line);
+      background: rgba(20, 21, 22, .78);
+    }
+
+    .positioning-card h3 {
+      margin-bottom: 16px;
+      color: var(--cyan-soft);
+    }
+
+    .positioning-card p {
+      color: var(--muted);
+    }
+
+    .use-grid {
+      gap: 1px;
+      border: 1px solid var(--line);
+      background: var(--line-soft);
+    }
+
+    .use-column {
+      min-width: 0;
+      background: rgba(14, 15, 16, .95);
+    }
+
+    .use-column h3 {
+      padding: 20px;
+      border-bottom: 1px solid var(--line-soft);
+      color: var(--cyan-soft);
+      font-size: 16px;
+    }
+
+    .use-column.faktorial h3 {
+      color: var(--pink);
+    }
+
+    .clean-list {
+      display: grid;
+      gap: 0;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      color: var(--muted);
+    }
+
+    .clean-list li {
+      position: relative;
+      min-height: 58px;
+      padding: 17px 20px 17px 42px;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .clean-list li:last-child {
+      border-bottom: 0;
+    }
+
+    .clean-list li::before {
+      content: "";
+      position: absolute;
+      top: 28px;
+      left: 20px;
+      width: 8px;
+      height: 1px;
+      background: var(--cyan);
+    }
+
+    .comparison-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      background: rgba(14, 15, 16, .76);
+    }
+
+    .compare-table {
+      width: 100%;
+      min-width: 880px;
+      border-collapse: collapse;
+    }
+
+    .compare-table th,
+    .compare-table td {
+      padding: 17px 18px;
+      border-bottom: 1px solid var(--line-soft);
+      border-right: 1px solid var(--line-soft);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .compare-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .compare-table th:last-child,
+    .compare-table td:last-child {
+      border-right: 0;
+    }
+
+    .compare-table th {
+      color: var(--cyan-soft);
+      background: rgba(0, 218, 243, .06);
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .compare-table td:first-child {
+      width: 22%;
+      color: var(--ink);
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .compare-table td {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 1100px) {
+      .hero .inner,
+      .section-head,
+      .positioning {
+        grid-template-columns: 1fr;
+      }
+
+      .quick-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .stat:nth-child(2n) {
+        border-right: 0;
+      }
+
+      .stat:nth-last-child(-n + 2) {
+        border-bottom: 0;
+      }
+    }
+
+    @media (max-width: 760px) {
+      main {
+        padding-top: 72px;
+      }
+
+      .inner {
+        width: min(100vw - 30px, var(--max));
+        padding: 70px 0;
+      }
+
+      .hero .inner {
+        padding: 52px 0 70px;
+      }
+
+      main h1 {
+        font-size: clamp(40px, 13vw, 56px);
+      }
+
+      .lead {
+        font-size: 18px;
+      }
+
+      .split-grid,
+      .quick-grid,
+      .use-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .product-card,
+      .stat {
+        border-right: 0;
+        border-bottom: 1px solid var(--line-soft);
+      }
+
+      .product-card:last-child,
+      .stat:last-child {
+        border-bottom: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="site-header__brand" href="index.html" aria-label="Faktorial home">
+      <img class="site-header__brand-mark" src="images/faktorialai-plain.png" alt="Faktorial.AI" />
+      <span class="site-header__brand-copy">
+        <span class="site-header__brand-title">Faktorial.AI</span>
+        <span class="site-header__brand-subtitle">Asynkron autonomous engineering</span>
+      </span>
+    </a>
+    <nav class="site-header__primary" aria-label="Primary">
+      <a class="site-header__link" href="index.html">Overview</a>
+      <a class="site-header__link" href="/bokabra">BokaBra</a>
+      <a class="site-header__link" href="/asynkron-jsengine">JsEngine</a>
+      <a class="site-header__link" href="/comparison" aria-current="page">Compare</a>
+      <div class="site-header__menu" data-nav-menu>
+        <button class="site-header__link site-header__menu-trigger" type="button" data-nav-trigger aria-expanded="false" aria-controls="site-sections-comparison">
+          Sections
+          <span class="site-header__caret" aria-hidden="true"></span>
+        </button>
+        <div class="site-header__dropdown" id="site-sections-comparison" data-nav-panel hidden>
+          <a class="site-header__dropdown-link" href="#positioning">Positioning</a>
+          <a class="site-header__dropdown-link" href="#when-to-use">When to use</a>
+          <a class="site-header__dropdown-link" href="#comparison">Comparison</a>
+        </div>
+      </div>
+    </nav>
+    <div class="site-header__actions">
+      <a class="site-header__cta" href="mailto:info@asynkron.se?subject=Faktorial%20Pilot%20Inquiry&body=Hi%2C%0A%0AWe%27re%20interested%20in%20running%20a%20Faktorial%20pilot.%0A%0ACompany%3A%20%0ARepo%20size%20(approx)%3A%20%0ABacklog%20size%3A%20%0A%0AThanks">Run a Pilot</a>
+      <div class="site-header__menu site-header__menu--mobile" data-nav-menu>
+        <button class="site-header__icon-button" type="button" data-nav-trigger aria-expanded="false" aria-controls="mobile-nav-comparison">
+          Menu
+          <span class="site-header__icon-stack" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
+        <div class="site-header__mobile-panel" id="mobile-nav-comparison" data-nav-panel hidden>
+          <div class="site-header__mobile-group">
+            <span class="site-header__mobile-label">Pages</span>
+            <a class="site-header__mobile-link" href="index.html">Overview</a>
+            <a class="site-header__mobile-link" href="/bokabra">BokaBra</a>
+            <a class="site-header__mobile-link" href="/asynkron-jsengine">JsEngine</a>
+            <a class="site-header__mobile-link" href="/comparison" aria-current="page">Compare</a>
+          </div>
+          <div class="site-header__mobile-group">
+            <span class="site-header__mobile-label">Sections</span>
+            <a class="site-header__mobile-link" href="#positioning">Positioning</a>
+            <a class="site-header__mobile-link" href="#when-to-use">When to use</a>
+            <a class="site-header__mobile-link" href="#comparison">Comparison</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="page-title">
+      <div class="inner">
+        <div>
+          <span class="eyebrow">Product sheet</span>
+          <h1 id="page-title">A virtual engineering team <span class="accent">for real systems</span></h1>
+          <p class="lead">Lovable is excellent when you want to create a new app quickly. Faktorial is built for a different job: helping engineering teams build, extend, modernize, and maintain real software inside the stack and workflow they already use.</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="mailto:info@asynkron.se?subject=Faktorial%20Pilot%20Inquiry&body=Hi%2C%0A%0AWe%27re%20interested%20in%20running%20a%20Faktorial%20pilot.%0A%0ACompany%3A%20%0ARepo%20size%20(approx)%3A%20%0ABacklog%20size%3A%20%0A%0AThanks">Run a Pilot</a>
+            <a class="btn" href="#comparison">Compare Products</a>
+          </div>
+        </div>
+
+        <aside class="split-panel" aria-label="Lovable and Faktorial summary">
+          <div class="split-top">
+            <span>Different jobs</span>
+            <span>same AI shift</span>
+          </div>
+          <div class="split-grid">
+            <div class="product-card">
+              <small>Lovable</small>
+              <strong>Build something <span class="accent">Lovable</span></strong>
+              <p>Start from an idea, prompt toward a working web application, then iterate through an AI app-building workflow.</p>
+            </div>
+            <div class="product-card faktorial">
+              <small>Faktorial</small>
+              <strong>Build something <span class="accent">maintainable</span></strong>
+              <p>Start from issues, bugs, migrations, features, tests, and engineering goals in systems your team already owns.</p>
+            </div>
+          </div>
+          <div class="quick-grid">
+            <div class="stat"><small>Faktorial input</small><strong>Issues</strong></div>
+            <div class="stat"><small>Faktorial output</small><strong>Tested PRs</strong></div>
+            <div class="stat"><small>Stack</small><strong>Your stack</strong></div>
+            <div class="stat"><small>Control</small><strong>Human approval</strong></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="positioning">
+      <div class="inner">
+        <div class="section-head">
+          <div>
+            <span class="kicker">Positioning</span>
+            <h2>Not an app builder. <span class="accent pink">A virtual engineering team.</span></h2>
+          </div>
+          <p>App builders help you create a new product quickly. Faktorial helps you deliver engineering work inside systems you already build, operate, review, deploy, and maintain.</p>
+        </div>
+        <div class="positioning">
+          <article class="positioning-card">
+            <h3>Lovable starts with the product idea</h3>
+            <p>Lovable is a powerful way to go from a prompt to a working web application. Its documentation describes a natural-language workflow for building, iterating on, syncing, deploying, and operating web apps.</p>
+          </article>
+          <article class="positioning-card">
+            <h3>Faktorial starts with the engineering system</h3>
+            <p>Bring your repositories, frameworks, tools, CI/CD, deployment model, coding standards, and review process. Faktorial turns scoped engineering work into tested, reviewable pull requests.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="when-to-use">
+      <div class="inner">
+        <div class="section-head">
+          <div>
+            <span class="kicker">Decision guide</span>
+            <h2>Choose by the work. <span class="accent">Not by the category.</span></h2>
+          </div>
+          <p>If the problem is "build me an app", start with Lovable. If the problem is "help us ship and maintain software", bring that work to Faktorial.</p>
+        </div>
+        <div class="use-grid">
+          <article class="use-column">
+            <h3>Use Lovable when...</h3>
+            <ul class="clean-list">
+              <li>You want to create a new app from an idea.</li>
+              <li>You are validating an MVP or internal tool.</li>
+              <li>You are comfortable starting inside an AI app builder.</li>
+              <li>Speed to first working product matters most.</li>
+              <li>The problem is "build me an app."</li>
+            </ul>
+          </article>
+          <article class="use-column faktorial">
+            <h3>Use Faktorial when...</h3>
+            <ul class="clean-list">
+              <li>You want a virtual engineering team working in your existing repos.</li>
+              <li>You need features, fixes, tests, migrations, refactors, or maintenance.</li>
+              <li>You want to keep your current stack, tools, CI/CD, and deployment model.</li>
+              <li>Safe, reviewable delivery in real systems matters most.</li>
+              <li>The problem is "help us ship and maintain software."</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="comparison">
+      <div class="inner">
+        <div class="section-head">
+          <div>
+            <span class="kicker">Product comparison</span>
+            <h2>Different centers. <span class="accent pink">Different gravity.</span></h2>
+          </div>
+          <p>Lovable centers on creating and iterating web apps. Faktorial centers on increasing delivery capacity inside existing engineering workflows.</p>
+        </div>
+        <div class="comparison-wrap">
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Lovable</th>
+                <th>Faktorial</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Best described as</td>
+                <td>AI app builder.</td>
+                <td>Virtual engineering team.</td>
+              </tr>
+              <tr>
+                <td>Primary job</td>
+                <td>Turn a product idea into a working web app.</td>
+                <td>Turn real engineering work into tested, reviewable changes.</td>
+              </tr>
+              <tr>
+                <td>Best starting point</td>
+                <td>An idea, prototype, MVP, or new internal tool.</td>
+                <td>Existing repos, systems, issues, bugs, migrations, features, and maintenance work.</td>
+              </tr>
+              <tr>
+                <td>Main input</td>
+                <td>Natural-language prompts and app-building instructions.</td>
+                <td>GitHub issues, requirements, bugs, technical goals, acceptance criteria, and engineering context.</td>
+              </tr>
+              <tr>
+                <td>Main output</td>
+                <td>A generated full-stack web application.</td>
+                <td>Pull requests, tests, fixes, features, refactors, migrations, and maintained systems.</td>
+              </tr>
+              <tr>
+                <td>Stack model</td>
+                <td>Works especially well with its supported web-app stack and integrations.</td>
+                <td>Stack-agnostic: use your languages, frameworks, tools, infrastructure, and deployment model.</td>
+              </tr>
+              <tr>
+                <td>Workflow model</td>
+                <td>Build inside an AI app-building experience, with GitHub sync and deployment options.</td>
+                <td>Work inside your existing issue tracker, repository, CI/CD, and review process.</td>
+              </tr>
+              <tr>
+                <td>Deployment model</td>
+                <td>Can publish through Lovable or sync/export code for other deployment paths.</td>
+                <td>Uses your deployment model, environments, release process, and operational constraints.</td>
+              </tr>
+              <tr>
+                <td>Greenfield work</td>
+                <td>Very strong.</td>
+                <td>Strong when requirements and architecture are clear, but not limited to greenfield.</td>
+              </tr>
+              <tr>
+                <td>Existing systems</td>
+                <td>Useful when code is synced or exported, but not its main center of gravity.</td>
+                <td>Core use case.</td>
+              </tr>
+              <tr>
+                <td>Maintenance</td>
+                <td>Possible after code ownership or export; app creation is the primary motion.</td>
+                <td>Core use case: fixes, upgrades, refactors, migrations, tests, and ongoing system evolution.</td>
+              </tr>
+              <tr>
+                <td>Governance</td>
+                <td>Workspace, GitHub sync, code ownership, security, and deployment controls.</td>
+                <td>PR-first delivery, human approval, quality gates, CI, scoped changes, and auditability.</td>
+              </tr>
+              <tr>
+                <td>Buyer/user</td>
+                <td>Founder, product builder, PM, designer, startup team, or non-technical builder.</td>
+                <td>CTO, engineering leader, tech lead, software team, consultancy, or platform team.</td>
+              </tr>
+              <tr>
+                <td>Good fit when</td>
+                <td>You need to create something usable fast.</td>
+                <td>You need more engineering capacity without changing how your team builds software.</td>
+              </tr>
+              <tr>
+                <td>Poor fit when</td>
+                <td>You need deep autonomous maintenance across a complex existing estate.</td>
+                <td>You do not yet know what should be built, or there is no repo, review path, or engineering owner.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="w-full py-16 px-8 bg-[#0e0e0f] border-t border-[#00daf3]/10">
+    <div class="max-w-[1240px] mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr_1fr] gap-12">
+        <div>
+          <div class="flex flex-wrap items-center gap-4 mb-6">
+            <div class="text-xl font-black text-[#c3f5ff] tracking-[0.25em] uppercase">FAKTORIAL.AI</div>
+            <div class="h-5 w-px bg-primary/20 hidden sm:block"></div>
+            <img src="https://asynkron.se/img/asynkron.png" alt="Asynkron" class="h-6 w-auto" />
+          </div>
+          <p class="text-[#bac9cc]/70 text-sm leading-relaxed max-w-xl">
+            Autonomous engineering delivery by Asynkron AB, the distributed-systems team behind Proto.Actor.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-4">
+            <a class="px-5 py-3 bg-primary-container text-on-primary-container font-bold uppercase tracking-[0.15em] text-xs hover:bg-primary-fixed-dim transition-colors inline-block" href="mailto:info@asynkron.se?subject=Faktorial%20Pilot%20Inquiry&body=Hi%2C%0A%0AWe%27re%20interested%20in%20running%20a%20Faktorial%20pilot.%0A%0ACompany%3A%20%0ARepo%20size%20(approx)%3A%20%0ABacklog%20size%3A%20%0A%0AThanks">Run a Pilot</a>
+            <a class="px-5 py-3 border border-tertiary-fixed-dim/20 text-tertiary-fixed-dim font-bold uppercase tracking-[0.15em] text-xs hover:bg-tertiary-fixed-dim/5 transition-colors inline-block" href="mailto:info@asynkron.se?subject=Faktorial%20Managed%20Service&body=Hi%2C%0A%0AWe%27re%20interested%20in%20Faktorial%20Managed%20by%20Asynkron.%0A%0ACompany%3A%20%0AWhat%20we%20need%20help%20with%3A%20%0A%0AThanks">Managed Service</a>
+          </div>
+        </div>
+        <div>
+          <h2 class="font-headline font-bold uppercase tracking-[0.2em] text-sm text-primary mb-6">Company</h2>
+          <address class="not-italic text-[#bac9cc]/70 text-sm leading-relaxed space-y-3">
+            <div class="grid grid-cols-[1.5rem_1fr] gap-3">
+              <span class="font-mono text-primary-fixed-dim/80">a:</span>
+              <span>Asynkron AB<br />Sankt Eriksvägen 9B<br />141 32 Huddinge</span>
+            </div>
+            <div class="grid grid-cols-[1.5rem_1fr] gap-3">
+              <span class="font-mono text-primary-fixed-dim/80">e:</span>
+              <a class="hover:text-primary-fixed-dim transition-colors" href="mailto:info@asynkron.se">info@asynkron.se</a>
+            </div>
+            <div class="grid grid-cols-[1.5rem_1fr] gap-3">
+              <span class="font-mono text-primary-fixed-dim/80">w:</span>
+              <a class="hover:text-primary-fixed-dim transition-colors" href="https://asynkron.se">asynkron.se</a>
+            </div>
+            <div class="grid grid-cols-[1.5rem_1fr] gap-3">
+              <span class="font-mono text-primary-fixed-dim/80">m:</span>
+              <a class="hover:text-primary-fixed-dim transition-colors" href="tel:+46763150349">+46-763150349</a>
+            </div>
+          </address>
+        </div>
+        <div>
+          <h2 class="font-headline font-bold uppercase tracking-[0.2em] text-sm text-tertiary-fixed-dim mb-6">Links</h2>
+          <nav class="grid grid-cols-1 gap-3">
+            <a class="text-[#bac9cc]/70 hover:text-primary-fixed-dim transition-colors text-sm uppercase font-headline tracking-widest" href="https://asynkron.se/docs/intro/">Asynkron Docs</a>
+            <a class="text-[#bac9cc]/70 hover:text-primary-fixed-dim transition-colors text-sm uppercase font-headline tracking-widest" href="https://asynkron.se/blog">Blog</a>
+            <a class="text-[#bac9cc]/70 hover:text-primary-fixed-dim transition-colors text-sm uppercase font-headline tracking-widest" href="https://github.com/Asynkron">GitHub Organization</a>
+            <a class="text-[#bac9cc]/70 hover:text-primary-fixed-dim transition-colors text-sm uppercase font-headline tracking-widest" href="https://proto.actor">Proto.Actor Project</a>
+            <a class="text-[#bac9cc]/70 hover:text-primary-fixed-dim transition-colors text-sm uppercase font-headline tracking-widest" href="/bokabra">BokaBra Case</a>
+            <a class="text-[#bac9cc]/70 hover:text-primary-fixed-dim transition-colors text-sm uppercase font-headline tracking-widest" href="/asynkron-jsengine">JsEngine Case</a>
+            <a class="text-[#bac9cc]/70 hover:text-primary-fixed-dim transition-colors text-sm uppercase font-headline tracking-widest" href="/comparison">Product Comparison</a>
+            <a class="text-[#bac9cc]/70 hover:text-tertiary-fixed-dim transition-colors text-sm uppercase font-headline tracking-widest" href="mailto:info@asynkron.se?subject=Faktorial%20Inquiry">Contact</a>
+          </nav>
+        </div>
+      </div>
+      <div class="mt-14 pt-6 border-t border-primary/10 flex flex-col md:flex-row justify-between gap-4 text-[#bac9cc]/40 font-mono text-[10px] tracking-widest uppercase">
+        <span>&copy; Asynkron AB</span>
+        <span>Faktorial.ai</span>
+      </div>
+    </div>
+  </footer>
+  <script src="header.js"></script>
+</body>
+</html>

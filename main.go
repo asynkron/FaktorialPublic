@@ -118,6 +118,8 @@ func (s *server) routes() http.Handler {
 	mux.HandleFunc("/product-sheet", s.handleComparisonPage)
 	mux.HandleFunc("/comparison.html", s.handleComparisonRedirect)
 	mux.HandleFunc("/product-sheet.html", s.handleComparisonRedirect)
+	mux.HandleFunc("/compliance", s.handleCompliancePage)
+	mux.HandleFunc("/compliance.html", s.handleComplianceRedirect)
 	mux.Handle("/", http.FileServer(http.Dir("static")))
 	return mux
 }
@@ -185,6 +187,26 @@ func (s *server) handleComparisonPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	http.ServeFile(w, r, "static/comparison.html")
+}
+
+func (s *server) handleComplianceRedirect(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet && r.Method != http.MethodHead {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	target := "/compliance"
+	if r.URL.RawQuery != "" {
+		target += "?" + r.URL.RawQuery
+	}
+	http.Redirect(w, r, target, http.StatusMovedPermanently)
+}
+
+func (s *server) handleCompliancePage(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet && r.Method != http.MethodHead {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	http.ServeFile(w, r, "static/compliance.html")
 }
 
 func (s *server) handleGitHubSetup(w http.ResponseWriter, r *http.Request) {

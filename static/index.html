@@ -694,6 +694,400 @@
     .capability:nth-child(3) { --accent: var(--green); }
     .capability:nth-child(4) { --accent: var(--amber); }
 
+    .decision-section {
+      position: relative;
+      background:
+        radial-gradient(ellipse 72% 42% at 50% 0%, rgba(0, 218, 243, .1), transparent 68%),
+        radial-gradient(ellipse 48% 34% at 78% 46%, rgba(255, 171, 243, .08), transparent 66%),
+        linear-gradient(180deg, #090a0b 0%, #101213 52%, #08090a 100%);
+    }
+
+    .decision-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(300px, 480px);
+      gap: 34px;
+      align-items: end;
+      margin-bottom: 34px;
+    }
+
+    .decision-head h2 {
+      margin-bottom: 0;
+    }
+
+    .decision-graph {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(280px, .92fr) minmax(300px, .82fr) minmax(300px, .86fr);
+      gap: 34px;
+      align-items: stretch;
+      min-height: 596px;
+      padding: 30px;
+      border-top: 1px solid rgba(0, 218, 243, .34);
+      border-bottom: 1px solid rgba(0, 218, 243, .24);
+      background:
+        linear-gradient(rgba(0, 218, 243, .045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 218, 243, .045) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(21, 25, 27, .66), rgba(7, 8, 9, .68));
+      background-size: 38px 38px, 38px 38px, auto;
+      box-shadow:
+        0 28px 90px rgba(0, 0, 0, .42),
+        inset 0 1px 0 rgba(255, 255, 255, .035);
+      overflow: hidden;
+    }
+
+    .decision-graph::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 34% 54% at 50% 50%, rgba(0, 218, 243, .16), transparent 72%),
+        linear-gradient(90deg, rgba(0, 0, 0, .42), transparent 28%, transparent 72%, rgba(0, 0, 0, .42));
+      pointer-events: none;
+    }
+
+    .signal-column,
+    .evaluation-core,
+    .output-column {
+      position: relative;
+      min-width: 0;
+    }
+
+    .signal-column {
+      z-index: 4;
+      overflow: visible;
+    }
+
+    .evaluation-core {
+      z-index: 3;
+      overflow: visible;
+    }
+
+    .output-column {
+      z-index: 2;
+    }
+
+    .signal-column,
+    .output-column {
+      display: grid;
+      gap: 10px;
+    }
+
+    .signal-column {
+      padding: 18px;
+      border: 1px solid rgba(0, 218, 243, .26);
+      background:
+        linear-gradient(180deg, rgba(16, 19, 21, .88), rgba(6, 7, 8, .9));
+    }
+
+    .decision-label {
+      color: var(--cyan);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+    }
+
+    .signal-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      min-height: 68px;
+      padding: 11px 13px;
+      border: 1px solid rgba(0, 218, 243, .16);
+      background:
+        linear-gradient(180deg, rgba(24, 27, 29, .9), rgba(8, 9, 10, .88));
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .035),
+        0 14px 38px rgba(0, 0, 0, .2);
+    }
+
+    .signal-card::after {
+      content: "";
+      position: absolute;
+      z-index: 7;
+      right: -5px;
+      top: 50%;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 12px rgba(0, 218, 243, .5);
+      transform: translateY(-50%);
+    }
+
+    .signal-card::before {
+      content: "";
+      position: absolute;
+      z-index: 6;
+      left: 100%;
+      top: 50%;
+      width: 52px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--cyan), rgba(0, 218, 243, .32));
+      box-shadow: 0 0 10px rgba(0, 218, 243, .34);
+      transform: translateY(-50%);
+    }
+
+    .signal-icon,
+    .output-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border: 1px solid color-mix(in srgb, var(--signal, var(--cyan)) 52%, transparent);
+      color: var(--signal, var(--cyan));
+      background:
+        linear-gradient(180deg, color-mix(in srgb, var(--signal, var(--cyan)) 17%, transparent), color-mix(in srgb, var(--signal, var(--cyan)) 6%, transparent));
+      box-shadow: inset 0 1px 0 color-mix(in srgb, var(--signal, var(--cyan)) 22%, transparent);
+    }
+
+    .signal-icon .material-symbols-outlined,
+    .output-icon .material-symbols-outlined {
+      color: inherit;
+      font-size: 24px;
+      text-shadow: 0 0 12px color-mix(in srgb, var(--signal, var(--cyan)) 48%, transparent);
+    }
+
+    .signal-card strong,
+    .output-card strong {
+      display: block;
+      margin-bottom: 2px;
+      color: var(--ink);
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 850;
+      letter-spacing: .02em;
+      line-height: 1.12;
+    }
+
+    .signal-card > span:last-child,
+    .output-card > span:last-child {
+      display: block;
+      color: var(--quiet);
+      font-size: 13px;
+      line-height: 1.24;
+    }
+
+    .signal-card:nth-of-type(2) { --signal: var(--cyan); }
+    .signal-card:nth-of-type(3) { --signal: #8b6cff; }
+    .signal-card:nth-of-type(4) { --signal: #59adff; }
+    .signal-card:nth-of-type(5) { --signal: #ffc14d; }
+    .signal-card:nth-of-type(6) { --signal: #00c9a7; }
+    .signal-card:nth-of-type(7) { --signal: var(--violet); }
+    .signal-card:nth-of-type(8) { --signal: var(--green); }
+    .signal-card:nth-of-type(9) { --signal: var(--blue); }
+
+    .evaluation-core {
+      display: grid;
+      gap: 18px;
+      align-content: center;
+      justify-items: center;
+      padding: 28px 24px;
+      border: 1px solid rgba(0, 218, 243, .42);
+      background:
+        radial-gradient(circle at 50% 24%, rgba(0, 218, 243, .19), transparent 38%),
+        linear-gradient(180deg, rgba(24, 27, 29, .94), rgba(8, 9, 10, .96));
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, .025) inset,
+        0 26px 76px rgba(0, 0, 0, .48);
+      text-align: center;
+    }
+
+    .evaluation-core::before {
+      content: "";
+      position: absolute;
+      inset: -44px;
+      z-index: -1;
+      background:
+        radial-gradient(ellipse at 50% 50%, rgba(0, 218, 243, .16), transparent 68%);
+      opacity: .46;
+      pointer-events: none;
+    }
+
+    .evaluation-core::after {
+      content: "";
+      position: absolute;
+      z-index: 6;
+      left: 100%;
+      top: 50%;
+      width: 34px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--cyan), rgba(0, 218, 243, .34));
+      box-shadow: 0 0 16px rgba(0, 218, 243, .42);
+      transform: translateY(-50%);
+    }
+
+    .evaluation-mark {
+      width: 86px;
+      height: 86px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 24px rgba(0, 218, 243, .42));
+    }
+
+    .shell main .evaluation-core h3 {
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(22px, 2vw, 32px);
+      line-height: 1;
+    }
+
+    .evaluation-core p {
+      max-width: 270px;
+      margin: -6px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .evaluation-list {
+      display: grid;
+      gap: 9px;
+      width: min(310px, 100%);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      text-align: left;
+    }
+
+    .evaluation-list li {
+      display: grid;
+      grid-template-columns: 22px minmax(0, 1fr);
+      gap: 9px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .evaluation-list .material-symbols-outlined {
+      color: var(--cyan);
+      font-size: 18px;
+    }
+
+    .output-column {
+      align-content: center;
+      padding: 18px;
+      border: 1px solid rgba(0, 218, 243, .26);
+      background:
+        linear-gradient(180deg, rgba(16, 19, 21, .88), rgba(6, 7, 8, .9));
+    }
+
+    .output-column::before {
+      content: "";
+      position: absolute;
+      z-index: 7;
+      left: -5px;
+      top: 50%;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 14px rgba(0, 218, 243, .62);
+      transform: translateY(-50%);
+    }
+
+    .output-card {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      min-height: 72px;
+      padding: 12px;
+      border: 1px solid rgba(0, 218, 243, .16);
+      background: rgba(10, 10, 11, .64);
+    }
+
+    .output-card:nth-of-type(1) {
+      --signal: var(--cyan);
+    }
+
+    .output-card:nth-of-type(2) {
+      --signal: var(--blue);
+    }
+
+    .output-card:nth-of-type(3) {
+      --signal: var(--green);
+    }
+
+    .output-card:nth-of-type(4) {
+      --signal: var(--violet);
+    }
+
+    .output-card:nth-of-type(5) {
+      --signal: #ffc14d;
+    }
+
+    .output-score {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 2px;
+      padding: 12px;
+      border: 1px solid rgba(74, 222, 128, .28);
+      color: var(--muted);
+      background: rgba(74, 222, 128, .06);
+      font-size: 13px;
+    }
+
+    .output-score strong {
+      color: var(--green);
+      font-family: var(--font-mono);
+      font-size: 20px;
+    }
+
+    .decision-benefits {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border-bottom: 1px solid rgba(0, 218, 243, .22);
+      border-left: 1px solid rgba(0, 218, 243, .16);
+      border-right: 1px solid rgba(0, 218, 243, .16);
+      background: rgba(8, 9, 10, .72);
+    }
+
+    .decision-benefit {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 13px;
+      min-width: 0;
+      padding: 18px;
+      border-right: 1px solid rgba(0, 218, 243, .14);
+    }
+
+    .decision-benefit:last-child {
+      border-right: 0;
+    }
+
+    .decision-benefit .material-symbols-outlined {
+      color: var(--benefit, var(--cyan));
+      font-size: 29px;
+    }
+
+    .decision-benefit strong {
+      display: block;
+      color: var(--ink);
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .decision-benefit span:last-child {
+      display: block;
+      margin-top: 3px;
+      color: var(--quiet);
+      font-size: 14px;
+      line-height: 1.28;
+    }
+
+    .decision-benefit:nth-child(2) { --benefit: var(--violet); }
+    .decision-benefit:nth-child(3) { --benefit: var(--green); }
+    .decision-benefit:nth-child(4) { --benefit: #ffc14d; }
+
     .flow-band {
       background:
         linear-gradient(180deg, rgba(255, 171, 243, .04), rgba(0, 218, 243, .04)),
@@ -1440,7 +1834,7 @@
     .flow-band,
     #control,
     #learn,
-    main > .section:not(.flow-band):not(.closing):not(#what) {
+    main > .section:not(.flow-band):not(.closing):not(#what):not(.decision-section) {
       background:
         radial-gradient(ellipse 84% 44% at 50% 0%, rgba(0, 218, 243, .055), transparent 68%),
         linear-gradient(180deg, #0c0d0e 0%, #111213 50%, #0b0c0d 100%);
@@ -1554,7 +1948,9 @@
       .scope-panel,
       .learning,
       .closing .inner,
-      .section-head {
+      .section-head,
+      .decision-head,
+      .decision-graph {
         grid-template-columns: 1fr;
       }
 
@@ -1574,6 +1970,33 @@
 
       .capability-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .decision-graph {
+        min-height: auto;
+        gap: 22px;
+      }
+
+      .decision-wires,
+      .signal-card::before,
+      .signal-card::after,
+      .evaluation-core::after,
+      .output-column::before {
+        display: none;
+      }
+
+      .decision-benefits {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        border-top: 1px solid rgba(0, 218, 243, .16);
+      }
+
+      .decision-benefit:nth-child(2) {
+        border-right: 0;
+      }
+
+      .decision-benefit:nth-child(1),
+      .decision-benefit:nth-child(2) {
+        border-bottom: 1px solid rgba(0, 218, 243, .14);
       }
 
       .capability:nth-child(2) {
@@ -1663,7 +2086,8 @@
       .capability-grid,
       .control-grid,
       .branch-row,
-      .integrations {
+      .integrations,
+      .decision-benefits {
         grid-template-columns: 1fr;
       }
 
@@ -1682,6 +2106,29 @@
 
       .status-board {
         margin-bottom: 22px;
+      }
+
+      .decision-graph {
+        padding: 16px;
+      }
+
+      .signal-card,
+      .output-card {
+        grid-template-columns: 38px minmax(0, 1fr);
+      }
+
+      .signal-icon,
+      .output-icon {
+        width: 38px;
+        height: 38px;
+      }
+
+      .decision-benefit {
+        border-right: 0;
+      }
+
+      .decision-benefit:nth-child(3) {
+        border-bottom: 1px solid rgba(0, 218, 243, .14);
       }
 
       .pipeline-track {
@@ -2310,6 +2757,7 @@
           </button>
           <div class="site-header__dropdown" id="site-sections-home" data-nav-panel hidden>
             <a class="site-header__dropdown-link" href="#what">What it does</a>
+            <a class="site-header__dropdown-link" href="#decision">Decision engine</a>
             <a class="site-header__dropdown-link" href="#asynkron">Proto.Actor team</a>
             <a class="site-header__dropdown-link" href="#models">Two modes</a>
             <a class="site-header__dropdown-link" href="#flow">Flow</a>
@@ -2338,6 +2786,7 @@
             <div class="site-header__mobile-group">
               <span class="site-header__mobile-label">Sections</span>
               <a class="site-header__mobile-link" href="#what">What it does</a>
+              <a class="site-header__mobile-link" href="#decision">Decision engine</a>
               <a class="site-header__mobile-link" href="#asynkron">Proto.Actor team</a>
               <a class="site-header__mobile-link" href="#models">Two modes</a>
               <a class="site-header__mobile-link" href="#flow">Flow</a>
@@ -2538,6 +2987,117 @@
               <h3>You decide the scope</h3>
               <p>Run on selected labels, selected sizes, the full backlog, or only a pilot. PR-only or auto-merge is a control.</p>
             </article>
+          </div>
+        </div>
+      </section>
+
+<section class="section decision-section" id="decision" aria-labelledby="decision-title">
+        <div class="inner">
+          <div class="decision-head">
+            <div>
+              <div class="eyebrow">Decision engine</div>
+              <h2 id="decision-title">Faktorial decides what to build from evidence.</h2>
+            </div>
+            <p class="section-copy">A request is only the start. Faktorial reads it beside telemetry, logs, code structure, change history, stored domain knowledge, and the target architecture. The result is a ranked build plan: what to change, why it matters, how to prove it, and when to escalate before code is written.</p>
+          </div>
+
+          <div class="decision-graph" aria-label="Faktorial signal evaluation graph">
+            <div class="signal-column" aria-label="Input signals">
+              <div class="decision-label">Input signals</div>
+              <div class="signal-card">
+                <span class="signal-icon" aria-hidden="true"><span class="material-symbols-outlined">person_raised_hand</span></span>
+                <span><strong>User requests / requirements</strong><span>Feature requests, pain points, goals, and acceptance criteria.</span></span>
+              </div>
+              <div class="signal-card">
+                <span class="signal-icon" aria-hidden="true"><span class="material-symbols-outlined">gavel</span></span>
+                <span><strong>Compliance requirements and rules</strong><span>Policies, controls, standards, and team-specific guardrails.</span></span>
+              </div>
+              <div class="signal-card">
+                <span class="signal-icon" aria-hidden="true"><span class="material-symbols-outlined">account_tree</span></span>
+                <span><strong>Distributed tracing</strong><span>Request flows, latency, dependencies, and runtime boundaries.</span></span>
+              </div>
+              <div class="signal-card">
+                <span class="signal-icon" aria-hidden="true"><span class="material-symbols-outlined">article</span></span>
+                <span><strong>Logs</strong><span>Errors, behavior, operational events, and recurring failure modes.</span></span>
+              </div>
+              <div class="signal-card">
+                <span class="signal-icon" aria-hidden="true"><span class="material-symbols-outlined">code_blocks</span></span>
+                <span><strong>Code analysis</strong><span>Structure, complexity, quality, ownership, and technical debt.</span></span>
+              </div>
+              <div class="signal-card">
+                <span class="signal-icon" aria-hidden="true"><span class="material-symbols-outlined">monitoring</span></span>
+                <span><strong>Change frequency</strong><span>Hotspots, churn, brittle areas, and active development paths.</span></span>
+              </div>
+              <div class="signal-card">
+                <span class="signal-icon" aria-hidden="true"><span class="material-symbols-outlined">hub</span></span>
+                <span><strong>Knowledge graph</strong><span>Domain relationships, prior decisions, and historical context.</span></span>
+              </div>
+              <div class="signal-card">
+                <span class="signal-icon" aria-hidden="true"><span class="material-symbols-outlined">architecture</span></span>
+                <span><strong>Target architecture</strong><span>Standards, constraints, boundaries, and strategic direction.</span></span>
+              </div>
+            </div>
+
+            <div class="evaluation-core" aria-label="Evaluation engine">
+              <div class="decision-label">Evaluation</div>
+              <img class="evaluation-mark" src="images/faktorial-symbol.png" alt="" loading="lazy" />
+              <h3>Context scoring</h3>
+              <p>Signals are correlated before an agent starts building.</p>
+              <ul class="evaluation-list">
+                <li><span class="material-symbols-outlined" aria-hidden="true">done</span><span>Connects requests to system evidence</span></li>
+                <li><span class="material-symbols-outlined" aria-hidden="true">done</span><span>Ranks impact, urgency, and risk</span></li>
+                <li><span class="material-symbols-outlined" aria-hidden="true">done</span><span>Finds constraints and ownership boundaries</span></li>
+                <li><span class="material-symbols-outlined" aria-hidden="true">done</span><span>Chooses the smallest credible build path</span></li>
+                <li><span class="material-symbols-outlined" aria-hidden="true">done</span><span>Defines proof before implementation</span></li>
+              </ul>
+            </div>
+
+            <div class="output-column" aria-label="Build plan output">
+              <div class="decision-label">Output / build plan</div>
+              <article class="output-card">
+                <span class="output-icon" aria-hidden="true"><span class="material-symbols-outlined">deployed_code</span></span>
+                <span><strong>What to build</strong><span>A scoped change with a reason to exist.</span></span>
+              </article>
+              <article class="output-card">
+                <span class="output-icon" aria-hidden="true"><span class="material-symbols-outlined">query_stats</span></span>
+                <span><strong>Why it matters</strong><span>Impact, tradeoffs, and expected system effect.</span></span>
+              </article>
+              <article class="output-card">
+                <span class="output-icon" aria-hidden="true"><span class="material-symbols-outlined">fact_check</span></span>
+                <span><strong>Acceptance criteria</strong><span>Conditions the change must satisfy before review.</span></span>
+              </article>
+              <article class="output-card">
+                <span class="output-icon" aria-hidden="true"><span class="material-symbols-outlined">route</span></span>
+                <span><strong>Implementation path</strong><span>Issue slices, tests, PR shape, and review gates.</span></span>
+              </article>
+              <article class="output-card">
+                <span class="output-icon" aria-hidden="true"><span class="material-symbols-outlined">code</span></span>
+                <span><strong>Code evidence</strong><span>Deterministic code-change provers verify exactly what was added, changed, or removed.</span></span>
+              </article>
+              <div class="output-score">
+                <span>Confidence and risk level decide whether the agent builds, slices, or escalates.</span>
+                <strong>gated</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="decision-benefits" aria-label="Decision outcomes">
+            <div class="decision-benefit">
+              <span class="material-symbols-outlined" aria-hidden="true">radar</span>
+              <span><strong>Right problem</strong><span>Work is selected by evidence, not queue position alone.</span></span>
+            </div>
+            <div class="decision-benefit">
+              <span class="material-symbols-outlined" aria-hidden="true">bolt</span>
+              <span><strong>Faster decision</strong><span>Context is assembled before implementation starts.</span></span>
+            </div>
+            <div class="decision-benefit">
+              <span class="material-symbols-outlined" aria-hidden="true">trending_up</span>
+              <span><strong>Higher impact</strong><span>Agent capacity moves toward the changes that matter.</span></span>
+            </div>
+            <div class="decision-benefit">
+              <span class="material-symbols-outlined" aria-hidden="true">verified_user</span>
+              <span><strong>Your context</strong><span>Architecture, data, and team rules stay in the loop.</span></span>
+            </div>
           </div>
         </div>
       </section>

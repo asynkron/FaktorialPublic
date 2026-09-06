@@ -94,8 +94,10 @@ func loadConfig() (*config, error) {
 }
 
 type server struct {
-	cfg        *config
-	httpClient *http.Client
+	cfg                       *config
+	httpClient                *http.Client
+	sessionUser               func(context.Context, string) (*githubUser, error)
+	repositoryTokenAuthorized func(context.Context, int64, string, string, string) (bool, error)
 }
 
 func (s *server) routes() http.Handler {

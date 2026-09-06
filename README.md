@@ -51,7 +51,8 @@ CLI login to work.
 
 ## Database
 
-Run `schema.sql` in Supabase before deploying.
+Apply the versioned files in `supabase/migrations` before deploying. `schema.sql`
+is retained for the original GitHub App installation table bootstrap.
 
 ## Local Run
 
@@ -78,7 +79,7 @@ The script publishes `rogeralsing/faktorialpublic:<tag>`. When the tag is not
 
 ## Read-only repository tokens
 
-Trusted callers may send `{ "repo": "owner/name", "access": "contents-read" }`
+Authorized callers may send `{ "repo": "owner/name", "access": "contents-read" }`
 to the existing `/api/github/token` endpoint. The broker requests exactly that
 repository and `contents: read`, then checks GitHub's returned permissions before
 returning the token. Only implicit `metadata: read` is also accepted. The response
@@ -86,8 +87,10 @@ includes `access`, `permissions`, `token` and `expires_at` and is marked no-stor
 An omitted access field preserves the existing CLI token permission behavior.
 Unknown access modes fail instead of falling back to broader permissions.
 
-This is a restriction of token permissions, not a new authorization boundary:
-the endpoint retains its existing Faktorial session authentication. Keep those
-sessions in the trusted control plane. Project pods must not receive the session
-or the app private key. Tokens still expire and callers must renew before using
-them for a subsequent fetch. This change does not implement Kubernetes rotation.
+Before contacting GitHub, the broker requires an exact
+`faktorial_repository_grants` row for the authenticated GitHub user, repository,
+and requested access mode. An omitted access field maps to the explicit `legacy`
+grant. Missing grants fail closed with `403 Forbidden`. Project pods must not
+receive the Faktorial session or the app private key. Tokens still expire and
+callers must renew before using them for a subsequent fetch. This change does not
+implement Kubernetes rotation.

@@ -133,7 +133,8 @@ func (s *server) handleAPIGitHubToken(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, http.StatusUnauthorized, map[string]string{"error": "missing bearer token"})
 		return
 	}
-	if _, err := s.userForSession(r.Context(), token); err != nil {
+	user, err := s.lookupSessionUser(r.Context(), token)
+	if err != nil {
 		log.Printf("api github token: invalid session: %T", err)
 		status := http.StatusUnauthorized
 		if !errors.Is(err, pgx.ErrNoRows) {
@@ -161,7 +162,18 @@ func (s *server) handleAPIGitHubToken(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, http.StatusBadRequest, map[string]string{"error": "repo must be owner/name"})
 		return
 	}
-	log.Printf("api github token: repo=%s/%s session ok", owner, name)
+	authorized, err := s.canIssueRepositoryToken(r.Context(), user.ID, owner, name, req.Access)
+	if err != nil {
+		log.Printf("api github token: repo=%s/%s authorization failed: %v", owner, name, err)
+		writeJSON(w, http.StatusInternalServerError, map[string]string{"error": "could not authorize repository"})
+		return
+	}
+	if !authorized {
+		log.Printf("api github token: repo=%s/%s denied for github_user_id=%d", owner, name, user.ID)
+		writeJSON(w, http.StatusForbidden, map[string]string{"error": "repository is not authorized for this session"})
+		return
+	}
+	log.Printf("api github token: repo=%s/%s session authorized", owner, name)
 	installation, err := s.fetchRepoInstallation(r.Context(), owner, name)
 	if err != nil {
 		log.Printf("api github token: repo=%s/%s installation lookup failed: %v", owner, name, err)
@@ -398,6 +410,41 @@ where s.token_hash = $1 and s.expires_at > now()
 		return nil, err
 	}
 	return &user, nil
+}
+
+func (s *server) lookupSessionUser(ctx context.Context, token string) (*githubUser, error) {
+	if s.sessionUser != nil {
+		return s.sessionUser(ctx, token)
+	}
+	return s.userForSession(ctx, token)
+}
+
+func (s *server) canIssueRepositoryToken(ctx context.Context, githubUserID int64, owner, repo, access string) (bool, error) {
+	if s.repositoryTokenAuthorized != nil {
+		return s.repositoryTokenAuthorized(ctx, githubUserID, owner, repo, access)
+	}
+	db, err := pgxpool.New(ctx, s.cfg.DatabaseURL)
+	if err != nil {
+		return false, fmt.Errorf("db pool: %w", err)
+	}
+	defer db.Close()
+	if access == "" {
+		access = "legacy"
+	}
+	var authorized bool
+	err = db.QueryRow(ctx, `
+select exists (
+    select 1
+    from faktorial_repository_grants
+    where github_user_id = $1
+      and repository_owner = lower($2)
+      and repository_name = lower($3)
+      and token_access = $4
+)`, githubUserID, owner, repo, access).Scan(&authorized)
+	if err != nil {
+		return false, fmt.Errorf("query repository grant: %w", err)
+	}
+	return authorized, nil
 }
 
 func sessionTokenHash(token string) string {

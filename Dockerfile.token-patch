@@ -1,0 +1,11 @@
+# Preserve the exact deployed runtime filesystem and informational site.
+FROM --platform=$BUILDPLATFORM golang:1.25-alpine AS build
+ARG TARGETARCH
+WORKDIR /src
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=$TARGETARCH go build -trimpath -ldflags="-s -w" -o /out/faktorial-public-app .
+
+FROM rogeralsing/faktorialpublic@sha256:63d42cd444d9540108ab286347c94fedf99d28ee8be906f2b16c9ab7a362dff4
+COPY --from=build /out/faktorial-public-app /usr/local/bin/faktorial-public-app

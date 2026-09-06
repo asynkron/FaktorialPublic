@@ -109,6 +109,7 @@ func (s *server) handleAPIIdentity(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *server) handleAPIGitHubToken(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Cache-Control", "no-store")
 	defer func() {
 		if recovered := recover(); recovered != nil {
 			log.Printf("api github token panic: %v", recovered)
@@ -142,11 +143,16 @@ func (s *server) handleAPIGitHubToken(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var req struct {
-		Repo string `json:"repo"`
+		Repo   string `json:"repo"`
+		Access string `json:"access"`
 	}
 	if err := json.NewDecoder(io.LimitReader(r.Body, 1<<20)).Decode(&req); err != nil {
 		log.Printf("api github token: invalid json")
 		writeJSON(w, http.StatusBadRequest, map[string]string{"error": "invalid json"})
+		return
+	}
+	if req.Access != "" && req.Access != "contents-read" {
+		writeJSON(w, http.StatusBadRequest, map[string]string{"error": "unsupported token access"})
 		return
 	}
 	owner, name, err := parseRepo(req.Repo)
@@ -166,7 +172,7 @@ func (s *server) handleAPIGitHubToken(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Printf("api github token: repo=%s/%s installation=%d", owner, name, installation.ID)
-	accessToken, err := s.mintInstallationAccessToken(r.Context(), installation.ID, name)
+	accessToken, err := s.mintInstallationTokenWithAccess(r.Context(), installation.ID, name, req.Access)
 	if err != nil {
 		log.Printf("api github token: repo=%s/%s mint failed: %v", owner, name, err)
 		writeJSON(w, http.StatusFailedDependency, map[string]string{"error": "could not mint github token"})
@@ -174,8 +180,10 @@ func (s *server) handleAPIGitHubToken(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Printf("api github token: repo=%s/%s ok in %s", owner, name, time.Since(start))
 	writeJSON(w, http.StatusOK, map[string]any{
-		"token":      accessToken.Token,
-		"expires_at": accessToken.ExpiresAt,
+		"token":       accessToken.Token,
+		"expires_at":  accessToken.ExpiresAt,
+		"access":      req.Access,
+		"permissions": accessToken.Permissions,
 	})
 }
 

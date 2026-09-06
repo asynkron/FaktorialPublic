@@ -316,16 +316,27 @@ func (s *server) fetchRepoInstallation(ctx context.Context, owner, repo string) 
 }
 
 type installationAccessToken struct {
-	Token     string    `json:"token"`
-	ExpiresAt time.Time `json:"expires_at"`
+	Token       string            `json:"token"`
+	ExpiresAt   time.Time         `json:"expires_at"`
+	Permissions map[string]string `json:"permissions,omitempty"`
 }
 
 func (s *server) mintInstallationAccessToken(ctx context.Context, installationID int64, repo string) (*installationAccessToken, error) {
+	return s.mintInstallationTokenWithAccess(ctx, installationID, repo, "")
+}
+
+func (s *server) mintInstallationTokenWithAccess(ctx context.Context, installationID int64, repo, access string) (*installationAccessToken, error) {
+	if access != "" && access != "contents-read" {
+		return nil, errors.New("unsupported installation token access")
+	}
 	jwt, err := signAppJWT(s.cfg.GitHubAppID, s.cfg.GitHubPrivateKey)
 	if err != nil {
 		return nil, err
 	}
-	payload := map[string][]string{"repositories": []string{repo}}
+	payload := map[string]any{"repositories": []string{repo}}
+	if access == "contents-read" {
+		payload["permissions"] = map[string]string{"contents": "read"}
+	}
 	raw, err := json.Marshal(payload)
 	if err != nil {
 		return nil, err
@@ -362,6 +373,16 @@ func (s *server) mintInstallationAccessToken(ctx context.Context, installationID
 	}
 	if out.ExpiresAt.IsZero() {
 		return nil, errors.New("github installation token response missing expires_at")
+	}
+	if access == "contents-read" {
+		if out.Permissions["contents"] != "read" {
+			return nil, errors.New("GitHub did not confirm contents read permission")
+		}
+		for permission, level := range out.Permissions {
+			if (permission != "contents" && permission != "metadata") || level != "read" {
+				return nil, errors.New("GitHub returned permissions beyond repository content read")
+			}
+		}
 	}
 	return &out, nil
 }

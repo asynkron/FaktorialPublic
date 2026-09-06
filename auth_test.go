@@ -80,10 +80,14 @@ func TestGitHubInstallationTokenFlow(t *testing.T) {
 				t.Fatalf("mint method = %s", r.Method)
 			}
 			var req struct {
-				Repositories []string `json:"repositories"`
+				Repositories []string          `json:"repositories"`
+				Permissions  map[string]string `json:"permissions"`
 			}
 			if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 				t.Fatal(err)
+			}
+			if req.Permissions != nil {
+				t.Fatal("legacy token request unexpectedly restricted permissions")
 			}
 			if len(req.Repositories) != 1 || req.Repositories[0] != "SvenskCater" {
 				t.Fatalf("repositories = %#v", req.Repositories)

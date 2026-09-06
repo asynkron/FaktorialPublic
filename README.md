@@ -75,3 +75,19 @@ To publish the production image:
 
 The script publishes `rogeralsing/faktorialpublic:<tag>`. When the tag is not
 `latest`, it also updates `rogeralsing/faktorialpublic:latest`.
+
+## Read-only repository tokens
+
+Trusted callers may send `{ "repo": "owner/name", "access": "contents-read" }`
+to the existing `/api/github/token` endpoint. The broker requests exactly that
+repository and `contents: read`, then checks GitHub's returned permissions before
+returning the token. Only implicit `metadata: read` is also accepted. The response
+includes `access`, `permissions`, `token` and `expires_at` and is marked no-store.
+An omitted access field preserves the existing CLI token permission behavior.
+Unknown access modes fail instead of falling back to broader permissions.
+
+This is a restriction of token permissions, not a new authorization boundary:
+the endpoint retains its existing Faktorial session authentication. Keep those
+sessions in the trusted control plane. Project pods must not receive the session
+or the app private key. Tokens still expire and callers must renew before using
+them for a subsequent fetch. This change does not implement Kubernetes rotation.

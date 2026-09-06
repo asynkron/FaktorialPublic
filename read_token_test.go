@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"crypto/rand"
 	"crypto/rsa"
@@ -8,9 +9,56 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 )
+
+func TestGitHubTokenRequiresRepositoryGrantBeforeCallingGitHub(t *testing.T) {
+	githubCalled := false
+	github := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		githubCalled = true
+		http.Error(w, "unexpected GitHub call", http.StatusInternalServerError)
+	}))
+	defer github.Close()
+
+	old := githubAPI
+	githubAPI = github.URL
+	defer func() { githubAPI = old }()
+
+	s := &server{
+		cfg: &config{
+			GitHubAppID:      "42",
+			GitHubPrivateKey: &rsa.PrivateKey{},
+			DatabaseURL:      "configured",
+		},
+		httpClient: github.Client(),
+		sessionUser: func(context.Context, string) (*githubUser, error) {
+			return &githubUser{ID: 7, Login: "unauthorized-user"}, nil
+		},
+		repositoryTokenAuthorized: func(_ context.Context, userID int64, owner, repo, access string) (bool, error) {
+			if userID != 7 || owner != "asynkron" || repo != "Faktorial" || access != "contents-read" {
+				t.Fatalf("authorization input = %d %q/%q %q", userID, owner, repo, access)
+			}
+			return false, nil
+		},
+	}
+	req := httptest.NewRequest(http.MethodPost, "/api/github/token", bytes.NewBufferString(`{"repo":"asynkron/Faktorial","access":"contents-read"}`))
+	req.Header.Set("Authorization", "Bearer session")
+	rec := httptest.NewRecorder()
+
+	s.handleAPIGitHubToken(rec, req)
+
+	if rec.Code != http.StatusForbidden {
+		t.Fatalf("status = %d, want %d; body=%s", rec.Code, http.StatusForbidden, rec.Body.String())
+	}
+	if githubCalled {
+		t.Fatal("unauthorized request reached GitHub")
+	}
+	if !strings.Contains(rec.Body.String(), "repository is not authorized") {
+		t.Fatalf("body = %s", rec.Body.String())
+	}
+}
 
 func TestReadTokenRequestsSingleRepositoryAndRejectsExcessPermissions(t *testing.T) {
 	key, err := rsa.GenerateKey(rand.Reader, 2048)

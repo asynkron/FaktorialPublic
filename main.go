@@ -398,16 +398,17 @@ func (s *server) mintInstallationAccessToken(ctx context.Context, installationID
 }
 
 func (s *server) mintInstallationTokenWithAccess(ctx context.Context, installationID int64, repo, access string) (*installationAccessToken, error) {
-	if access != "" && access != "contents-read" {
-		return nil, errors.New("unsupported installation token access")
+	permissions, err := installationTokenPermissions(access)
+	if err != nil {
+		return nil, err
 	}
 	jwt, err := signAppJWT(s.cfg.GitHubAppID, s.cfg.GitHubPrivateKey)
 	if err != nil {
 		return nil, err
 	}
 	payload := map[string]any{"repositories": []string{repo}}
-	if access == "contents-read" {
-		payload["permissions"] = map[string]string{"contents": "read"}
+	if permissions != nil {
+		payload["permissions"] = permissions
 	}
 	raw, err := json.Marshal(payload)
 	if err != nil {
@@ -446,16 +447,23 @@ func (s *server) mintInstallationTokenWithAccess(ctx context.Context, installati
 	if out.ExpiresAt.IsZero() {
 		return nil, errors.New("github installation token response missing expires_at")
 	}
-	if access == "contents-read" {
-		if out.Permissions["contents"] != "read" {
-			return nil, errors.New("GitHub did not confirm contents read permission")
+
+	if permissions != nil {
+		for permission, level := range permissions {
+			if out.Permissions[permission] != level {
+				return nil, errors.New("GitHub did not confirm requested repository permissions")
+			}
 		}
 		for permission, level := range out.Permissions {
-			if (permission != "contents" && permission != "metadata") || level != "read" {
-				return nil, errors.New("GitHub returned permissions beyond repository content read")
+			if permission == "metadata" && level == "read" {
+				continue
+			}
+			if expected, ok := permissions[permission]; !ok || expected != level {
+				return nil, errors.New("GitHub returned permissions beyond requested repository access")
 			}
 		}
 	}
+
 	return &out, nil
 }
 
@@ -729,3 +737,17 @@ var setupErrorTemplate = template.Must(template.New("setup-error").Parse(`<!doct
   </main>
 </body>
 </html>`))
+
+// Each explicit mode has an exact permission set and its own repository grant.
+func installationTokenPermissions(access string) (map[string]string, error) {
+	switch access {
+	case "":
+		return nil, nil
+	case "contents-read":
+		return map[string]string{"contents": "read"}, nil
+	case "worker-build":
+		return map[string]string{"contents": "read", "pull_requests": "write", "issues": "write"}, nil
+	default:
+		return nil, errors.New("unsupported installation token access")
+	}
+}

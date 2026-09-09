@@ -94,3 +94,25 @@ grant. Missing grants fail closed with `403 Forbidden`. Project pods must not
 receive the Faktorial session or the app private key. Tokens still expire and
 callers must renew before using them for a subsequent fetch. This change does not
 implement Kubernetes rotation.
+
+### Project worker Build tokens
+
+`POST /api/github/token` also accepts `access: "worker-build"`. It requires an
+explicit `faktorial_repository_grants` row for that exact access mode, GitHub user
+and repository. Contents-read and legacy grants do not authorize this mode.
+Apply migration `20260909214500_worker_build_repository_grants.sql` before enrolling
+worker-build grants; the migration itself grants nothing.
+
+The token request names one repository and exactly `contents: read`,
+`pull_requests: write` and `issues: write`. The broker verifies those permissions
+in GitHub's response, allowing only the implicit `metadata: read` addition. This
+mode supports reading worker commits and writing PRs/comments. It does not grant
+code-write or repository administration access. Existing empty-access and
+contents-read requests retain their behavior.
+
+Validation: the Go race suite tests single-repository requests, exact permission
+confirmation, rejection of extra/missing rights and denial before any GitHub call
+when the session lacks a worker-build grant. The constraint migration was tested
+in a rolled-back local PostgreSQL transaction, preserving prior modes and rejecting
+an unknown mode. Production migration, grants and broker deployment are separate
+rollout steps and were not performed with this change.

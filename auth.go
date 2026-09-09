@@ -152,7 +152,7 @@ func (s *server) handleAPIGitHubToken(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, http.StatusBadRequest, map[string]string{"error": "invalid json"})
 		return
 	}
-	if req.Access != "" && req.Access != "contents-read" {
+	if _, err := installationTokenPermissions(req.Access); err != nil {
 		writeJSON(w, http.StatusBadRequest, map[string]string{"error": "unsupported token access"})
 		return
 	}

@@ -15,6 +15,12 @@ import (
 )
 
 func TestGitHubTokenRequiresRepositoryGrantBeforeCallingGitHub(t *testing.T) {
+	for _, access := range []string{"contents-read", "worker-build"} {
+		t.Run(access, func(t *testing.T) { testDeniedRepositoryToken(t, access) })
+	}
+}
+
+func testDeniedRepositoryToken(t *testing.T, access string) {
 	githubCalled := false
 	github := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		githubCalled = true
@@ -36,14 +42,15 @@ func TestGitHubTokenRequiresRepositoryGrantBeforeCallingGitHub(t *testing.T) {
 		sessionUser: func(context.Context, string) (*githubUser, error) {
 			return &githubUser{ID: 7, Login: "unauthorized-user"}, nil
 		},
-		repositoryTokenAuthorized: func(_ context.Context, userID int64, owner, repo, access string) (bool, error) {
-			if userID != 7 || owner != "asynkron" || repo != "Faktorial" || access != "contents-read" {
-				t.Fatalf("authorization input = %d %q/%q %q", userID, owner, repo, access)
+		repositoryTokenAuthorized: func(_ context.Context, userID int64, owner, repo, requested string) (bool, error) {
+			if userID != 7 || owner != "asynkron" || repo != "Faktorial" || requested != access {
+				t.Fatalf("authorization input = %d %q/%q %q", userID, owner, repo, requested)
 			}
 			return false, nil
 		},
 	}
-	req := httptest.NewRequest(http.MethodPost, "/api/github/token", bytes.NewBufferString(`{"repo":"asynkron/Faktorial","access":"contents-read"}`))
+	payload, _ := json.Marshal(map[string]string{"repo": "asynkron/Faktorial", "access": access})
+	req := httptest.NewRequest(http.MethodPost, "/api/github/token", bytes.NewReader(payload))
 	req.Header.Set("Authorization", "Bearer session")
 	rec := httptest.NewRecorder()
 
@@ -60,7 +67,7 @@ func TestGitHubTokenRequiresRepositoryGrantBeforeCallingGitHub(t *testing.T) {
 	}
 }
 
-func TestReadTokenRequestsSingleRepositoryAndRejectsExcessPermissions(t *testing.T) {
+func TestScopedTokenRequestsSingleRepositoryAndRejectsExcessPermissions(t *testing.T) {
 	key, err := rsa.GenerateKey(rand.Reader, 2048)
 	if err != nil {
 		t.Fatal(err)
@@ -69,14 +76,21 @@ func TestReadTokenRequestsSingleRepositoryAndRejectsExcessPermissions(t *testing
 		name        string
 		permissions map[string]string
 		accepted    bool
+		access      string
 	}{
-		{"contents", map[string]string{"contents": "read"}, true},
-		{"implicit metadata", map[string]string{"contents": "read", "metadata": "read"}, true},
-		{"missing confirmation", nil, false},
-		{"write contents", map[string]string{"contents": "write"}, false},
-		{"additional read", map[string]string{"contents": "read", "issues": "read"}, false},
-		{"additional write", map[string]string{"contents": "read", "issues": "write"}, false},
-		{"metadata write", map[string]string{"contents": "read", "metadata": "write"}, false},
+		{"contents", map[string]string{"contents": "read"}, true, "contents-read"},
+		{"implicit metadata", map[string]string{"contents": "read", "metadata": "read"}, true, "contents-read"},
+		{"missing confirmation", nil, false, "contents-read"},
+		{"write contents", map[string]string{"contents": "write"}, false, "contents-read"},
+		{"additional read", map[string]string{"contents": "read", "issues": "read"}, false, "contents-read"},
+		{"additional write", map[string]string{"contents": "read", "issues": "write"}, false, "contents-read"},
+		{"metadata write", map[string]string{"contents": "read", "metadata": "write"}, false, "contents-read"},
+		{"worker build", map[string]string{"contents": "read", "pull_requests": "write", "issues": "write"}, true, "worker-build"},
+		{"worker metadata", map[string]string{"contents": "read", "pull_requests": "write", "issues": "write", "metadata": "read"}, true, "worker-build"},
+		{"worker missing PR write", map[string]string{"contents": "read", "issues": "write"}, false, "worker-build"},
+		{"worker cannot write code", map[string]string{"contents": "write", "pull_requests": "write", "issues": "write"}, false, "worker-build"},
+		{"worker cannot administer", map[string]string{"contents": "read", "pull_requests": "write", "issues": "write", "administration": "write"}, false, "worker-build"},
+		{"unknown empty permission", map[string]string{"contents": "read", "pull_requests": "write", "issues": "write", "unknown": ""}, false, "worker-build"},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			called := false
@@ -90,7 +104,12 @@ func TestReadTokenRequestsSingleRepositoryAndRejectsExcessPermissions(t *testing
 					t.Error(err)
 					return
 				}
-				want := map[string]any{"repositories": []any{"Faktorial"}, "permissions": map[string]any{"contents": "read"}}
+				permissions := map[string]any{"contents": "read"}
+				if tc.access == "worker-build" {
+					permissions["pull_requests"] = "write"
+					permissions["issues"] = "write"
+				}
+				want := map[string]any{"repositories": []any{"Faktorial"}, "permissions": permissions}
 				if !reflect.DeepEqual(request, want) {
 					t.Errorf("request = %#v", request)
 				}
@@ -101,7 +120,7 @@ func TestReadTokenRequestsSingleRepositoryAndRejectsExcessPermissions(t *testing
 			githubAPI = github.URL
 			defer func() { githubAPI = old }()
 			s := &server{cfg: &config{GitHubAppID: "42", GitHubPrivateKey: key}, httpClient: github.Client()}
-			result, err := s.mintInstallationTokenWithAccess(context.Background(), 123, "Faktorial", "contents-read")
+			result, err := s.mintInstallationTokenWithAccess(context.Background(), 123, "Faktorial", tc.access)
 			if !called || (err == nil) != tc.accepted {
 				t.Fatalf("called=%v accepted=%v error=%v", called, tc.accepted, err)
 			}

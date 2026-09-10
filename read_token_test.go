@@ -85,12 +85,12 @@ func TestScopedTokenRequestsSingleRepositoryAndRejectsExcessPermissions(t *testi
 		{"additional read", map[string]string{"contents": "read", "issues": "read"}, false, "contents-read"},
 		{"additional write", map[string]string{"contents": "read", "issues": "write"}, false, "contents-read"},
 		{"metadata write", map[string]string{"contents": "read", "metadata": "write"}, false, "contents-read"},
-		{"worker build", map[string]string{"contents": "read", "pull_requests": "write", "issues": "write"}, true, "worker-build"},
-		{"worker metadata", map[string]string{"contents": "read", "pull_requests": "write", "issues": "write", "metadata": "read"}, true, "worker-build"},
-		{"worker missing PR write", map[string]string{"contents": "read", "issues": "write"}, false, "worker-build"},
-		{"worker cannot write code", map[string]string{"contents": "write", "pull_requests": "write", "issues": "write"}, false, "worker-build"},
-		{"worker cannot administer", map[string]string{"contents": "read", "pull_requests": "write", "issues": "write", "administration": "write"}, false, "worker-build"},
-		{"unknown empty permission", map[string]string{"contents": "read", "pull_requests": "write", "issues": "write", "unknown": ""}, false, "worker-build"},
+		{"worker build", map[string]string{"contents": "write", "pull_requests": "write", "issues": "write"}, true, "worker-build"},
+		{"worker metadata", map[string]string{"contents": "write", "pull_requests": "write", "issues": "write", "metadata": "read"}, true, "worker-build"},
+		{"worker missing PR write", map[string]string{"contents": "write", "issues": "write"}, false, "worker-build"},
+		{"worker requires merge permission", map[string]string{"contents": "read", "pull_requests": "write", "issues": "write"}, false, "worker-build"},
+		{"worker cannot administer", map[string]string{"contents": "write", "pull_requests": "write", "issues": "write", "administration": "write"}, false, "worker-build"},
+		{"unknown empty permission", map[string]string{"contents": "write", "pull_requests": "write", "issues": "write", "unknown": ""}, false, "worker-build"},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			called := false
@@ -106,6 +106,7 @@ func TestScopedTokenRequestsSingleRepositoryAndRejectsExcessPermissions(t *testi
 				}
 				permissions := map[string]any{"contents": "read"}
 				if tc.access == "worker-build" {
+					permissions["contents"] = "write"
 					permissions["pull_requests"] = "write"
 					permissions["issues"] = "write"
 				}

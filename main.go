@@ -746,7 +746,7 @@ func installationTokenPermissions(access string) (map[string]string, error) {
 	case "contents-read":
 		return map[string]string{"contents": "read"}, nil
 	case "worker-build":
-		return map[string]string{"contents": "read", "pull_requests": "write", "issues": "write"}, nil
+		return map[string]string{"contents": "write", "pull_requests": "write", "issues": "write"}, nil
 	default:
 		return nil, errors.New("unsupported installation token access")
 	}

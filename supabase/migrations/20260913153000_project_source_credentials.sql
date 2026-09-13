@@ -6,7 +6,7 @@ alter table faktorial_login_states
 create table if not exists faktorial_project_source_credentials (
     credential_hash text primary key,
     github_user_id bigint not null references faktorial_users (github_user_id) on delete cascade,
-    project_audience text not null unique,
+    project_audience text not null,
     repository_owner text not null check (repository_owner = lower(repository_owner)),
     repository_name text not null check (repository_name = lower(repository_name)),
     token_access text not null check (token_access = 'worker-build'),

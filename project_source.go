@@ -175,9 +175,6 @@ func (s *server) issueProjectSourceCredential(ctx context.Context, githubUserID 
 		return "", err
 	}
 	defer tx.Rollback(ctx)
-	if _, err := tx.Exec(ctx, `UPDATE faktorial_project_source_credentials SET revoked_at = now() WHERE project_audience = $1 AND revoked_at IS NULL`, project); err != nil {
-		return "", err
-	}
 	if _, err := tx.Exec(ctx, `INSERT INTO faktorial_project_source_credentials(credential_hash, github_user_id, project_audience, repository_owner, repository_name, token_access) VALUES($1, $2, $3, lower($4), lower($5), $6)`, opaqueCredentialHash(credential), githubUserID, project, owner, name, workerBuildAccess); err != nil {
 		return "", err
 	}

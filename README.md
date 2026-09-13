@@ -116,3 +116,36 @@ when the session lacks a worker-build grant. The constraint migration was tested
 in a rolled-back local PostgreSQL transaction, preserving prior modes and rejecting
 an unknown mode. Production migration, grants and broker deployment are separate
 rollout steps and were not performed with this change.
+
+### Project source delegation
+
+A worker can turn its existing Faktorial session into one renewable, project-bound
+source credential without sending that session to the project:
+
+1. `POST /api/github/project-source` with the Faktorial session bearer and
+   `{ "repo": "owner/name", "project": "https://app.faktorial.ai/projects/<id>" }`
+   returns `{ "repo", "project", "token" }`. The response token is opaque; only
+   its hash is stored. It is bound to that exact repository, Cloud project and
+   `worker-build` access mode.
+2. `POST /api/github/project-source/token` with that opaque bearer and the same
+   JSON returns `{ "repo", "project", "access": "worker-build", "token",
+   "expires_at", "permissions" }`. It rechecks the exact repository grant on
+   every renewal and mints one short-lived installation token for one repository.
+
+Project URLs must be canonical `https://app.faktorial.ai/projects/<id>` values.
+A token for another project or repository is rejected. The service never returns
+Faktorial login sessions or the GitHub App private key.
+
+When an agent needs a missing worker-build grant, it starts the existing GitHub
+App user-login flow with `repo=owner/name&access=worker-build`. The OAuth token is
+used only during that callback to verify GitHub reports exact repository `push`
+access, then discarded. A successful check records the exact grant; ordinary
+login requests do not create grants. The broker does not request broad `repo`
+OAuth scope or infer access from repository visibility. If GitHub cannot prove
+push access, the user must complete the explicit repository login after granting
+the Faktorial GitHub App access.
+
+Worker-build tokens request and verify only `contents: write`, `pull_requests:
+write`, `issues: write`, `checks: read` and `statuses: read` (plus GitHub's
+implicit metadata permission). Apply
+`20260913153000_project_source_credentials.sql` before enabling these routes.

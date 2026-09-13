@@ -94,10 +94,14 @@ func loadConfig() (*config, error) {
 }
 
 type server struct {
-	cfg                       *config
-	httpClient                *http.Client
-	sessionUser               func(context.Context, string) (*githubUser, error)
-	repositoryTokenAuthorized func(context.Context, int64, string, string, string) (bool, error)
+	cfg                           *config
+	httpClient                    *http.Client
+	sessionUser                   func(context.Context, string) (*githubUser, error)
+	repositoryTokenAuthorized     func(context.Context, int64, string, string, string) (bool, error)
+	projectSourceCredentialIssued func(context.Context, int64, string, string, string) (string, error)
+	projectSourceCredentialUser   func(context.Context, string, string, string, string) (int64, bool, error)
+	repositoryWriteAuthorized     func(context.Context, string, string, string) (bool, error)
+	repositoryGrantStored         func(context.Context, int64, string, string, string) error
 }
 
 func (s *server) routes() http.Handler {
@@ -106,6 +110,8 @@ func (s *server) routes() http.Handler {
 	mux.HandleFunc("/login", s.handleLogin)
 	mux.HandleFunc("/api/me", s.handleAPIIdentity)
 	mux.HandleFunc("/api/github/token", s.handleAPIGitHubToken)
+	mux.HandleFunc("/api/github/project-source", s.handleAPIProjectSource)
+	mux.HandleFunc("/api/github/project-source/token", s.handleAPIProjectSourceToken)
 	mux.HandleFunc("/setup", s.handleGitHubSetup)
 	mux.HandleFunc("/github/setup", s.handleGitHubSetup)
 	mux.HandleFunc("/callback", s.handleGitHubCallback)
@@ -287,6 +293,13 @@ func (s *server) handleGitHubCallback(w http.ResponseWriter, r *http.Request) {
 		log.Printf("github oauth user lookup failed: %v", err)
 		renderSetupError(w, http.StatusBadGateway, "Could not read your GitHub identity.")
 		return
+	}
+	if loginState.RepositoryOwner != "" {
+		if err := s.establishRepositoryGrant(r.Context(), user.ID, accessToken, loginState.RepositoryOwner, loginState.RepositoryName, loginState.TokenAccess); err != nil {
+			log.Printf("github oauth repository authorization failed: repo=%s/%s user=%d error=%v", loginState.RepositoryOwner, loginState.RepositoryName, user.ID, err)
+			renderSetupError(w, http.StatusForbidden, "GitHub did not confirm push access to this repository. Grant the Faktorial GitHub App access, then run repository login again.")
+			return
+		}
 	}
 	sessionToken, err := randomToken(32)
 	if err != nil {
@@ -746,7 +759,7 @@ func installationTokenPermissions(access string) (map[string]string, error) {
 	case "contents-read":
 		return map[string]string{"contents": "read"}, nil
 	case "worker-build":
-		return map[string]string{"contents": "write", "pull_requests": "write", "issues": "write"}, nil
+		return map[string]string{"contents": "write", "pull_requests": "write", "issues": "write", "checks": "read", "statuses": "read"}, nil
 	default:
 		return nil, errors.New("unsupported installation token access")
 	}

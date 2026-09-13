@@ -32,6 +32,9 @@ type loginState struct {
 	State            string
 	CLIState         string
 	LocalCallbackURL string
+	RepositoryOwner  string
+	RepositoryName   string
+	TokenAccess      string
 }
 
 type githubUser struct {
@@ -62,12 +65,17 @@ func (s *server) handleLogin(w http.ResponseWriter, r *http.Request) {
 		renderSetupError(w, http.StatusBadRequest, "Missing CLI login state.")
 		return
 	}
+	owner, name, access, err := loginRepositoryRequest(r)
+	if err != nil {
+		renderSetupError(w, http.StatusBadRequest, err.Error())
+		return
+	}
 	state, err := randomToken(24)
 	if err != nil {
 		renderSetupError(w, http.StatusInternalServerError, "Could not start login.")
 		return
 	}
-	if err := s.storeLoginState(r.Context(), state, cliState, localCallback); err != nil {
+	if err := s.storeLoginState(r.Context(), state, cliState, localCallback, owner, name, access); err != nil {
 		renderSetupError(w, http.StatusInternalServerError, "Could not start login.")
 		return
 	}
@@ -324,16 +332,63 @@ func (s *server) fetchGitHubUser(ctx context.Context, accessToken string) (*gith
 	return &user, nil
 }
 
-func (s *server) storeLoginState(ctx context.Context, state, cliState, localCallbackURL string) error {
+func loginRepositoryRequest(r *http.Request) (string, string, string, error) {
+	repo := strings.TrimSpace(r.URL.Query().Get("repo"))
+	access := strings.TrimSpace(r.URL.Query().Get("access"))
+	if repo == "" && access == "" {
+		return "", "", "", nil
+	}
+	if access != workerBuildAccess {
+		return "", "", "", errors.New("repository login requires access=worker-build")
+	}
+	owner, name, err := parseRepo(repo)
+	if err != nil {
+		return "", "", "", errors.New("repository login requires repo=owner/name")
+	}
+	return owner, name, access, nil
+}
+
+func (s *server) establishRepositoryGrant(ctx context.Context, githubUserID int64, oauthToken, owner, name, access string) error {
+	if access != workerBuildAccess {
+		return errors.New("unsupported repository authorization")
+	}
+	allowed, err := s.verifyRepositoryWrite(ctx, oauthToken, owner, name)
+	if err != nil {
+		return err
+	}
+	if !allowed {
+		return errors.New("github did not confirm repository push access")
+	}
+	return s.storeRepositoryGrant(ctx, githubUserID, owner, name, access)
+}
+
+func (s *server) storeRepositoryGrant(ctx context.Context, githubUserID int64, owner, name, access string) error {
+	if s.repositoryGrantStored != nil {
+		return s.repositoryGrantStored(ctx, githubUserID, owner, name, access)
+	}
 	db, err := pgxpool.New(ctx, s.cfg.DatabaseURL)
 	if err != nil {
 		return err
 	}
 	defer db.Close()
 	_, err = db.Exec(ctx, `
-insert into faktorial_login_states (state, cli_state, local_callback_url, expires_at)
-values ($1, $2, $3, now() + $4::interval)
-`, state, cliState, localCallbackURL, fmt.Sprintf("%d seconds", int(loginStateTTL.Seconds())))
+insert into faktorial_repository_grants (github_user_id, repository_owner, repository_name, token_access)
+values ($1, lower($2), lower($3), $4)
+on conflict (github_user_id, repository_owner, repository_name, token_access) do nothing
+`, githubUserID, owner, name, access)
+	return err
+}
+
+func (s *server) storeLoginState(ctx context.Context, state, cliState, localCallbackURL, owner, name, access string) error {
+	db, err := pgxpool.New(ctx, s.cfg.DatabaseURL)
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+	_, err = db.Exec(ctx, `
+insert into faktorial_login_states (state, cli_state, local_callback_url, repository_owner, repository_name, token_access, expires_at)
+values ($1, $2, $3, lower($4), lower($5), $6, now() + $7::interval)
+`, state, cliState, localCallbackURL, owner, name, access, fmt.Sprintf("%d seconds", int(loginStateTTL.Seconds())))
 	return err
 }
 
@@ -355,8 +410,8 @@ func (s *server) consumeLoginState(ctx context.Context, state string) (*loginSta
 	err = tx.QueryRow(ctx, `
 delete from faktorial_login_states
 where state = $1 and expires_at > now()
-returning state, cli_state, local_callback_url
-`, state).Scan(&out.State, &out.CLIState, &out.LocalCallbackURL)
+returning state, cli_state, local_callback_url, repository_owner, repository_name, token_access
+`, state).Scan(&out.State, &out.CLIState, &out.LocalCallbackURL, &out.RepositoryOwner, &out.RepositoryName, &out.TokenAccess)
 	if err != nil {
 		return nil, err
 	}

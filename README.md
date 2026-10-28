@@ -95,6 +95,13 @@ receive the Faktorial session or the app private key. Tokens still expire and
 callers must renew before using them for a subsequent fetch. This change does not
 implement Kubernetes rotation.
 
+Authorize a missing read-only grant through the existing GitHub App user-login
+flow with `repo=owner/name&access=contents-read`, together with the CLI callback
+and state. The callback verifies GitHub reports `pull` permission for that exact
+repository before storing the `contents-read` grant. Repository visibility or a
+worker-build grant does not substitute for this explicit authorization. No
+additional OAuth scope or GitHub App installation permission is requested.
+
 ### Project worker Build tokens
 
 `POST /api/github/token` also accepts `access: "worker-build"`. It requires an

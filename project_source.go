@@ -212,10 +212,7 @@ func opaqueCredentialHash(value string) string {
 	return hex.EncodeToString(sum[:])
 }
 
-func (s *server) verifyRepositoryWrite(ctx context.Context, oauthToken, owner, name string) (bool, error) {
-	if s.repositoryWriteAuthorized != nil {
-		return s.repositoryWriteAuthorized(ctx, oauthToken, owner, name)
-	}
+func (s *server) verifyRepositoryAccess(ctx context.Context, oauthToken, owner, name, access string) (bool, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("%s/repos/%s/%s", githubAPI, url.PathEscape(owner), url.PathEscape(name)), nil)
 	if err != nil {
 		return false, err
@@ -234,11 +231,22 @@ func (s *server) verifyRepositoryWrite(ctx context.Context, oauthToken, owner, n
 	var body struct {
 		FullName    string `json:"full_name"`
 		Permissions struct {
+			Pull bool `json:"pull"`
 			Push bool `json:"push"`
 		} `json:"permissions"`
 	}
 	if err := json.NewDecoder(io.LimitReader(resp.Body, 1<<20)).Decode(&body); err != nil {
 		return false, err
 	}
-	return strings.EqualFold(body.FullName, owner+"/"+name) && body.Permissions.Push, nil
+	if !strings.EqualFold(body.FullName, owner+"/"+name) {
+		return false, nil
+	}
+	switch access {
+	case "contents-read":
+		return body.Permissions.Pull, nil
+	case workerBuildAccess:
+		return body.Permissions.Push, nil
+	default:
+		return false, errors.New("unsupported repository authorization")
+	}
 }

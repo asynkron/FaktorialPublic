@@ -100,7 +100,6 @@ type server struct {
 	repositoryTokenAuthorized     func(context.Context, int64, string, string, string) (bool, error)
 	projectSourceCredentialIssued func(context.Context, int64, string, string, string) (string, error)
 	projectSourceCredentialUser   func(context.Context, string, string, string, string) (int64, bool, error)
-	repositoryWriteAuthorized     func(context.Context, string, string, string) (bool, error)
 	repositoryGrantStored         func(context.Context, int64, string, string, string) error
 }
 
@@ -297,7 +296,7 @@ func (s *server) handleGitHubCallback(w http.ResponseWriter, r *http.Request) {
 	if loginState.RepositoryOwner != "" {
 		if err := s.establishRepositoryGrant(r.Context(), user.ID, accessToken, loginState.RepositoryOwner, loginState.RepositoryName, loginState.TokenAccess); err != nil {
 			log.Printf("github oauth repository authorization failed: repo=%s/%s user=%d error=%v", loginState.RepositoryOwner, loginState.RepositoryName, user.ID, err)
-			renderSetupError(w, http.StatusForbidden, "GitHub did not confirm push access to this repository. Grant the Faktorial GitHub App access, then run repository login again.")
+			renderSetupError(w, http.StatusForbidden, "GitHub did not confirm the requested access to this repository. Grant the Faktorial GitHub App access, then run repository login again.")
 			return
 		}
 	}

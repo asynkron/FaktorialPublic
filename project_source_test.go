@@ -6,8 +6,11 @@ import (
 	"crypto/rand"
 	"crypto/rsa"
 	"encoding/json"
+	"errors"
+	"io"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 	"time"
 )
@@ -88,18 +91,88 @@ func TestProjectSourceRenewalRejectsWrongProjectBeforeGitHub(t *testing.T) {
 	}
 }
 
-func TestRepositoryLoginGrantRequiresGitHubPushAuthorization(t *testing.T) {
-	s := projectSourceTestServer(t)
-	stored := false
-	s.repositoryWriteAuthorized = func(context.Context, string, string, string) (bool, error) { return false, nil }
-	s.repositoryGrantStored = func(context.Context, int64, string, string, string) error { stored = true; return nil }
-	if err := s.establishRepositoryGrant(context.Background(), 9, "ephemeral", "asynkron", "Faktorial", workerBuildAccess); err == nil || stored {
-		t.Fatalf("err=%v stored=%v", err, stored)
+func TestRepositoryLoginGrantRequiresGitHubPermissionForRequestedAccess(t *testing.T) {
+	for _, tc := range []struct {
+		name      string
+		access    string
+		body      string
+		status    int
+		transport bool
+		accepted  bool
+	}{
+		{name: "read-only user", access: "contents-read", body: `{"full_name":"asynkron/FaktorialDemo","permissions":{"pull":true,"push":false}}`, accepted: true},
+		{name: "read-only user cannot build", access: workerBuildAccess, body: `{"full_name":"asynkron/FaktorialDemo","permissions":{"pull":true,"push":false}}`},
+		{name: "writer can build", access: workerBuildAccess, body: `{"full_name":"asynkron/FaktorialDemo","permissions":{"pull":true,"push":true}}`, accepted: true},
+		{name: "writer can request read only", access: "contents-read", body: `{"full_name":"asynkron/FaktorialDemo","permissions":{"pull":true,"push":true}}`, accepted: true},
+		{name: "read requires pull permission", access: "contents-read", body: `{"full_name":"asynkron/FaktorialDemo","permissions":{"pull":false,"push":true}}`},
+		{name: "visible metadata is insufficient", access: "contents-read", body: `{"full_name":"asynkron/FaktorialDemo"}`},
+		{name: "read rejects another repository", access: "contents-read", body: `{"full_name":"asynkron/Other","permissions":{"pull":true,"push":true}}`},
+		{name: "build rejects another repository", access: workerBuildAccess, body: `{"full_name":"asynkron/Other","permissions":{"pull":true,"push":true}}`},
+		{name: "read denies provider rejection", access: "contents-read", status: http.StatusForbidden, body: `{"full_name":"asynkron/FaktorialDemo","permissions":{"pull":true}}`},
+		{name: "read denies malformed response", access: "contents-read", body: `not json`},
+		{name: "read denies transport failure", access: "contents-read", transport: true},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			req := httptest.NewRequest(http.MethodGet, "/login?repo=asynkron%2FFaktorialDemo&access="+tc.access, nil)
+			owner, name, access, err := loginRepositoryRequest(req)
+			if err != nil || owner != "asynkron" || name != "FaktorialDemo" || access != tc.access {
+				t.Fatalf("repository login selection = %q/%q %q, %v", owner, name, access, err)
+			}
+			called, stored := false, false
+			s := &server{
+				httpClient: &http.Client{Transport: repositoryPermissionTransport(func(r *http.Request) (*http.Response, error) {
+					called = true
+					if r.Method != http.MethodGet || r.URL.Path != "/repos/asynkron/FaktorialDemo" || r.Header.Get("Authorization") != "Bearer ephemeral" {
+						t.Fatalf("unexpected repository permission request: %s %s", r.Method, r.URL.Path)
+					}
+					if tc.transport {
+						return nil, errors.New("fixture transport failure")
+					}
+					status := tc.status
+					if status == 0 {
+						status = http.StatusOK
+					}
+					return &http.Response{StatusCode: status, Body: io.NopCloser(strings.NewReader(tc.body)), Header: make(http.Header)}, nil
+				})},
+				repositoryGrantStored: func(_ context.Context, id int64, owner, name, access string) error {
+					if id != 9 || owner != "asynkron" || name != "FaktorialDemo" || access != tc.access {
+						t.Fatalf("stored grant = %d %s/%s %s", id, owner, name, access)
+					}
+					stored = true
+					return nil
+				},
+			}
+			err = s.establishRepositoryGrant(t.Context(), 9, "ephemeral", owner, name, access)
+			if !called || stored != tc.accepted || (err == nil) != tc.accepted {
+				t.Fatalf("permission check called=%v stored=%v accepted=%v error=%v", called, stored, tc.accepted, err)
+			}
+		})
 	}
-	s.repositoryWriteAuthorized = func(context.Context, string, string, string) (bool, error) { return true, nil }
-	if err := s.establishRepositoryGrant(context.Background(), 9, "ephemeral", "asynkron", "Faktorial", workerBuildAccess); err != nil || !stored {
-		t.Fatalf("err=%v stored=%v", err, stored)
+}
+
+func TestRepositoryLoginRejectsUnsupportedGrantAccess(t *testing.T) {
+	for _, access := range []string{"", "legacy", "contents-write", "unknown"} {
+		t.Run("access="+access, func(t *testing.T) {
+			req := httptest.NewRequest(http.MethodGet, "/login?repo=asynkron%2FFaktorialDemo&access="+access, nil)
+			if _, _, _, err := loginRepositoryRequest(req); err == nil {
+				t.Fatal("unsupported repository login access was accepted")
+			}
+			stored := false
+			s := &server{repositoryGrantStored: func(context.Context, int64, string, string, string) error {
+				stored = true
+				return nil
+			}}
+			if err := s.establishRepositoryGrant(t.Context(), 9, "ephemeral", "asynkron", "FaktorialDemo", access); err == nil || stored {
+				t.Fatalf("unsupported access grant error=%v stored=%v", err, stored)
+			}
+		})
 	}
+}
+
+type repositoryPermissionTransport func(*http.Request) (*http.Response, error)
+
+func (transport repositoryPermissionTransport) RoundTrip(request *http.Request) (*http.Response, error) {
+	return transport(request)
 }
 
 func projectSourceTestServer(t *testing.T) *server {

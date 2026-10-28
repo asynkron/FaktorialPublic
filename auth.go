@@ -338,8 +338,8 @@ func loginRepositoryRequest(r *http.Request) (string, string, string, error) {
 	if repo == "" && access == "" {
 		return "", "", "", nil
 	}
-	if access != workerBuildAccess {
-		return "", "", "", errors.New("repository login requires access=worker-build")
+	if access != "contents-read" && access != workerBuildAccess {
+		return "", "", "", errors.New("repository login requires access=contents-read or worker-build")
 	}
 	owner, name, err := parseRepo(repo)
 	if err != nil {
@@ -349,14 +349,17 @@ func loginRepositoryRequest(r *http.Request) (string, string, string, error) {
 }
 
 func (s *server) establishRepositoryGrant(ctx context.Context, githubUserID int64, oauthToken, owner, name, access string) error {
-	if access != workerBuildAccess {
+	if access != "contents-read" && access != workerBuildAccess {
 		return errors.New("unsupported repository authorization")
 	}
-	allowed, err := s.verifyRepositoryWrite(ctx, oauthToken, owner, name)
+	allowed, err := s.verifyRepositoryAccess(ctx, oauthToken, owner, name, access)
 	if err != nil {
 		return err
 	}
 	if !allowed {
+		if access == "contents-read" {
+			return errors.New("github did not confirm repository read access")
+		}
 		return errors.New("github did not confirm repository push access")
 	}
 	return s.storeRepositoryGrant(ctx, githubUserID, owner, name, access)
